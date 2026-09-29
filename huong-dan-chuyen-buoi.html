@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hướng dẫn chuyển buổi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f7f5; --surface: #ffffff; --ink: #1c2230; --muted: #5a6273; --line: #dfe2e6;
+    --accent: #2f5d8a; --accent-soft: #e6eef6;
+    --crit: #b3261e; --crit-soft: #fbeae8;
+    --warn: #9a5b00; --warn-soft: #fbf0dd;
+    --ok: #2e7d4f; --ok-soft: #e4f3ea;
+    --code-bg: #eef0f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+      --accent: #7fb0e0; --accent-soft: #1d2b3b;
+      --crit: #f08a80; --crit-soft: #3a1f1e;
+      --warn: #e7b25c; --warn-soft: #362a17;
+      --ok: #79c795; --ok-soft: #1a3024;
+      --code-bg: #242a35;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+    --accent: #7fb0e0; --accent-soft: #1d2b3b;
+    --crit: #f08a80; --crit-soft: #3a1f1e;
+    --warn: #e7b25c; --warn-soft: #362a17;
+    --ok: #79c795; --ok-soft: #1a3024;
+    --code-bg: #242a35;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    padding-inline: 16px; padding-block: 32px 64px;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px; }
+  header { display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
+  h2 { font-size: 20px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  p { margin: 0; max-width: 70ch; }
+  .lede { color: var(--muted); font-size: 16px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--muted); font-size: 13px; }
+  section { display: flex; flex-direction: column; gap: 12px; }
+  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+  ul.list, ol.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+
+  .danger { background: var(--crit-soft); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .danger h2 { color: var(--crit); }
+  .danger .box { background: var(--surface); border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; display: grid; grid-template-columns: 34px 1fr; gap: 4px 14px; }
+  .step .n { grid-row: span 2; width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .who { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--bg); }
+  tr:last-child td { border-bottom: 0; }
+  td.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; white-space: nowrap; }
+  td.num { font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12.5px; white-space: nowrap; }
+  tr.known td { background: var(--warn-soft); }
+
+  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .rule { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; font-size: 14px; }
+  .rule > b:first-child { display: block; font-size: 14.5px; margin-bottom: 4px; }
+  .note { font-size: 13.5px; color: var(--muted); max-width: 72ch; }
+
+  @media (max-width: 520px) {
+    h1 { font-size: 23px; }
+    .step { grid-template-columns: 1fr; }
+    .step .n { grid-row: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Note cho team vận hành · Chuyển buổi</div>
+    <h1>Chuyển buổi từ gói cũ sang gói mới</h1>
+    <p class="lede">Buổi còn dư trong gói đã hết hạn giờ được chuyển sang gói khác của cùng khách ngay trên app nội bộ: CS tạo yêu cầu, quản lý (OM) duyệt. Không ai phải sửa tay số buổi nữa.</p>
+    <div class="meta">
+      <span>Ngày: 28/09/2026</span>
+      <span>Áp dụng: internal-app-v2 · trang khách hàng và trang Duyệt yêu cầu</span>
+    </div>
+  </header>
+
+  <section class="danger">
+    <h2>Đọc trước: gói đã được "chuyển tay" thì KHÔNG tạo yêu cầu</h2>
+    <p>Trước đây, khi khách gia hạn, nhân viên thường <b>cộng tay số buổi còn lại vào gói mới trên Directus Admin</b> nhưng <b>không trừ ở gói cũ</b>. Gói cũ vì vậy vẫn hiện còn buổi, dù số buổi đó đã được chuyển rồi.</p>
+    <p>Nếu tạo yêu cầu chuyển buổi từ gói cũ đó, khách sẽ được <b>cộng hai lần</b>. Ví dụ: gói cũ còn 29 PT đã được cộng tay sang gói mới, chuyển thêm lần nữa thì gói mới có 55 PT.</p>
+    <div class="box">
+      <h3>Cách nhận biết</h3>
+      <ul class="list">
+        <li>Gói mới của khách từng được cộng thêm buổi <b>bằng tay</b>, và số buổi cộng thêm <b>trùng với số buổi còn lại</b> ở gói cũ.</li>
+        <li>Không chắc thì hỏi người phụ trách khách hoặc quản lý trước khi tạo yêu cầu.</li>
+      </ul>
+      <h3>Nếu đã chuyển tay rồi</h3>
+      <ul class="list">
+        <li><b>Không tạo</b> yêu cầu chuyển buổi.</li>
+        <li>Báo quản lý để <b>đưa số buổi của gói cũ về 0</b>. Dev sửa cả số buổi của gói lẫn sổ số buổi, có ghi lý do. Sau đó gói cũ không còn hiện trong danh sách chuyển buổi nữa.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Danh sách khách cần kiểm tra trước khi dùng</h2>
+    <p>Dev rà lịch sử sửa tay và tìm ra các khách dưới đây. Mỗi khách có một gói đang hoạt động từng được cộng tay đúng bằng số buổi còn lại ở một gói hết hạn, nên nhiều khả năng đã chuyển tay. Mở trang khách bằng đường dẫn <code>/customers/&lt;mã khách&gt;</code> trên app.</p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Mã khách</th><th>Gói hết hạn (còn)</th><th>Gói đang dùng (được cộng tay)</th><th>Ngày sửa tay</th></tr>
+        </thead>
+        <tbody>
+          <tr class="known"><td class="mono">d772e84a-2c12-4ef3-b5e0-42d2082ee077</td><td>House Membership · <span class="num">29 PT, 1 Massage</span></td><td>Solo Membership</td><td class="num">27/09/2026</td></tr>
+          <tr><td class="mono">020dc806-f2c4-4abb-895c-ee2e65d2fe4b</td><td>(không tên) · <span class="num">6 Massage</span></td><td>membership</td><td class="num">09/03/2026</td></tr>
+          <tr><td class="mono">4a22007c-1a75-46a7-b42f-cada3001f3cc</td><td>(không tên) · <span class="num">4 PT</span></td><td>House Membership</td><td class="num">14/03/2026</td></tr>
+          <tr><td class="mono">f6a8382a-8f3f-4747-aa15-c6a7f7ea9afe</td><td>(không tên) · <span class="num">7 PT</span></td><td>House Membership</td><td class="num">04/04/2026</td></tr>
+          <tr><td class="mono">26e11fa8-f1e4-4f62-828b-584b760ed791</td><td>membership · <span class="num">18 PT</span></td><td>House Membership</td><td class="num">16/05/2026</td></tr>
+          <tr><td class="mono">6378abf3-a016-4072-a00b-2a85ca713649</td><td>House Membership · <span class="num">14 PT</span></td><td>House Membership</td><td class="num">03/07/2026</td></tr>
+          <tr><td class="mono">75a016c2-9391-450b-9bcd-600a3936ae98</td><td>House Membership · <span class="num">4 PT</span></td><td>House Membership</td><td class="num">11/07/2026</td></tr>
+          <tr><td class="mono">b1fb7e66-13b5-4c09-8bcf-71fb868e682e</td><td>House Membership · <span class="num">5 PT</span></td><td>House Membership</td><td class="num">19/07/2026</td></tr>
+          <tr><td class="mono">ba04c628-cdc5-47bb-8aa7-1db8b52b3491</td><td>2 gói (không tên) · <span class="num">1 PT</span> và <span class="num">6 Massage</span></td><td>House Membership</td><td class="num">17/08/2026</td></tr>
+          <tr><td class="mono">dda3e0ab-8d51-43e5-974b-1383265ce733</td><td>Month Pass · <span class="num">52 PT</span></td><td>House Membership</td><td class="num">29/08/2026</td></tr>
+          <tr><td class="mono">dae3ab5e-bcb8-429f-8473-bfd7253bcc12</td><td>Month Pass · <span class="num">4 PT</span></td><td>Month Pass</td><td class="num">02/09/2026</td></tr>
+          <tr><td class="mono">fa2742cd-338d-4fa8-8a69-6d035a9a8efa</td><td>House Membership · <span class="num">4 PT</span></td><td>Month Pass</td><td class="num">03/09/2026</td></tr>
+          <tr><td class="mono">58461e01-addb-440f-99cf-9c82b22b450f</td><td>membership · <span class="num">13 PT, 2 Massage</span></td><td>Solo Membership</td><td class="num">17/09/2026</td></tr>
+          <tr><td class="mono">3e61ad38-b8f4-49c0-85fe-1778d40e33f6</td><td>2 gói: Month Pass · <span class="num">4 PT, 1 Massage</span>; House Membership · <span class="num">7 PT, 1 Massage</span></td><td>Month Pass</td><td class="num">21/09/2026</td></tr>
+          <tr><td class="mono">e93d1b5e-ca04-49f8-b69b-3a1674602052</td><td>House Membership · <span class="num">2 PT</span></td><td>Solo Membership</td><td class="num">23/09/2026</td></tr>
+          <tr><td class="mono">b3c5156b-02ea-4836-94c0-8273fd48485f</td><td>(không tên) · <span class="num">9 PT</span></td><td>Club Membership</td><td class="num">25/09/2026</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Danh sách lấy từ <b>dữ liệu clone</b> và chỉ gồm các trường hợp số buổi trùng khớp hoàn toàn, nên <b>chưa đầy đủ</b>. Trước khi mở tính năng trên prod, dev chạy lại truy vấn này trên dữ liệu thật. Dòng tô vàng là trường hợp đã xác nhận khi test. Danh sách chỉ ghi mã khách, không ghi tên hay số điện thoại, vì file này nằm trong repo.</p>
+  </section>
+
+  <section>
+    <h2>Quy trình</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">CS · trang khách hàng</div>
+        <div>Bấm <b>Chuyển buổi</b> trên thẻ gói đã hết hạn (hoặc ở đầu mục "Gói hội viên &amp; quyền lợi"). Chọn gói nhận, số buổi từng loại, ghi <b>lý do</b>, rồi bấm <b>Gửi yêu cầu duyệt</b>. Lúc này số buổi <b>chưa thay đổi</b>.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">OM · trang Duyệt yêu cầu → tab Chuyển buổi</div>
+        <div>Đọc lý do, kiểm tra khách không nằm trong trường hợp "chuyển tay" ở trên, rồi bấm <b>Duyệt</b> hoặc <b>Từ chối</b> (từ chối phải ghi lý do). Bấm duyệt xong thì buổi được chuyển ngay.</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">OM · khi duyệt nhầm</div>
+        <div>Mở tab <b>Đã duyệt</b> và bấm <b>Hoàn tác</b> (phải ghi lý do). Buổi được trả về gói cũ.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Quy tắc cần nhớ</h2>
+    <div class="rules">
+      <div class="rule"><b>Gói cũ phải đã hết hạn</b>Gói nhận có thể đang hoạt động, chưa bắt đầu, bảo lưu hoặc tạm ngưng. Hai gói phải cùng một chủ gói.</div>
+      <div class="rule"><b>Không tự duyệt yêu cầu của mình</b>Áp dụng cho mọi tài khoản, kể cả admin. Người tạo chỉ có thể huỷ yêu cầu của chính mình.</div>
+      <div class="rule"><b>Gói nhận đang bảo lưu hoặc tạm ngưng</b>Buổi vẫn được cộng vào, nhưng khách chỉ dùng được khi có gói đang hoạt động.</div>
+      <div class="rule"><b>Hoàn tác có giới hạn</b>Không hoàn tác được nếu khách đã dùng một phần số buổi được chuyển sang.</div>
+      <div class="rule"><b>Số buổi đang chờ duyệt bị giữ chỗ</b>Một gói cũ còn 6 PT, đã có yêu cầu 4 PT đang chờ, thì chỉ tạo thêm được tối đa 2 PT.</div>
+      <div class="rule"><b>Không sửa tay số buổi nữa</b>Bảng số dư (<code>subscription_balances</code>) đã bị khoá trên Directus Admin với mọi tài khoản. Cần điều chỉnh thì báo quản lý hoặc dev để ghi một dòng điều chỉnh có lý do.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Gói cũ (2023–2024) không hiện trong danh sách chuyển buổi</h2>
+    <p>Khoảng 200 gói tạo từ 10/2023 đến 05/2024 chưa có <b>chủ gói</b>: hồi đó khách chỉ được gắn vào danh sách thành viên của gói. Chuyển buổi chỉ làm được giữa hai gói cùng một chủ gói, nên các gói này không hiện trong form, và nếu cố chuyển thì hệ thống báo "Hai gói phải cùng một chủ gói".</p>
+    <p>Không xử lý hàng loạt. Khi có khách hỏi thì làm như sau:</p>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">OM · xác minh</div>
+        <div>Mở gói cũ trên Directus Admin (<code>customer_subscriptions</code>), xem danh sách thành viên. Xác nhận khách đang hỏi đúng là người mua gói: đối chiếu hợp đồng hoặc hoá đơn, hoặc hỏi người phụ trách. Gói có nhiều thành viên thì phải hỏi rõ ai là chủ.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">OM · điền chủ gói</div>
+        <div>Chọn khách đó ở trường <b>Chủ gói</b> (<code>subscription_owner</code>) của gói cũ rồi lưu. <b>Chỉ sửa trường này</b>, không sửa số buổi.</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">CS · chuyển buổi như bình thường</div>
+        <div>Tải lại trang khách. Gói cũ giờ hiện trong form Chuyển buổi. Tạo yêu cầu, rồi quản lý duyệt như mọi yêu cầu khác. Nhớ kiểm tra trước xem gói này đã từng được "chuyển tay" chưa (mục đầu trang).</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Các thông báo thường gặp</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Thông báo</th><th>Nghĩa là</th><th>Làm gì</th></tr></thead>
+        <tbody>
+          <tr><td>Gói cũ không còn đủ buổi</td><td>Số buổi xin chuyển vượt số còn lại, kể cả phần đang chờ duyệt ở yêu cầu khác</td><td>Giảm số buổi, hoặc xem các yêu cầu đang chờ của gói đó</td></tr>
+          <tr><td>Không tự duyệt yêu cầu do chính mình tạo</td><td>Bạn là người tạo yêu cầu này</td><td>Nhờ một quản lý khác duyệt</td></tr>
+          <tr><td>Khách đã dùng một phần số buổi được chuyển sang</td><td>Không hoàn tác được vì gói nhận không còn đủ buổi để trả</td><td>Báo quản lý xử lý riêng</td></tr>
+          <tr><td>Số buổi của gói đang bị âm</td><td>Dữ liệu gói đã sai từ trước</td><td>Báo quản lý hoặc dev sửa dữ liệu trước khi chuyển</td></tr>
+          <tr><td>Số dư sổ cái của gói không khớp dữ liệu</td><td>Sổ số buổi của gói đang lệch, thường do sửa tay trước đây</td><td><b>Đừng bấm lại</b>. Báo dev kiểm tra gói đó</td></tr>
+          <tr><td>Hai gói phải cùng một chủ gói</td><td>Gói cũ chưa có chủ gói (gói 2023–2024), hoặc hai gói của hai người khác nhau</td><td>Xem mục "Gói cũ (2023–2024)…" ở trên</td></tr>
+          <tr><td>Yêu cầu này đã được xử lý</td><td>Người khác vừa duyệt, từ chối hoặc huỷ</td><td>Tải lại trang để xem trạng thái mới</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

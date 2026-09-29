@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bán gói khách mời</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f7f5; --surface: #ffffff; --ink: #1c2230; --muted: #5a6273; --line: #dfe2e6;
+    --accent: #2f5d8a; --accent-soft: #e6eef6;
+    --warn: #9a5b00; --warn-soft: #fbf0dd;
+    --code-bg: #eef0f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+      --accent: #7fb0e0; --accent-soft: #1d2b3b;
+      --warn: #e7b25c; --warn-soft: #362a17;
+      --code-bg: #242a35;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+    --accent: #7fb0e0; --accent-soft: #1d2b3b;
+    --warn: #e7b25c; --warn-soft: #362a17;
+    --code-bg: #242a35;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    padding-inline: 16px; padding-block: 32px 64px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+  header { display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
+  h2 { font-size: 21px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  p { margin: 0; max-width: 72ch; }
+  .lede { color: var(--muted); font-size: 16px; }
+  section { display: flex; flex-direction: column; gap: 18px; }
+  .who { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 2px 10px; border-radius: 999px; width: fit-content; }
+
+  .step { display: grid; grid-template-columns: 34px 1fr; gap: 6px 14px; }
+  .step .n { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .step .n.sub { background: var(--accent-soft); color: var(--accent); }
+  .step .body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  figure { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  figure img { display: block; max-width: min(100%, 720px); height: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+  figcaption { font-size: 13px; color: var(--muted); }
+
+  .callout { background: var(--warn-soft); border-radius: 8px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; }
+  .callout b:first-child { color: var(--warn); }
+  ul.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+  .note { font-size: 13px; color: var(--muted); }
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--bg); }
+  tr:last-child td { border-bottom: 0; }
+
+  @media (max-width: 560px) {
+    h1 { font-size: 23px; }
+    .step { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Hướng dẫn thao tác · Bán gói</div>
+    <h1>Bán gói cho khách đã từng đến bằng thẻ mời</h1>
+    <p class="lede">Khách đến tập thử bằng thẻ mời (invite pass) đã có sẵn hồ sơ. Trước đây bán gói cho họ ở kịch bản "Khách mới" thì báo lỗi đã có tài khoản. Giờ hệ thống tự tìm hồ sơ cũ và cho bán luôn trên hồ sơ đó.</p>
+    <p class="note">Ảnh chụp trên môi trường thử nghiệm. Tên, số điện thoại và email của khách đã được thay bằng dữ liệu giả.</p>
+  </header>
+
+  <div class="callout">
+    <b>Nhớ một quy tắc</b>
+    <p><b>Khách mới</b> là khách <b>chưa từng mua gói nào</b>. Khách chỉ từng dùng thẻ mời vẫn là khách mới. Khách đã từng mua gói, kể cả daypass hoặc gói đã hết hạn, thì đi <b>Tái ký</b>.</p>
+  </div>
+
+  <section>
+    <span class="who">CS · Tại quầy</span>
+    <h2>Các bước</h2>
+
+    <div class="step">
+      <div class="n">1</div>
+      <div class="body">
+        <h3>Chọn gói, bấm "Tạo Gói", chọn "Khách mới"</h3>
+        <p>Thao tác như cũ. Nếu không biết khách đã có hồ sơ hay chưa, cứ chọn <b>Khách mới</b>: bước sau hệ thống sẽ tự kiểm tra.</p>
+        <figure>
+          <img src="images/khach-moi-01-chon-khach-moi.png" alt="Bước 1, chọn tình huống Khách mới">
+          <figcaption>Bước 1: chọn "Khách mới" rồi bấm Next.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="n">2</div>
+      <div class="body">
+        <h3>Nhập họ tên, SĐT, email rồi bấm "Tạo mới"</h3>
+        <p>Hệ thống tra SĐT và email trước khi tạo. Có 4 kết quả, xem bên dưới.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="n sub">A</div>
+      <div class="body">
+        <h3>Không có hồ sơ nào: tạo khách mới như cũ</h3>
+        <p>Khách được tạo, email Welcome được gửi. Bấm Next đi tiếp.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="n sub">B</div>
+      <div class="body">
+        <h3>"Khách đã có hồ sơ (khách mời)": bấm "Dùng hồ sơ này"</h3>
+        <p>Kiểm tra đúng người (SĐT, email, ngày mời gần nhất) rồi bấm <b>Dùng hồ sơ này</b>. Không tạo tài khoản mới.</p>
+        <figure>
+          <img src="images/khach-moi-02-the-khach-moi.png" alt="Thẻ Khách đã có hồ sơ khách mời với nút Dùng hồ sơ này">
+          <figcaption>Nếu tên vừa nhập khác tên trên hồ sơ, hệ thống giữ tên trên hồ sơ.</figcaption>
+        </figure>
+        <figure>
+          <img src="images/khach-moi-03-da-dung-ho-so.png" alt="Đã chọn hồ sơ khách mời có sẵn">
+          <figcaption>Đã chọn hồ sơ. Khách dùng lại hồ sơ <b>không nhận email Welcome</b> (sẽ bổ sung ở đợt sau).</figcaption>
+        </figure>
+        <p class="note">Hồ sơ không có thẻ mời nào (ví dụ vừa được quầy khác tạo) hiện tiêu đề "Khách đã có hồ sơ (chưa mua gói)". Thao tác giống hệt.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="n sub">C</div>
+      <div class="body">
+        <h3>"Khách đã từng mua gói": bấm "Chuyển sang Tái ký"</h3>
+        <p>Hệ thống chuyển kịch bản sang <b>Tái ký</b> và giữ nguyên khách vừa tìm được. Đi tiếp như bán tái ký bình thường.</p>
+        <figure>
+          <img src="images/khach-moi-04-da-tung-mua.png" alt="Thẻ Khách đã từng mua gói với nút Chuyển sang Tái ký">
+          <figcaption>Khách này từng mua daypass nên không bán như khách mới.</figcaption>
+        </figure>
+        <p class="note">Nếu đang chốt từ <b>báo giá lập cho lead</b> thì không có nút này. Lập lại báo giá, chọn đối tượng <b>Khách hiện có</b>.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="n sub">D</div>
+      <div class="body">
+        <h3>Thông báo màu vàng: không bán được trên hồ sơ này</h3>
+        <figure>
+          <img src="images/khach-moi-05-bi-chan.png" alt="Thông báo SĐT email thuộc tài khoản không phải khách hàng">
+        </figure>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Thông báo</th><th>Cần làm</th></tr></thead>
+            <tbody>
+              <tr><td>SĐT / email thuộc một tài khoản không phải khách hàng</td><td>SĐT hoặc email trùng tài khoản nhân viên. Hỏi lại khách thông tin khác.</td></tr>
+              <tr><td>SĐT và email thuộc hai hồ sơ khác nhau</td><td>Hỏi lại khách, sửa cho khớp một người.</td></tr>
+              <tr><td>Hồ sơ khách đang bị khoá</td><td>Báo quản lý kiểm tra hồ sơ.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="n">3</div>
+      <div class="body">
+        <h3>Đi tiếp các bước còn lại như bình thường</h3>
+        <p>Chọn kỳ thanh toán, thu tiền, tạo transaction. Gói mới được tạo trên đúng hồ sơ của khách. Sau khi Kế toán xác nhận, loại khách được cập nhật theo số tiền đã trả.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Hỏi nhanh</h2>
+    <ul class="list">
+      <li><b>Đã chọn hồ sơ rồi mới phát hiện sai SĐT?</b> Sửa SĐT hoặc email, hệ thống tự bỏ chọn khách cũ. Bấm "Tạo mới" lại để tra.</li>
+      <li><b>Chọn "Nâng cấp" nhưng không thấy gói thẻ mời của khách?</b> Đúng như vậy. Gói thẻ mời chỉ có hiệu lực 1 ngày nên không nâng cấp hay cộng dồn được. Bán gói mới ở kịch bản Khách mới. Gói daypass thì vẫn nâng cấp được.</li>
+      <li><b>Chốt từ báo giá cho lead là khách mời?</b> Form điền sẵn thông tin lead. Bấm "Tạo mới", hệ thống sẽ hiện thẻ khách mời như bước B.</li>
+    </ul>
+  </section>
+
+</div>
+</body>
+</html>
