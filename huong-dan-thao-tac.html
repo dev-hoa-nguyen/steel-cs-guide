@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thao tác chuyển nhượng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f7f5; --surface: #ffffff; --ink: #1c2230; --muted: #5a6273; --line: #dfe2e6;
+    --accent: #2f5d8a; --accent-soft: #e6eef6;
+    --warn: #9a5b00; --warn-soft: #fbf0dd;
+    --code-bg: #eef0f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+      --accent: #7fb0e0; --accent-soft: #1d2b3b;
+      --warn: #e7b25c; --warn-soft: #362a17;
+      --code-bg: #242a35;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+    --accent: #7fb0e0; --accent-soft: #1d2b3b;
+    --warn: #e7b25c; --warn-soft: #362a17;
+    --code-bg: #242a35;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    padding-inline: 16px; padding-block: 32px 64px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+  header { display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
+  h2 { font-size: 21px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  p { margin: 0; max-width: 72ch; }
+  .lede { color: var(--muted); font-size: 16px; }
+  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+  section { display: flex; flex-direction: column; gap: 18px; }
+  .who { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 2px 10px; border-radius: 999px; width: fit-content; }
+
+  .step { display: grid; grid-template-columns: 34px 1fr; gap: 6px 14px; }
+  .step .n { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .step .body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  figure { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+  figure img.narrow { max-width: min(100%, 560px); }
+  figcaption { font-size: 13px; color: var(--muted); }
+
+  .callout { background: var(--warn-soft); border-radius: 8px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; }
+  .callout b:first-child { color: var(--warn); }
+  ul.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+  .note { font-size: 13px; color: var(--muted); }
+
+  @media (max-width: 560px) {
+    h1 { font-size: 23px; }
+    .step { grid-template-columns: 1fr; }
+  }
+  .compare { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+  .compare table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  .compare th, .compare td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .compare th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--bg); }
+  .compare tr:last-child td { border-bottom: 0; }
+  ol.steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; max-width: 72ch; }
+  .box { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Hướng dẫn thao tác · Chuyển nhượng</div>
+    <h1>Chuyển buổi cho khách khác &amp; sang tên gói</h1>
+    <p class="lede"><b>CS</b> tạo yêu cầu ở trang khách. <b>OM</b> duyệt ở <b>Duyệt yêu cầu</b>. Chưa duyệt thì chưa có gì thay đổi.</p>
+  </header>
+
+  <div class="callout">
+    <b>Trước khi tạo yêu cầu, kiểm tra 3 điều</b>
+    <ul class="list">
+      <li>Khách chuyển (A) đã <b>mua Transfer Fee</b> vào <b>đúng gói sẽ chuyển</b> (Tạo/báo giá gói tập → Benefit → Transfer Fee → "Nâng cấp gói đã mua").</li>
+      <li>Khoản thu phí đã được <b>xác nhận</b> ở Đối soát. Chưa xác nhận thì chưa có phí.</li>
+      <li>Có <b>giấy tờ đã ký</b> (biên bản / phụ lục chuyển nhượng), đã chụp hoặc scan.</li>
+    </ul>
+    <p class="note">Mỗi lần chuyển dùng 1 lượt phí. Gói "MEMBER | TRANSFER FEE" bán trên hệ thống cũ <b>không</b> tính là phí.</p>
+  </div>
+
+  <section>
+    <h2>Chọn đúng việc</h2>
+    <div class="compare">
+      <table>
+        <thead><tr><th>Khách muốn</th><th>Làm</th><th>Sau khi duyệt</th></tr></thead>
+        <tbody>
+          <tr><td>Cho người khác <b>một phần buổi</b> (PT, Massage…)</td><td><b>Chuyển buổi → Cho khách khác</b></td><td>Gói A bớt buổi, gói B thêm buổi. B phải có sẵn gói.</td></tr>
+          <tr><td>Nhượng lại <b>cả gói</b></td><td><b>Sang tên gói</b></td><td>Gói thành của B, giữ nguyên buổi, bảo lưu, hạn. A không dùng gói nữa. Hội viên phụ vẫn dùng.</td></tr>
+          <tr><td>Dồn buổi từ gói cũ hết hạn sang gói mới <b>của chính mình</b></td><td>Chuyển buổi → Giữa các gói của khách</td><td>Xem <a href="../session-transfer/huong-dan-thao-tac.html">hướng dẫn chuyển buổi</a>. Không cần phí.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Chỉ chuyển từ gói <b>còn hạn</b> (đang hoạt động, chưa bắt đầu, bảo lưu). Không chuyển nhượng gói của hoặc cho nhân viên. Người nhận phải có hồ sơ khách trước.</p>
+  </section>
+
+  <section>
+    <span class="who">CS</span>
+    <h2>Chuyển buổi cho khách khác</h2>
+    <div class="box">
+      <ol class="steps">
+        <li>Mở trang khách A → bấm <b>Chuyển buổi</b> (đầu mục gói) → chọn <b>Cho khách khác</b>.</li>
+        <li>Tìm và chọn người nhận B (tên, SĐT hoặc email).</li>
+        <li>Chọn gói của A, gói nhận của B, số buổi từng loại. Xem dòng <b>"Phí chuyển nhượng: còn … lượt"</b>.</li>
+        <li><b>Tải biên bản lên</b>, ghi lý do → <b>Gửi yêu cầu duyệt</b>.</li>
+      </ol>
+      <figure><img class="narrow" src="images/05-form-da-dien.png" alt="Form chuyển buổi cho khách khác đã điền"></figure>
+    </div>
+  </section>
+
+  <section>
+    <span class="who">CS</span>
+    <h2>Sang tên gói</h2>
+    <div class="box">
+      <ol class="steps">
+        <li>Mở trang <b>chủ gói</b> A → trên thẻ gói bấm <b>Sang tên gói</b>. (Trang hội viên phụ không có nút này.)</li>
+        <li>Chọn người nhận B → <b>Tải phụ lục lên</b> → <b>Gửi yêu cầu duyệt</b>.</li>
+      </ol>
+      <figure><img class="narrow" src="images/07-form-sang-ten.png" alt="Dialog sang tên gói"></figure>
+    </div>
+  </section>
+
+  <section>
+    <span class="who">OM</span>
+    <h2>Duyệt</h2>
+    <div class="box">
+      <ol class="steps">
+        <li><b>Duyệt yêu cầu</b> → tab <b>Chuyển buổi</b> hoặc <b>Sang tên gói</b> → lọc <b>Chờ duyệt</b>.</li>
+        <li>Kiểm tra người chuyển, người nhận, gói, số buổi; bấm <b>Xem biên bản / phụ lục</b>.</li>
+        <li><b>Duyệt</b> → xác nhận. Có hiệu lực ngay, trừ 1 lượt phí của A.</li>
+        <li>Sai thì <b>Từ chối</b>, ghi lý do. CS tự huỷ được yêu cầu của mình khi còn chờ duyệt.</li>
+      </ol>
+      <figure><img src="images/11-hang-doi-sang-ten.png" alt="Hàng đợi sang tên gói"></figure>
+      <figure><img class="narrow" src="images/12-hop-duyet-sang-ten.png" alt="Hộp xác nhận duyệt sang tên"></figure>
+      <p><b>Duyệt nhầm chuyển buổi?</b> Lọc <b>Đã duyệt</b> → <b>Hoàn tác</b>, ghi lý do: buổi và lượt phí trả lại A. Không hoàn tác được nếu B đã dùng số buổi đó.<br>
+      <b>Duyệt nhầm sang tên?</b> Chưa hoàn tác được trên app, báo kỹ thuật.</p>
+      <p class="note">Không tự duyệt yêu cầu do chính mình tạo. Sang tên <b>không</b> duyệt trên Directus Admin được, chỉ trên app.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Gặp thông báo này thì làm gì</h2>
+    <div class="compare">
+      <table>
+        <thead><tr><th>Thông báo</th><th>Làm gì</th></tr></thead>
+        <tbody>
+          <tr><td>Gói chưa có phí chuyển nhượng / phí đang giữ cho yêu cầu khác</td><td>Bán thêm Transfer Fee vào đúng gói và xác nhận thu tiền, hoặc chờ yêu cầu kia xử lý xong.</td></tr>
+          <tr><td>Cần tải lên biên bản / phụ lục đã ký</td><td>Tải file lên rồi gửi lại.</td></tr>
+          <tr><td>Gói chuyển đi phải còn hạn</td><td>Gói hết hạn hoặc tạm ngưng không chuyển nhượng được.</td></tr>
+          <tr><td>Người nhận đang là chủ gói này</td><td>Hai gói cùng một khách thì dùng "Giữa các gói của khách".</td></tr>
+          <tr><td>Không chuyển nhượng gói của hoặc cho nhân viên</td><td>Không làm được; báo quản lý nếu cần ngoại lệ.</td></tr>
+          <tr><td>Không thấy người nhận khi tìm</td><td>Tạo hồ sơ khách ở màn Bán gói trước.</td></tr>
+          <tr><td>Văn bản cũ không gắn gói nào</td><td>OM bấm <b>Từ chối</b> để dọn.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
