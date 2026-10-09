@@ -1,514 +1,1975 @@
 <!doctype html>
 <html lang="vi">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Thao tác Lịch Booking</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<style>
-  :root {
-    color-scheme: light;
-    --bg: #f6f7f5; --surface: #ffffff; --ink: #1c2230; --muted: #5a6273; --line: #dfe2e6;
-    --accent: #2f5d8a; --accent-soft: #e6eef6;
-    --warn: #9a5b00; --warn-soft: #fbf0dd;
-    --code-bg: #eef0f2;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
-      --accent: #7fb0e0; --accent-soft: #1d2b3b;
-      --warn: #e7b25c; --warn-soft: #362a17;
-      --code-bg: #242a35;
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
-    --accent: #7fb0e0; --accent-soft: #1d2b3b;
-    --warn: #e7b25c; --warn-soft: #362a17;
-    --code-bg: #242a35;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--bg); color: var(--ink);
-    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    font-size: 15px; line-height: 1.6;
-    padding-inline: 16px; padding-block: 32px 64px;
-  }
-  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
-  header { display: flex; flex-direction: column; gap: 10px; }
-  .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
-  h1 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
-  h2 { font-size: 21px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
-  h3 { font-size: 16px; margin: 0; font-weight: 600; }
-  p { margin: 0; max-width: 72ch; }
-  .lede { color: var(--muted); font-size: 16px; }
-  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
-  section { display: flex; flex-direction: column; gap: 18px; }
-  .who { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 2px 10px; border-radius: 999px; width: fit-content; }
-  figure { margin: 0; display: flex; flex-direction: column; gap: 6px; }
-  figcaption { font-size: 13px; color: var(--muted); }
-  .callout { background: var(--warn-soft); border-radius: 8px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; }
-  .callout b:first-child { color: var(--warn); }
-  ul.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
-  ol.steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; max-width: 72ch; }
-  .note { font-size: 13px; color: var(--muted); }
-  .box { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; }
-  .compare { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
-  .compare table { border-collapse: collapse; width: 100%; font-size: 14px; }
-  .compare th, .compare td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  .compare th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--bg); }
-  .compare tr:last-child td { border-bottom: 0; }
-  .checklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-  .checklist li { display: flex; gap: 10px; align-items: baseline; }
-  .checklist li::before { content: ""; flex: none; width: 14px; height: 14px; border: 1.5px solid var(--muted); border-radius: 3px; transform: translateY(2px); }
-  @media (max-width: 560px) { h1 { font-size: 23px; } }
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Thao tác Lịch Booking</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+        />
+        <style>
+            :root {
+                color-scheme: light;
+                --bg: #f6f7f5;
+                --surface: #ffffff;
+                --ink: #1c2230;
+                --muted: #5a6273;
+                --line: #dfe2e6;
+                --accent: #2f5d8a;
+                --accent-soft: #e6eef6;
+                --warn: #9a5b00;
+                --warn-soft: #fbf0dd;
+                --code-bg: #eef0f2;
+            }
+            @media (prefers-color-scheme: dark) {
+                :root:not([data-theme="light"]) {
+                    color-scheme: dark;
+                    --bg: #13171e;
+                    --surface: #1b2029;
+                    --ink: #e6e9ee;
+                    --muted: #9aa3b2;
+                    --line: #2c3340;
+                    --accent: #7fb0e0;
+                    --accent-soft: #1d2b3b;
+                    --warn: #e7b25c;
+                    --warn-soft: #362a17;
+                    --code-bg: #242a35;
+                }
+            }
+            :root[data-theme="dark"] {
+                color-scheme: dark;
+                --bg: #13171e;
+                --surface: #1b2029;
+                --ink: #e6e9ee;
+                --muted: #9aa3b2;
+                --line: #2c3340;
+                --accent: #7fb0e0;
+                --accent-soft: #1d2b3b;
+                --warn: #e7b25c;
+                --warn-soft: #362a17;
+                --code-bg: #242a35;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--ink);
+                font-family:
+                    "IBM Plex Sans",
+                    system-ui,
+                    -apple-system,
+                    "Segoe UI",
+                    Roboto,
+                    sans-serif;
+                font-size: 15px;
+                line-height: 1.6;
+                padding-inline: 16px;
+                padding-block: 32px 64px;
+            }
+            .wrap {
+                max-width: 900px;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+            }
+            header {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .eyebrow {
+                font-family: "IBM Plex Mono", ui-monospace, monospace;
+                font-size: 12px;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--accent);
+            }
+            h1 {
+                font-size: 28px;
+                line-height: 1.2;
+                margin: 0;
+                font-weight: 700;
+                text-wrap: balance;
+            }
+            h2 {
+                font-size: 21px;
+                line-height: 1.3;
+                margin: 0;
+                font-weight: 600;
+                text-wrap: balance;
+            }
+            h3 {
+                font-size: 16px;
+                margin: 0;
+                font-weight: 600;
+            }
+            p {
+                margin: 0;
+                max-width: 72ch;
+            }
+            .lede {
+                color: var(--muted);
+                font-size: 16px;
+            }
+            code {
+                font-family: "IBM Plex Mono", ui-monospace, monospace;
+                font-size: 13px;
+                background: var(--code-bg);
+                padding: 1px 5px;
+                border-radius: 4px;
+            }
+            section {
+                display: flex;
+                flex-direction: column;
+                gap: 18px;
+            }
+            .who {
+                display: inline-block;
+                font-size: 12px;
+                font-weight: 600;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                color: var(--accent);
+                background: var(--accent-soft);
+                padding: 2px 10px;
+                border-radius: 999px;
+                width: fit-content;
+            }
+            figure {
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+            figcaption {
+                font-size: 13px;
+                color: var(--muted);
+            }
+            .callout {
+                background: var(--warn-soft);
+                border-radius: 8px;
+                padding: 14px 18px;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+            .callout b:first-child {
+                color: var(--warn);
+            }
+            ul.list {
+                margin: 0;
+                padding-left: 22px;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                max-width: 72ch;
+            }
+            ol.steps {
+                margin: 0;
+                padding-left: 22px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                max-width: 72ch;
+            }
+            .note {
+                font-size: 13px;
+                color: var(--muted);
+            }
+            .box {
+                background: var(--surface);
+                border: 1px solid var(--line);
+                border-radius: 8px;
+                padding: 16px 18px;
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+            .compare {
+                overflow-x: auto;
+                border: 1px solid var(--line);
+                border-radius: 8px;
+                background: var(--surface);
+            }
+            .compare table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 14px;
+            }
+            .compare th,
+            .compare td {
+                text-align: left;
+                padding: 9px 12px;
+                border-bottom: 1px solid var(--line);
+                vertical-align: top;
+            }
+            .compare th {
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: var(--muted);
+                font-weight: 600;
+                background: var(--bg);
+            }
+            .compare tr:last-child td {
+                border-bottom: 0;
+            }
+            .checklist {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .checklist li {
+                display: flex;
+                gap: 10px;
+                align-items: baseline;
+            }
+            .checklist li::before {
+                content: "";
+                flex: none;
+                width: 14px;
+                height: 14px;
+                border: 1.5px solid var(--muted);
+                border-radius: 3px;
+                transform: translateY(2px);
+            }
+            @media (max-width: 560px) {
+                h1 {
+                    font-size: 23px;
+                }
+            }
 
-  /* ---------- Mockups: a drawing of the app (light UI), fake names only ---------- */
-  .mock {
-    --m-bg: #f7f7f5; --m-surface: #fff; --m-ink: #1c2230; --m-muted: #6b7280; --m-line: #e3e5e8;
-    --m-primary: #14332B; --m-primary-soft: #e3ece7;
-    background: var(--m-bg); color: var(--m-ink); border: 1px solid var(--line); border-radius: 10px;
-    padding: 14px; font-size: 12px; line-height: 1.35; overflow-x: auto; color-scheme: light;
-  }
-  .mock .inner { min-width: 640px; display: flex; flex-direction: column; gap: 10px; }
-  .m-btn { display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 11px; border: 1px solid var(--m-line); background: var(--m-surface); border-radius: 7px; font-weight: 700; font-size: 12px; white-space: nowrap; }
-  .m-btn.icon { width: 28px; padding: 0; justify-content: center; }
-  .m-btn.primary { background: var(--m-primary); color: #fff; border-color: var(--m-primary); }
-  .m-btn.danger { background: #fdecec; color: #b42318; border-color: #f6caca; }
-  .m-seg { display: inline-flex; background: #eceef0; border-radius: 999px; padding: 2px; }
-  .m-seg span { padding: 4px 11px; border-radius: 999px; font-weight: 700; color: var(--m-muted); }
-  .m-seg span.on { background: var(--m-primary); color: #fff; }
-  .m-seg.ink span.on { background: #1c2230; }
-  .m-pill { display: inline-flex; align-items: center; height: 26px; padding: 0 12px; border: 1px solid var(--m-line); border-radius: 999px; background: var(--m-surface); font-weight: 700; color: var(--m-muted); }
-  .m-toolbar { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; row-gap: 12px; }
-  .m-toolbar .tag { margin-right: 10px; }
-  .m-toolbar > * { white-space: nowrap; flex: none; }
-  .m-switch.tag { padding-right: 10px; }
-  .m-toolbar .m-btn, .m-toolbar .m-seg span, .m-toolbar .m-pill { font-size: 11px; }
-  .m-toolbar .m-seg span { padding: 4px 9px; }
-  .m-title b { display: block; font-size: 14px; }
-  .m-title small { color: var(--m-muted); font-weight: 600; font-size: 10.5px; }
-  .m-switch { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--m-muted); }
-  .m-switch i { width: 26px; height: 15px; border-radius: 999px; background: #d4d7db; position: relative; }
-  .m-switch i::after { content: ""; position: absolute; left: 2px; top: 2px; width: 11px; height: 11px; border-radius: 50%; background: #fff; }
-  .tag { position: relative; }
-  .tag::after { content: attr(data-n); position: absolute; top: -9px; right: -9px; width: 18px; height: 18px; border-radius: 50%; background: #e0592a; color: #fff; font: 700 11px/18px "IBM Plex Sans", sans-serif; text-align: center; box-shadow: 0 0 0 2px #fff; }
-  .tag.left::after { left: 4px; top: 4px; right: auto; }
-  .n-ref { display: inline-flex; width: 18px; height: 18px; border-radius: 50%; background: #e0592a; color: #fff; font-size: 11px; font-weight: 700; align-items: center; justify-content: center; vertical-align: 1px; }
+            /* ---------- Mockups: a drawing of the app (light UI), fake names only ---------- */
+            .mock {
+                --m-bg: #f7f7f5;
+                --m-surface: #fff;
+                --m-ink: #1c2230;
+                --m-muted: #6b7280;
+                --m-line: #e3e5e8;
+                --m-primary: #14332b;
+                --m-primary-soft: #e3ece7;
+                background: var(--m-bg);
+                color: var(--m-ink);
+                border: 1px solid var(--line);
+                border-radius: 10px;
+                padding: 14px;
+                font-size: 12px;
+                line-height: 1.35;
+                overflow-x: auto;
+                color-scheme: light;
+            }
+            .mock .inner {
+                min-width: 640px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .m-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                height: 28px;
+                padding: 0 11px;
+                border: 1px solid var(--m-line);
+                background: var(--m-surface);
+                border-radius: 7px;
+                font-weight: 700;
+                font-size: 12px;
+                white-space: nowrap;
+            }
+            .m-btn.icon {
+                width: 28px;
+                padding: 0;
+                justify-content: center;
+            }
+            .m-btn.primary {
+                background: var(--m-primary);
+                color: #fff;
+                border-color: var(--m-primary);
+            }
+            .m-btn.danger {
+                background: #fdecec;
+                color: #b42318;
+                border-color: #f6caca;
+            }
+            .m-seg {
+                display: inline-flex;
+                background: #eceef0;
+                border-radius: 999px;
+                padding: 2px;
+            }
+            .m-seg span {
+                padding: 4px 11px;
+                border-radius: 999px;
+                font-weight: 700;
+                color: var(--m-muted);
+            }
+            .m-seg span.on {
+                background: var(--m-primary);
+                color: #fff;
+            }
+            .m-seg.ink span.on {
+                background: #1c2230;
+            }
+            .m-pill {
+                display: inline-flex;
+                align-items: center;
+                height: 26px;
+                padding: 0 12px;
+                border: 1px solid var(--m-line);
+                border-radius: 999px;
+                background: var(--m-surface);
+                font-weight: 700;
+                color: var(--m-muted);
+            }
+            .m-toolbar {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                flex-wrap: wrap;
+                row-gap: 12px;
+            }
+            .m-toolbar .tag {
+                margin-right: 10px;
+            }
+            .m-toolbar > * {
+                white-space: nowrap;
+                flex: none;
+            }
+            .m-switch.tag {
+                padding-right: 10px;
+            }
+            .m-toolbar .m-btn,
+            .m-toolbar .m-seg span,
+            .m-toolbar .m-pill {
+                font-size: 11px;
+            }
+            .m-toolbar .m-seg span {
+                padding: 4px 9px;
+            }
+            .m-title b {
+                display: block;
+                font-size: 14px;
+            }
+            .m-title small {
+                color: var(--m-muted);
+                font-weight: 600;
+                font-size: 10.5px;
+            }
+            .m-switch {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-weight: 700;
+                color: var(--m-muted);
+            }
+            .m-switch i {
+                width: 26px;
+                height: 15px;
+                border-radius: 999px;
+                background: #d4d7db;
+                position: relative;
+            }
+            .m-switch i::after {
+                content: "";
+                position: absolute;
+                left: 2px;
+                top: 2px;
+                width: 11px;
+                height: 11px;
+                border-radius: 50%;
+                background: #fff;
+            }
+            .tag {
+                position: relative;
+            }
+            .tag::after {
+                content: attr(data-n);
+                position: absolute;
+                top: -9px;
+                right: -9px;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: #e0592a;
+                color: #fff;
+                font:
+                    700 11px/18px "IBM Plex Sans",
+                    sans-serif;
+                text-align: center;
+                box-shadow: 0 0 0 2px #fff;
+            }
+            .tag.left::after {
+                left: 4px;
+                top: 4px;
+                right: auto;
+            }
+            .n-ref {
+                display: inline-flex;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: #e0592a;
+                color: #fff;
+                font-size: 11px;
+                font-weight: 700;
+                align-items: center;
+                justify-content: center;
+                vertical-align: 1px;
+            }
 
-  .m-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .m-kpi { background: var(--m-surface); border: 1px solid var(--m-line); border-radius: 9px; padding: 8px 10px; border-top: 3px solid var(--c); }
-  .m-kpi small { color: var(--m-muted); font-weight: 700; }
-  .m-kpi b { display: block; font-size: 20px; }
-  .m-legend { display: flex; flex-wrap: wrap; gap: 12px; color: var(--m-muted); font-weight: 600; }
-  .m-legend .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+            .m-kpis {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+            .m-kpi {
+                background: var(--m-surface);
+                border: 1px solid var(--m-line);
+                border-radius: 9px;
+                padding: 8px 10px;
+                border-top: 3px solid var(--c);
+            }
+            .m-kpi small {
+                color: var(--m-muted);
+                font-weight: 700;
+            }
+            .m-kpi b {
+                display: block;
+                font-size: 20px;
+            }
+            .m-legend {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                color: var(--m-muted);
+                font-weight: 600;
+            }
+            .m-legend .dot {
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                margin-right: 4px;
+            }
 
-  .m-grid { background: var(--m-surface); border: 1px solid var(--m-line); border-radius: 10px; overflow: hidden; }
-  .m-row { display: grid; grid-template-columns: 170px 1fr; border-top: 1px solid var(--m-line); }
-  .m-row:first-child { border-top: 0; }
-  .m-cell { padding: 8px 10px; display: flex; gap: 8px; align-items: center; border-right: 1px solid var(--m-line); }
-  .m-cell .av { width: 28px; height: 28px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; flex: none; }
-  .m-cell b { display: block; font-size: 12px; }
-  .m-cell small { color: var(--m-muted); }
-  .m-me { background: color-mix(in srgb, var(--m-primary-soft) 70%, #fff); }
-  .m-me .av { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--m-primary); }
-  .m-badge { font-size: 10px; font-weight: 700; background: var(--m-primary); color: #fff; border-radius: 999px; padding: 1px 6px; margin-left: 4px; }
-  .m-track { position: relative; height: 54px; background-image: repeating-linear-gradient(to right, transparent 0, transparent calc(20% - 1px), var(--m-line) calc(20% - 1px), var(--m-line) 20%); }
-  .m-hours { display: grid; grid-template-columns: 170px 1fr; background: #fafafa; }
-  .m-hours div:last-child { display: grid; grid-template-columns: repeat(5, 1fr); }
-  .m-hours span { padding: 5px 6px; color: var(--m-muted); font-weight: 700; border-left: 1px solid var(--m-line); }
-  .chip { position: absolute; top: 6px; bottom: 6px; border-radius: 7px; padding: 4px 7px; overflow: hidden; border: 1.5px solid transparent; font-size: 11px; }
-  .chip b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .chip small { opacity: .8; white-space: nowrap; }
-  .chip .fl { position: absolute; right: 6px; top: 4px; font-weight: 700; }
-  .chip.dashed { border-style: dashed; border-color: currentColor; }
-  .chip.req { border: 1.5px dashed #C8811A; }
-  .chip .ytag { font-size: 9.5px; font-weight: 700; background: #C8811A; color: #fff; padding: 0 5px; border-radius: 999px; margin-left: 4px; }
-  .chip.cx { background: #F1F2F4; color: #9EA5AD; }
-  .chip.cx b { text-decoration: line-through; }
-  .chip .m1 { font-size: 9.5px; font-weight: 700; background: #fdecec; color: #b42318; padding: 0 5px; border-radius: 999px; }
-  .pt { background: #E9EEE7; color: #14332B; }
-  .massage { background: #DCEAEC; color: #1F4E59; }
-  .stretching { background: #E5E9F7; color: #33458C; }
-  .recovery { background: #F8E8EF; color: #8A2F58; }
-  .ghost { position: absolute; top: 6px; bottom: 6px; border: 1.5px dashed #14332B; border-radius: 7px; background: rgba(20,51,43,.06); }
-  .arrow { position: absolute; top: 50%; height: 0; border-top: 1.5px solid #e0592a; }
-  .arrow::after { content: ""; position: absolute; right: -2px; top: -5px; border: 4.5px solid transparent; border-left: 7px solid #e0592a; }
-  .grip { position: absolute; right: 0; top: 0; bottom: 0; width: 6px; background: rgba(20,51,43,.25); border-radius: 0 6px 6px 0; }
+            .m-grid {
+                background: var(--m-surface);
+                border: 1px solid var(--m-line);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+            .m-row {
+                display: grid;
+                grid-template-columns: 170px 1fr;
+                border-top: 1px solid var(--m-line);
+            }
+            .m-row:first-child {
+                border-top: 0;
+            }
+            .m-cell {
+                padding: 8px 10px;
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                border-right: 1px solid var(--m-line);
+            }
+            .m-cell .av {
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 11px;
+                flex: none;
+            }
+            .m-cell b {
+                display: block;
+                font-size: 12px;
+            }
+            .m-cell small {
+                color: var(--m-muted);
+            }
+            .m-me {
+                background: color-mix(in srgb, var(--m-primary-soft) 70%, #fff);
+            }
+            .m-me .av {
+                box-shadow:
+                    0 0 0 2px #fff,
+                    0 0 0 4px var(--m-primary);
+            }
+            .m-badge {
+                font-size: 10px;
+                font-weight: 700;
+                background: var(--m-primary);
+                color: #fff;
+                border-radius: 999px;
+                padding: 1px 6px;
+                margin-left: 4px;
+            }
+            .m-track {
+                position: relative;
+                height: 54px;
+                background-image: repeating-linear-gradient(
+                    to right,
+                    transparent 0,
+                    transparent calc(20% - 1px),
+                    var(--m-line) calc(20% - 1px),
+                    var(--m-line) 20%
+                );
+            }
+            .m-hours {
+                display: grid;
+                grid-template-columns: 170px 1fr;
+                background: #fafafa;
+            }
+            .m-hours div:last-child {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+            }
+            .m-hours span {
+                padding: 5px 6px;
+                color: var(--m-muted);
+                font-weight: 700;
+                border-left: 1px solid var(--m-line);
+            }
+            .chip {
+                position: absolute;
+                top: 6px;
+                bottom: 6px;
+                border-radius: 7px;
+                padding: 4px 7px;
+                overflow: hidden;
+                border: 1.5px solid transparent;
+                font-size: 11px;
+            }
+            .chip b {
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .chip small {
+                opacity: 0.8;
+                white-space: nowrap;
+            }
+            .chip .fl {
+                position: absolute;
+                right: 6px;
+                top: 4px;
+                font-weight: 700;
+            }
+            .chip.dashed {
+                border-style: dashed;
+                border-color: currentColor;
+            }
+            .chip.req {
+                border: 1.5px dashed #c8811a;
+            }
+            .chip .ytag {
+                font-size: 9.5px;
+                font-weight: 700;
+                background: #c8811a;
+                color: #fff;
+                padding: 0 5px;
+                border-radius: 999px;
+                margin-left: 4px;
+            }
+            .chip.cx {
+                background: #f1f2f4;
+                color: #9ea5ad;
+            }
+            .chip.cx b {
+                text-decoration: line-through;
+            }
+            .chip .m1 {
+                font-size: 9.5px;
+                font-weight: 700;
+                background: #fdecec;
+                color: #b42318;
+                padding: 0 5px;
+                border-radius: 999px;
+            }
+            .pt {
+                background: #e9eee7;
+                color: #14332b;
+            }
+            .massage {
+                background: #dceaec;
+                color: #1f4e59;
+            }
+            .stretching {
+                background: #e5e9f7;
+                color: #33458c;
+            }
+            .recovery {
+                background: #f8e8ef;
+                color: #8a2f58;
+            }
+            .ghost {
+                position: absolute;
+                top: 6px;
+                bottom: 6px;
+                border: 1.5px dashed #14332b;
+                border-radius: 7px;
+                background: rgba(20, 51, 43, 0.06);
+            }
+            .arrow {
+                position: absolute;
+                top: 50%;
+                height: 0;
+                border-top: 1.5px solid #e0592a;
+            }
+            .arrow::after {
+                content: "";
+                position: absolute;
+                right: -2px;
+                top: -5px;
+                border: 4.5px solid transparent;
+                border-left: 7px solid #e0592a;
+            }
+            .grip {
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 6px;
+                background: rgba(20, 51, 43, 0.25);
+                border-radius: 0 6px 6px 0;
+            }
 
-  .m-panel { background: var(--m-surface); border: 1px solid var(--m-line); border-radius: 12px; padding: 16px; max-width: 460px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 8px 30px rgba(0,0,0,.08); }
-  .m-panel h4 { margin: 0; font-size: 15px; }
-  .m-panel .sub { color: var(--m-muted); }
-  .m-field { display: flex; flex-direction: column; gap: 4px; }
-  .m-field label { font-weight: 700; }
-  .m-input { height: 30px; border: 1px solid var(--m-line); border-radius: 7px; padding: 0 9px; display: flex; align-items: center; justify-content: space-between; background: #fff; }
-  .m-input.ph { color: var(--m-muted); }
-  .m-input::after { content: "▾"; color: var(--m-muted); font-size: 10px; }
-  .m-input.text::after { content: none; }
-  .m-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .m-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-  .m-kv { display: grid; grid-template-columns: 110px 1fr; gap: 4px 10px; }
-  .m-kv dt { color: var(--m-muted); font-weight: 600; }
-  .m-kv dd { margin: 0; font-weight: 600; }
-  .m-banner { background: #f2f3f5; border-radius: 8px; padding: 8px 10px; color: #3d434a; }
-  .m-foot { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .m-foot .full { grid-column: span 2; justify-content: center; }
-  .m-foot .m-btn { justify-content: center; height: 32px; }
-  .m-sep { border-top: 1px solid var(--m-line); }
-  .m-hint { color: var(--m-muted); font-size: 11px; }
+            .m-panel {
+                background: var(--m-surface);
+                border: 1px solid var(--m-line);
+                border-radius: 12px;
+                padding: 16px;
+                max-width: 460px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            }
+            .m-panel h4 {
+                margin: 0;
+                font-size: 15px;
+            }
+            .m-panel .sub {
+                color: var(--m-muted);
+            }
+            .m-field {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            .m-field label {
+                font-weight: 700;
+            }
+            .m-input {
+                height: 30px;
+                border: 1px solid var(--m-line);
+                border-radius: 7px;
+                padding: 0 9px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: #fff;
+            }
+            .m-input.ph {
+                color: var(--m-muted);
+            }
+            .m-input::after {
+                content: "▾";
+                color: var(--m-muted);
+                font-size: 10px;
+            }
+            .m-input.text::after {
+                content: none;
+            }
+            .m-2 {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .m-3 {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 10px;
+            }
+            .m-kv {
+                display: grid;
+                grid-template-columns: 110px 1fr;
+                gap: 4px 10px;
+            }
+            .m-kv dt {
+                color: var(--m-muted);
+                font-weight: 600;
+            }
+            .m-kv dd {
+                margin: 0;
+                font-weight: 600;
+            }
+            .m-banner {
+                background: #f2f3f5;
+                border-radius: 8px;
+                padding: 8px 10px;
+                color: #3d434a;
+            }
+            .m-foot {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .m-foot .full {
+                grid-column: span 2;
+                justify-content: center;
+            }
+            .m-foot .m-btn {
+                justify-content: center;
+                height: 32px;
+            }
+            .m-sep {
+                border-top: 1px solid var(--m-line);
+            }
+            .m-hint {
+                color: var(--m-muted);
+                font-size: 11px;
+            }
 
-  /* State diagram */
-  .flow { width: 100%; height: auto; display: block; }
-  .flow text { font-family: "IBM Plex Sans", sans-serif; fill: var(--ink); }
-  .flow .q { fill: var(--muted); }
-  .flow .bx { fill: var(--surface); stroke: var(--line); stroke-width: 1.25; }
-  .flow .bx.hot { stroke: #b42318; stroke-width: 1.5; }
-  .flow .ln { stroke: var(--muted); stroke-width: 1.25; fill: none; }
-  .flow .ah { fill: var(--muted); }
-</style>
-</head>
-<body>
-<div class="wrap">
+            /* State diagram */
+            .flow {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+            .flow text {
+                font-family: "IBM Plex Sans", sans-serif;
+                fill: var(--ink);
+            }
+            .flow .q {
+                fill: var(--muted);
+            }
+            .flow .bx {
+                fill: var(--surface);
+                stroke: var(--line);
+                stroke-width: 1.25;
+            }
+            .flow .bx.hot {
+                stroke: #b42318;
+                stroke-width: 1.5;
+            }
+            .flow .ln {
+                stroke: var(--muted);
+                stroke-width: 1.25;
+                fill: none;
+            }
+            .flow .ah {
+                fill: var(--muted);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrap">
+            <header>
+                <div class="eyebrow">Hướng dẫn thao tác · Lịch Booking</div>
+                <h1>Tạp, dời, xác nhận và huỷ buổi tập trên Lịch Booking</h1>
+                <p class="lede">
+                    <b>CS / OM</b> tạo lịch và chốt buổi ở
+                    <b>Lịch → Lịch Booking</b>. Gói của khách chỉ bị trừ khi bấm
+                    <b>Xác nhận</b> hoặc <b>Huỷ sát giờ</b>. Sau khi bấm thì
+                    buổi bị khoá.
+                </p>
+            </header>
 
-  <header>
-    <div class="eyebrow">Hướng dẫn thao tác · Lịch Booking</div>
-    <h1>Xếp, dời, xác nhận và huỷ buổi tập trên Lịch Booking</h1>
-    <p class="lede"><b>CS / OM</b> xếp lịch và chốt buổi ở <b>Lịch → Lịch Booking</b>. Gói của khách chỉ bị trừ khi bấm <b>Xác nhận</b> hoặc <b>Huỷ sát giờ</b>. Sau khi bấm thì buổi bị khoá.</p>
-  </header>
-
-  <div class="callout">
-    <b>Bản nháp, chờ UAT</b>
-    <p>Phần tạo, dời, xác nhận và huỷ buổi chưa chạy thử xong. Team vận hành chạy thử trên một khách thử rồi mới phổ biến. Hình trong tài liệu là hình vẽ minh hoạ dùng tên giả, không phải ảnh chụp dữ liệu thật.</p>
-  </div>
-
-  <section>
-    <h2>Ai làm được gì</h2>
-    <div class="compare">
-      <table>
-        <thead><tr><th>Vai trò</th><th>Xem lịch</th><th>Tạo / dời buổi</th><th>Xác nhận / huỷ</th></tr></thead>
-        <tbody>
-          <tr><td>CS, OM, Admin, Admin Manager</td><td>Toàn bộ club đang chọn</td><td>Có</td><td>Có</td></tr>
-          <tr><td>HLV, Therapist</td><td>Chỉ buổi của mình (hàng của mình nằm trên cùng, có nhãn <b>Bạn</b>)</td><td>Không</td><td>Không</td></tr>
-          <tr><td>Vai trò khác</td><td colspan="3">Không vào được, trang báo "Không có quyền xem lịch booking"</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="note">Form tạo buổi trên app chỉ có các buổi 1:1: PT 1:1, Sport Massage, Stretching, Recovery. Pilates 2:1 và lớp nhóm vẫn xếp trên Directus.</p>
-  </section>
-
-  <section>
-    <h2>Mở lịch và đọc lịch</h2>
-    <div class="box">
-      <ol class="steps">
-        <li>Chọn đúng <b>club</b> ở bộ chọn chi nhánh trên đầu trang. Lịch hiển thị và buổi mới tạo đều thuộc club đang chọn.</li>
-        <li>Mở menu <b>Lịch → Lịch Booking</b>.</li>
-        <li>Dùng thanh công cụ để chọn ngày và cách xem (số trên hình).</li>
-      </ol>
-      <figure>
-        <div class="mock" role="img" aria-label="Hình vẽ lịch ngày theo HLV">
-          <div class="inner">
-            <div class="m-toolbar">
-              <span class="tag" data-n="1" style="display:inline-flex;gap:3px"><span class="m-btn icon">‹</span><span class="m-btn">Hôm nay</span><span class="m-btn icon">›</span></span>
-              <span class="m-title"><b>Thứ Ba, 22/09</b></span>
-              <span style="margin-left:auto"></span>
-              <span class="m-switch tag" data-n="2"><i></i>Tất cả nhân sự</span>
-              <span class="m-seg tag" data-n="3"><span class="on">Theo HLV</span><span>Theo phòng</span></span>
-              <span class="m-seg ink tag" data-n="4"><span class="on">Ngày</span><span>Tuần</span></span>
-              <span class="m-pill tag" data-n="5">Tất cả HLV &amp; therapist ▾</span>
-              <span class="m-btn primary tag" data-n="6">+ Booking mới</span>
-            </div>
-            <div class="m-kpis tag" data-n="7">
-              <div class="m-kpi" style="--c:#9aa1a9"><small>Tổng buổi</small><b>6</b></div>
-              <div class="m-kpi" style="--c:#14332B"><small>PT · Pilates · nhóm</small><b>3</b></div>
-              <div class="m-kpi" style="--c:#33606B"><small>Trị liệu</small><b>3</b></div>
-              <div class="m-kpi" style="--c:#C8811A"><small>Chờ xác nhận</small><b>3</b></div>
-            </div>
-            <div class="m-legend">
-              <span><i class="dot" style="background:#14332B"></i>PT 1:1</span>
-              <span><i class="dot" style="background:#2F7A5C"></i>Pilates 2:1</span>
-              <span><i class="dot" style="background:#676E76"></i>Lớp nhóm</span>
-              <span><i class="dot" style="background:#33606B"></i>Sport Massage</span>
-              <span><i class="dot" style="background:#4356B0"></i>Stretching</span>
-              <span><i class="dot" style="background:#C25480"></i>Recovery</span>
-            </div>
-            <div class="m-grid">
-              <div class="m-hours"><div></div><div><span>08:00</span><span>09:00</span><span>10:00</span><span>11:00</span><span>12:00</span></div></div>
-              <div class="m-row">
-                <div class="m-cell m-me tag left" data-n="8"><span class="av" style="background:#14332B">HN</span><span><b>Lê Hoàng Nam<span class="m-badge">Bạn</span></b><small>HLV · 3 buổi</small></span></div>
-                <div class="m-track m-me">
-                  <div class="chip pt dashed" style="left:0;width:19.5%"><b>Nguyễn Văn An</b><small>08:00 – 09:00</small></div>
-                  <div class="chip pt" style="left:20%;width:19.5%"><span class="fl">✓</span><b>Trần Thị Bình</b><small>09:00 – 10:00</small></div>
-                  <div class="chip pt req" style="left:50%;width:29.5%"><b>Đỗ Minh Châu<span class="ytag">Yêu cầu</span></b><small>10:30 – 12:00</small></div>
+            <section>
+                <h2>Bảng phân quyền</h2>
+                <div class="compare">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vai trò</th>
+                                <th>Xem lịch</th>
+                                <th>Tạo / dời buổi</th>
+                                <th>Xác nhận / huỷ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CS, OM, Admin, Admin Manager</td>
+                                <td>Toàn bộ club đang chọn</td>
+                                <td>Có</td>
+                                <td>Có</td>
+                            </tr>
+                            <tr>
+                                <td>HLV, Therapist</td>
+                                <td>
+                                    Chỉ buổi của mình (hàng của mình nằm trên
+                                    cùng, có nhãn <b>Bạn</b>)
+                                </td>
+                                <td>Không</td>
+                                <td>Không</td>
+                            </tr>
+                            <tr>
+                                <td>Vai trò khác</td>
+                                <td colspan="3">
+                                    Không vào được, trang báo "Không có quyền
+                                    xem lịch booking"
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-              </div>
-              <div class="m-row">
-                <div class="m-cell"><span class="av" style="background:#2F7A5C">TH</span><span><b>Phạm Thu Hà</b><small>HLV · 0 buổi</small></span></div>
-                <div class="m-track"></div>
-              </div>
-              <div class="m-row">
-                <div class="m-cell"><span class="av" style="background:#C25480">MK</span><span><b>Võ Minh Khoa</b><small>Therapist · 3 buổi</small></span></div>
-                <div class="m-track">
-                  <div class="chip massage dashed" style="left:0;width:19.5%"><b>Huỳnh Gia Duy</b><small>08:00 – 09:00</small></div>
-                  <div class="chip cx" style="left:20%;width:19.5%"><span class="fl">✕</span><b>Lý Thanh Em</b><small>09:00 – 10:00</small></div>
-                  <div class="chip cx" style="left:40%;width:19.5%"><span class="fl">✕</span><b>Mai Quốc Phong</b><small><span class="m1">−1 buổi</span> 10:00</small></div>
-                  <div class="chip stretching" style="left:70%;width:9.5%"><span class="fl">✓</span><b>Hồ Ý</b><small>11:30</small></div>
+                <p class="note">
+                    Form tạo buổi trên app chỉ có các buổi 1:1: PT 1:1, Sport
+                    Massage, Stretching, Recovery. Pilates 2:1 và lớp nhóm vẫn
+                    xếp trên Directus.
+                </p>
+            </section>
+
+            <section>
+                <h2>Mở lịch và đọc lịch</h2>
+                <div class="box">
+                    <ol class="steps">
+                        <li>
+                            Chọn đúng <b>club</b> ở bộ chọn chi nhánh trên đầu
+                            trang. Lịch hiển thị và buổi mới tạo đều thuộc club
+                            đang chọn.
+                        </li>
+                        <li>Mở menu <b>Lịch → Lịch Booking</b>.</li>
+                        <li>
+                            Dùng thanh công cụ để chọn ngày và cách xem (số trên
+                            hình).
+                        </li>
+                    </ol>
+                    <figure>
+                        <div
+                            class="mock"
+                            role="img"
+                            aria-label="Hình vẽ lịch ngày theo HLV"
+                        >
+                            <div class="inner">
+                                <div class="m-toolbar">
+                                    <span
+                                        class="tag"
+                                        data-n="1"
+                                        style="display: inline-flex; gap: 3px"
+                                        ><span class="m-btn icon">‹</span
+                                        ><span class="m-btn">Hôm nay</span
+                                        ><span class="m-btn icon">›</span></span
+                                    >
+                                    <span class="m-title"
+                                        ><b>Thứ Ba, 22/09</b></span
+                                    >
+                                    <span style="margin-left: auto"></span>
+                                    <span class="m-switch tag" data-n="2"
+                                        ><i></i>Tất cả nhân sự</span
+                                    >
+                                    <span class="m-seg tag" data-n="3"
+                                        ><span class="on">Theo HLV</span
+                                        ><span>Theo phòng</span></span
+                                    >
+                                    <span class="m-seg ink tag" data-n="4"
+                                        ><span class="on">Ngày</span
+                                        ><span>Tuần</span></span
+                                    >
+                                    <span class="m-pill tag" data-n="5"
+                                        >Tất cả HLV &amp; therapist ▾</span
+                                    >
+                                    <span class="m-btn primary tag" data-n="6"
+                                        >+ Booking mới</span
+                                    >
+                                </div>
+                                <div class="m-kpis tag" data-n="7">
+                                    <div class="m-kpi" style="--c: #9aa1a9">
+                                        <small>Tổng buổi</small><b>6</b>
+                                    </div>
+                                    <div class="m-kpi" style="--c: #14332b">
+                                        <small>PT · Pilates · nhóm</small
+                                        ><b>3</b>
+                                    </div>
+                                    <div class="m-kpi" style="--c: #33606b">
+                                        <small>Trị liệu</small><b>3</b>
+                                    </div>
+                                    <div class="m-kpi" style="--c: #c8811a">
+                                        <small>Chờ xác nhận</small><b>3</b>
+                                    </div>
+                                </div>
+                                <div class="m-legend">
+                                    <span
+                                        ><i
+                                            class="dot"
+                                            style="background: #14332b"
+                                        ></i
+                                        >PT 1:1</span
+                                    >
+                                    <span
+                                        ><i
+                                            class="dot"
+                                            style="background: #2f7a5c"
+                                        ></i
+                                        >Pilates 2:1</span
+                                    >
+                                    <span
+                                        ><i
+                                            class="dot"
+                                            style="background: #676e76"
+                                        ></i
+                                        >Lớp nhóm</span
+                                    >
+                                    <span
+                                        ><i
+                                            class="dot"
+                                            style="background: #33606b"
+                                        ></i
+                                        >Sport Massage</span
+                                    >
+                                    <span
+                                        ><i
+                                            class="dot"
+                                            style="background: #4356b0"
+                                        ></i
+                                        >Stretching</span
+                                    >
+                                    <span
+                                        ><i
+                                            class="dot"
+                                            style="background: #c25480"
+                                        ></i
+                                        >Recovery</span
+                                    >
+                                </div>
+                                <div class="m-grid">
+                                    <div class="m-hours">
+                                        <div></div>
+                                        <div>
+                                            <span>08:00</span><span>09:00</span
+                                            ><span>10:00</span><span>11:00</span
+                                            ><span>12:00</span>
+                                        </div>
+                                    </div>
+                                    <div class="m-row">
+                                        <div
+                                            class="m-cell m-me tag left"
+                                            data-n="8"
+                                        >
+                                            <span
+                                                class="av"
+                                                style="background: #14332b"
+                                                >HN</span
+                                            ><span
+                                                ><b
+                                                    >Lê Hoàng Nam<span
+                                                        class="m-badge"
+                                                        >Bạn</span
+                                                    ></b
+                                                ><small
+                                                    >HLV · 3 buổi</small
+                                                ></span
+                                            >
+                                        </div>
+                                        <div class="m-track m-me">
+                                            <div
+                                                class="chip pt dashed"
+                                                style="left: 0; width: 19.5%"
+                                            >
+                                                <b>Nguyễn Văn An</b
+                                                ><small>08:00 – 09:00</small>
+                                            </div>
+                                            <div
+                                                class="chip pt"
+                                                style="left: 20%; width: 19.5%"
+                                            >
+                                                <span class="fl">✓</span
+                                                ><b>Trần Thị Bình</b
+                                                ><small>09:00 – 10:00</small>
+                                            </div>
+                                            <div
+                                                class="chip pt req"
+                                                style="left: 50%; width: 29.5%"
+                                            >
+                                                <b
+                                                    >Đỗ Minh Châu<span
+                                                        class="ytag"
+                                                        >Yêu cầu</span
+                                                    ></b
+                                                ><small>10:30 – 12:00</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-row">
+                                        <div class="m-cell">
+                                            <span
+                                                class="av"
+                                                style="background: #2f7a5c"
+                                                >TH</span
+                                            ><span
+                                                ><b>Phạm Thu Hà</b
+                                                ><small
+                                                    >HLV · 0 buổi</small
+                                                ></span
+                                            >
+                                        </div>
+                                        <div class="m-track"></div>
+                                    </div>
+                                    <div class="m-row">
+                                        <div class="m-cell">
+                                            <span
+                                                class="av"
+                                                style="background: #c25480"
+                                                >MK</span
+                                            ><span
+                                                ><b>Võ Minh Khoa</b
+                                                ><small
+                                                    >Therapist · 3 buổi</small
+                                                ></span
+                                            >
+                                        </div>
+                                        <div class="m-track">
+                                            <div
+                                                class="chip massage dashed"
+                                                style="left: 0; width: 19.5%"
+                                            >
+                                                <b>Huỳnh Gia Duy</b
+                                                ><small>08:00 – 09:00</small>
+                                            </div>
+                                            <div
+                                                class="chip cx"
+                                                style="left: 20%; width: 19.5%"
+                                            >
+                                                <span class="fl">✕</span
+                                                ><b>Lý Thanh Em</b
+                                                ><small>09:00 – 10:00</small>
+                                            </div>
+                                            <div
+                                                class="chip cx"
+                                                style="left: 40%; width: 19.5%"
+                                            >
+                                                <span class="fl">✕</span
+                                                ><b>Mai Quốc Phong</b
+                                                ><small
+                                                    ><span class="m1"
+                                                        >−1 buổi</span
+                                                    >
+                                                    10:00</small
+                                                >
+                                            </div>
+                                            <div
+                                                class="chip stretching"
+                                                style="left: 70%; width: 9.5%"
+                                            >
+                                                <span class="fl">✓</span
+                                                ><b>Hồ Ý</b><small>11:30</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <figcaption>
+                            Hình vẽ minh hoạ lịch ngày theo HLV. Tên trên hình
+                            là tên giả.
+                        </figcaption>
+                    </figure>
+                    <div class="compare">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Thành phần</th>
+                                    <th>Dùng để</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="n-ref">1</span></td>
+                                    <td>‹ Hôm nay ›</td>
+                                    <td>
+                                        Lùi, về hôm nay, tiến 1 ngày (hoặc 1
+                                        tuần khi xem Tuần).
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="n-ref">2</span></td>
+                                    <td>Tất cả nhân sự</td>
+                                    <td>
+                                        Mặc định chỉ hiện người thuộc club hoặc
+                                        có lịch trong tuần. Bật lên để thấy mọi
+                                        HLV/therapist, ví dụ khi xếp người từ
+                                        club khác.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="n-ref">3</span></td>
+                                    <td>Theo HLV / Theo phòng</td>
+                                    <td>
+                                        Mỗi hàng là một người, hoặc một phòng
+                                        (Phòng PT, Phòng Recovery). Chỉ có ở chế
+                                        độ Ngày.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="n-ref">4</span></td>
+                                    <td>Ngày / Tuần</td>
+                                    <td>
+                                        Ngày: xếp và kéo buổi. Tuần: nhìn tổng
+                                        quan, ô quá 3 buổi gộp thành
+                                        <b>+N buổi</b>, bấm tên ngày để mở lịch
+                                        ngày đó.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="n-ref">5</span></td>
+                                    <td>Lọc nhân sự</td>
+                                    <td>Chỉ xem lịch của một người.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="n-ref">6</span></td>
+                                    <td>+ Booking mới</td>
+                                    <td>Mở form tạo buổi.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="n-ref">7</span></td>
+                                    <td>Ô số liệu</td>
+                                    <td>
+                                        Số buổi trong ngày, không tính buổi đã
+                                        huỷ. <b>Chờ xác nhận</b> là việc cần xử
+                                        lý trong ngày.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="n-ref">8</span></td>
+                                    <td>Hàng "Bạn"</td>
+                                    <td>
+                                        Khi HLV/therapist đăng nhập, hàng của họ
+                                        luôn nằm trên cùng và được tô màu.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <figcaption>Hình vẽ minh hoạ lịch ngày theo HLV. Tên trên hình là tên giả.</figcaption>
-      </figure>
-      <div class="compare">
-        <table>
-          <thead><tr><th>#</th><th>Thành phần</th><th>Dùng để</th></tr></thead>
-          <tbody>
-            <tr><td><span class="n-ref">1</span></td><td>‹ Hôm nay ›</td><td>Lùi, về hôm nay, tiến 1 ngày (hoặc 1 tuần khi xem Tuần).</td></tr>
-            <tr><td><span class="n-ref">2</span></td><td>Tất cả nhân sự</td><td>Mặc định chỉ hiện người thuộc club hoặc có lịch trong tuần. Bật lên để thấy mọi HLV/therapist, ví dụ khi xếp người từ club khác.</td></tr>
-            <tr><td><span class="n-ref">3</span></td><td>Theo HLV / Theo phòng</td><td>Mỗi hàng là một người, hoặc một phòng (Phòng PT, Phòng Recovery). Chỉ có ở chế độ Ngày.</td></tr>
-            <tr><td><span class="n-ref">4</span></td><td>Ngày / Tuần</td><td>Ngày: xếp và kéo buổi. Tuần: nhìn tổng quan, ô quá 3 buổi gộp thành <b>+N buổi</b>, bấm tên ngày để mở lịch ngày đó.</td></tr>
-            <tr><td><span class="n-ref">5</span></td><td>Lọc nhân sự</td><td>Chỉ xem lịch của một người.</td></tr>
-            <tr><td><span class="n-ref">6</span></td><td>+ Booking mới</td><td>Mở form tạo buổi.</td></tr>
-            <tr><td><span class="n-ref">7</span></td><td>Ô số liệu</td><td>Số buổi trong ngày, không tính buổi đã huỷ. <b>Chờ xác nhận</b> là việc cần xử lý trong ngày.</td></tr>
-            <tr><td><span class="n-ref">8</span></td><td>Hàng "Bạn"</td><td>Khi HLV/therapist đăng nhập, hàng của họ luôn nằm trên cùng và được tô màu.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+            </section>
 
-  <section>
-    <h2>Trạng thái buổi và quy tắc trừ buổi</h2>
-    <figure>
-      <svg class="flow" viewBox="0 0 760 250" role="img" aria-label="Chỉ Xác nhận và Huỷ sát giờ trừ buổi">
-        <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker></defs>
-        <text x="24" y="28" font-size="15" font-weight="600">Chỉ Xác nhận và Huỷ sát giờ trừ buổi — sau đó buổi khoá</text>
-        <rect class="bx" x="24" y="62" width="200" height="56" rx="8"/>
-        <text x="124" y="86" font-size="13" font-weight="600" text-anchor="middle">Khách yêu cầu</text>
-        <text class="q" x="124" y="104" font-size="11.5" text-anchor="middle">khách đặt từ app</text>
-        <rect class="bx" x="24" y="152" width="200" height="56" rx="8"/>
-        <text x="124" y="176" font-size="13" font-weight="600" text-anchor="middle">Chờ xác nhận</text>
-        <text class="q" x="124" y="194" font-size="11.5" text-anchor="middle">CS tạo · dời được</text>
-        <rect class="bx hot" x="500" y="50" width="236" height="48" rx="8"/>
-        <text x="618" y="70" font-size="13" font-weight="600" text-anchor="middle">Đã xác nhận ✓</text>
-        <text x="618" y="88" font-size="11.5" text-anchor="middle" fill="#b42318" style="fill:#b42318">trừ 1 buổi · khoá</text>
-        <rect class="bx" x="500" y="112" width="236" height="48" rx="8"/>
-        <text x="618" y="132" font-size="13" font-weight="600" text-anchor="middle">Đã huỷ ✕</text>
-        <text class="q" x="618" y="150" font-size="11.5" text-anchor="middle">không trừ · khoá · giờ trống lại</text>
-        <rect class="bx hot" x="500" y="174" width="236" height="48" rx="8"/>
-        <text x="618" y="194" font-size="13" font-weight="600" text-anchor="middle">Huỷ sát giờ ✕</text>
-        <text x="618" y="212" font-size="11.5" text-anchor="middle" style="fill:#b42318">trừ 1 buổi · khoá · giờ trống lại</text>
-        <path class="ln" d="M224 90H300V180"/>
-        <path class="ln" d="M224 180H360"/>
-        <path class="ln" d="M360 198V74H500" marker-end="url(#ah)"/>
-        <path class="ln" d="M360 136H500" marker-end="url(#ah)"/>
-        <path class="ln" d="M360 198H500" marker-end="url(#ah)"/>
-        <text class="q" x="372" y="66" font-size="11.5">Xác nhận — trừ buổi</text>
-        <text class="q" x="372" y="128" font-size="11.5">Huỷ buổi</text>
-        <text class="q" x="372" y="190" font-size="11.5">Huỷ sát giờ</text>
-      </svg>
-      <figcaption>Buổi chỉ đi một chiều, từ trái sang phải. Trên app không có cách đưa buổi về trạng thái cũ.</figcaption>
-    </figure>
-    <div class="compare">
-      <table>
-        <thead><tr><th>Trên lịch thấy</th><th>Trạng thái</th><th>Dời được</th><th>Trừ buổi</th></tr></thead>
-        <tbody>
-          <tr><td>Viền vàng nét đứt + nhãn <b>Yêu cầu</b></td><td>Khách yêu cầu</td><td>Có</td><td>Chưa</td></tr>
-          <tr><td>Viền nét đứt</td><td>Chờ xác nhận</td><td>Có</td><td>Chưa</td></tr>
-          <tr><td>Dấu ✓</td><td>Đã xác nhận</td><td>Không</td><td><b>1 buổi</b></td></tr>
-          <tr><td>Xám, gạch ngang, ✕</td><td>Đã huỷ</td><td>Không</td><td>Không</td></tr>
-          <tr><td>Xám, gạch ngang, ✕ + <b>−1 buổi</b></td><td>Huỷ sát giờ</td><td>Không</td><td><b>1 buổi</b></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <section>
-    <span class="who">CS · OM</span>
-    <h2>Tạo booking</h2>
-    <div class="box">
-      <p>Mở form bằng một trong ba cách: bấm <b>+ Booking mới</b>; bấm vào chỗ trống trên hàng của một HLV/therapist (form điền sẵn người, ngày, giờ); hoặc bấm nút tạo trong một ô giờ khi xem Tuần.</p>
-      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start" class="create-grid">
-        <ol class="steps">
-          <li><b>Khách hàng</b>: gõ ít nhất 2 ký tự tên hoặc SĐT. Mỗi kết quả ghi số gói đang hoạt động.</li>
-          <li><b>Loại buổi</b>: PT chỉ cho chọn HLV, các loại trị liệu chỉ cho chọn therapist.</li>
-          <li><b>Gói trừ buổi</b>: gói sẽ bị trừ khi xác nhận, mỗi gói ghi "còn N buổi". Form ghi "Khách không còn buổi … trong gói nào đang hoạt động" thì không đặt được: mời khách gia hạn trước.</li>
-          <li><b>HLV phụ trách / Therapist</b>: mặc định là HLV phụ trách của khách.</li>
-          <li><b>Ngày, Giờ bắt đầu, Thời lượng</b>: giờ bắt đầu cách nhau 30 phút. Giờ có chữ <b>· bận</b> là người đó đã có buổi khác. Buổi phải xong trước 22:00.<br><span class="note">Thời lượng: PT và Recovery 45 phút, 1 giờ hoặc 1 giờ 30 · Massage 1 giờ hoặc 1 giờ 30 · Stretching 30 phút.</span></li>
-          <li><b>Lặp lại</b> (nếu cần): Thứ 2·4·6, Thứ 3·5 hoặc CN hằng tuần, tối đa 8 tuần.</li>
-          <li><b>Ghi chú</b> (không bắt buộc) → bấm <b>Tạo booking</b> (hoặc <b>Tạo N buổi</b> khi lặp lại).</li>
-        </ol>
-        <figure>
-          <div class="mock" role="img" aria-label="Hình vẽ form Tạo booking">
-            <div class="m-panel" style="min-width:300px">
-              <h4>Tạo booking</h4>
-              <div class="sub">Buổi mới ở trạng thái <b>Chờ xác nhận</b> — chưa trừ buổi cho tới khi xác nhận.</div>
-              <div class="m-field"><label>Khách hàng (buổi 1:1)</label><div class="m-input">Nguyễn Văn An — 09xx xxx 123</div></div>
-              <div class="m-field"><label>Gói trừ buổi</label><div class="m-input">PT 24 buổi · còn 11 buổi</div></div>
-              <div class="m-2">
-                <div class="m-field"><label>Loại buổi</label><div class="m-input">PT 1:1</div></div>
-                <div class="m-field"><label>HLV phụ trách</label><div class="m-input">Lê Hoàng Nam</div></div>
-              </div>
-              <div class="m-3">
-                <div class="m-field"><label>Ngày</label><div class="m-input">22/09/2026</div></div>
-                <div class="m-field"><label>Giờ bắt đầu</label><div class="m-input">10:00</div></div>
-                <div class="m-field"><label>Thời lượng</label><div class="m-input">1 giờ</div></div>
-              </div>
-              <div class="m-2">
-                <div class="m-field"><label>Lặp lại (booking định kỳ)</label><div class="m-input">Thứ 3 · 5 hằng tuần</div></div>
-                <div class="m-field"><label>&nbsp;</label><div class="m-input">4 tuần</div></div>
-              </div>
-              <div class="m-field"><label>Ghi chú</label><div class="m-input text ph">Không bắt buộc</div></div>
-              <div style="display:flex;justify-content:flex-end;gap:8px"><span class="m-btn">Huỷ</span><span class="m-btn primary">Tạo 8 buổi</span></div>
-            </div>
-          </div>
-          <figcaption>Form Tạo booking, đặt lặp 4 tuần.</figcaption>
-        </figure>
-      </div>
-      <p class="note">Khi đặt lặp, chỉ cần một ngày trùng giờ là cả đợt không được tạo. Đổi giờ hoặc giảm số tuần rồi tạo lại.</p>
-    </div>
-  </section>
-
-  <section>
-    <span class="who">CS · OM</span>
-    <h2>Dời giờ, đổi người, đổi thời lượng</h2>
-    <div class="box">
-      <p>Chỉ dời được buổi <b>Chờ xác nhận</b> hoặc <b>Khách yêu cầu</b>. Dời buổi không trừ buổi và không đổi trạng thái.</p>
-      <figure>
-        <div class="mock" role="img" aria-label="Hình vẽ kéo buổi trên lịch ngày">
-          <div class="inner">
-            <div class="m-grid">
-              <div class="m-hours"><div></div><div><span>08:00</span><span>09:00</span><span>10:00</span><span>11:00</span><span>12:00</span></div></div>
-              <div class="m-row">
-                <div class="m-cell"><span class="av" style="background:#14332B">HN</span><span><b>Lê Hoàng Nam</b><small>HLV</small></span></div>
-                <div class="m-track">
-                  <div class="ghost" style="left:0;width:19.5%"></div>
-                  <span class="arrow" style="left:12%;width:24%"></span>
-                  <div class="chip pt dashed" style="left:40%;width:19.5%"><b>Nguyễn Văn An</b><small>10:00 – 11:00</small><span class="grip"></span></div>
-                  <span class="note" style="position:absolute;left:61%;top:18px;font-size:11px;color:#e0592a;font-weight:700">← kéo mép phải để đổi thời lượng</span>
+            <section>
+                <h2>Trạng thái buổi và quy tắc trừ buổi</h2>
+                <figure>
+                    <svg
+                        class="flow"
+                        viewBox="0 0 760 250"
+                        role="img"
+                        aria-label="Chỉ Xác nhận và Huỷ sát giờ trừ buổi"
+                    >
+                        <defs>
+                            <marker
+                                id="ah"
+                                viewBox="0 0 10 10"
+                                refX="9"
+                                refY="5"
+                                markerWidth="7"
+                                markerHeight="7"
+                                orient="auto-start-reverse"
+                            >
+                                <path class="ah" d="M0 0L10 5L0 10z" />
+                            </marker>
+                        </defs>
+                        <text x="24" y="28" font-size="15" font-weight="600">
+                            Chỉ Xác nhận và Huỷ sát giờ trừ buổi — sau đó buổi
+                            khoá
+                        </text>
+                        <rect
+                            class="bx"
+                            x="24"
+                            y="62"
+                            width="200"
+                            height="56"
+                            rx="8"
+                        />
+                        <text
+                            x="124"
+                            y="86"
+                            font-size="13"
+                            font-weight="600"
+                            text-anchor="middle"
+                        >
+                            Khách yêu cầu
+                        </text>
+                        <text
+                            class="q"
+                            x="124"
+                            y="104"
+                            font-size="11.5"
+                            text-anchor="middle"
+                        >
+                            khách đặt từ app
+                        </text>
+                        <rect
+                            class="bx"
+                            x="24"
+                            y="152"
+                            width="200"
+                            height="56"
+                            rx="8"
+                        />
+                        <text
+                            x="124"
+                            y="176"
+                            font-size="13"
+                            font-weight="600"
+                            text-anchor="middle"
+                        >
+                            Chờ xác nhận
+                        </text>
+                        <text
+                            class="q"
+                            x="124"
+                            y="194"
+                            font-size="11.5"
+                            text-anchor="middle"
+                        >
+                            CS tạo · dời được
+                        </text>
+                        <rect
+                            class="bx hot"
+                            x="500"
+                            y="50"
+                            width="236"
+                            height="48"
+                            rx="8"
+                        />
+                        <text
+                            x="618"
+                            y="70"
+                            font-size="13"
+                            font-weight="600"
+                            text-anchor="middle"
+                        >
+                            Đã xác nhận ✓
+                        </text>
+                        <text
+                            x="618"
+                            y="88"
+                            font-size="11.5"
+                            text-anchor="middle"
+                            fill="#b42318"
+                            style="fill: #b42318"
+                        >
+                            trừ 1 buổi · khoá
+                        </text>
+                        <rect
+                            class="bx"
+                            x="500"
+                            y="112"
+                            width="236"
+                            height="48"
+                            rx="8"
+                        />
+                        <text
+                            x="618"
+                            y="132"
+                            font-size="13"
+                            font-weight="600"
+                            text-anchor="middle"
+                        >
+                            Đã huỷ ✕
+                        </text>
+                        <text
+                            class="q"
+                            x="618"
+                            y="150"
+                            font-size="11.5"
+                            text-anchor="middle"
+                        >
+                            không trừ · khoá · giờ trống lại
+                        </text>
+                        <rect
+                            class="bx hot"
+                            x="500"
+                            y="174"
+                            width="236"
+                            height="48"
+                            rx="8"
+                        />
+                        <text
+                            x="618"
+                            y="194"
+                            font-size="13"
+                            font-weight="600"
+                            text-anchor="middle"
+                        >
+                            Huỷ sát giờ ✕
+                        </text>
+                        <text
+                            x="618"
+                            y="212"
+                            font-size="11.5"
+                            text-anchor="middle"
+                            style="fill: #b42318"
+                        >
+                            trừ 1 buổi · khoá · giờ trống lại
+                        </text>
+                        <path class="ln" d="M224 90H300V180" />
+                        <path class="ln" d="M224 180H360" />
+                        <path
+                            class="ln"
+                            d="M360 198V74H500"
+                            marker-end="url(#ah)"
+                        />
+                        <path
+                            class="ln"
+                            d="M360 136H500"
+                            marker-end="url(#ah)"
+                        />
+                        <path
+                            class="ln"
+                            d="M360 198H500"
+                            marker-end="url(#ah)"
+                        />
+                        <text class="q" x="372" y="66" font-size="11.5">
+                            Xác nhận — trừ buổi
+                        </text>
+                        <text class="q" x="372" y="128" font-size="11.5">
+                            Huỷ buổi
+                        </text>
+                        <text class="q" x="372" y="190" font-size="11.5">
+                            Huỷ sát giờ
+                        </text>
+                    </svg>
+                    <figcaption>
+                        Buổi chỉ đi một chiều, từ trái sang phải. Trên app không
+                        có cách đưa buổi về trạng thái cũ.
+                    </figcaption>
+                </figure>
+                <div class="compare">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Trên lịch thấy</th>
+                                <th>Trạng thái</th>
+                                <th>Dời được</th>
+                                <th>Trừ buổi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Viền vàng nét đứt + nhãn <b>Yêu cầu</b></td>
+                                <td>Khách yêu cầu</td>
+                                <td>Có</td>
+                                <td>Chưa</td>
+                            </tr>
+                            <tr>
+                                <td>Viền nét đứt</td>
+                                <td>Chờ xác nhận</td>
+                                <td>Có</td>
+                                <td>Chưa</td>
+                            </tr>
+                            <tr>
+                                <td>Dấu ✓</td>
+                                <td>Đã xác nhận</td>
+                                <td>Không</td>
+                                <td><b>1 buổi</b></td>
+                            </tr>
+                            <tr>
+                                <td>Xám, gạch ngang, ✕</td>
+                                <td>Đã huỷ</td>
+                                <td>Không</td>
+                                <td>Không</td>
+                            </tr>
+                            <tr>
+                                <td>Xám, gạch ngang, ✕ + <b>−1 buổi</b></td>
+                                <td>Huỷ sát giờ</td>
+                                <td>Không</td>
+                                <td><b>1 buổi</b></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-              </div>
-              <div class="m-row">
-                <div class="m-cell"><span class="av" style="background:#2F7A5C">TH</span><span><b>Phạm Thu Hà</b><small>HLV</small></span></div>
-                <div class="m-track"><span class="note" style="position:absolute;left:12px;top:18px;font-size:11px;color:#e0592a;font-weight:700">↑↓ kéo sang hàng khác để đổi HLV</span></div>
-              </div>
-            </div>
-          </div>
+            </section>
+
+            <section>
+                <span class="who">CS · OM</span>
+                <h2>Tạo booking</h2>
+                <div class="box">
+                    <p>
+                        Mở form bằng một trong ba cách: bấm
+                        <b>+ Booking mới</b>; bấm vào chỗ trống trên hàng của
+                        một HLV/therapist (form điền sẵn người, ngày, giờ); hoặc
+                        bấm nút tạo trong một ô giờ khi xem Tuần.
+                    </p>
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: minmax(0, 1fr) minmax(
+                                    0,
+                                    1fr
+                                );
+                            gap: 18px;
+                            align-items: start;
+                        "
+                        class="create-grid"
+                    >
+                        <ol class="steps">
+                            <li>
+                                <b>Khách hàng</b>: gõ ít nhất 2 ký tự tên hoặc
+                                SĐT. Mỗi kết quả ghi số gói đang hoạt động.
+                            </li>
+                            <li>
+                                <b>Loại buổi</b>: PT chỉ cho chọn HLV, các loại
+                                trị liệu chỉ cho chọn therapist.
+                            </li>
+                            <li>
+                                <b>Gói trừ buổi</b>: gói sẽ bị trừ khi xác nhận,
+                                mỗi gói ghi "còn N buổi". Form ghi "Khách không
+                                còn buổi … trong gói nào đang hoạt động" thì
+                                không đặt được: mời khách gia hạn trước.
+                            </li>
+                            <li>
+                                <b>HLV phụ trách / Therapist</b>: mặc định là
+                                HLV phụ trách của khách.
+                            </li>
+                            <li>
+                                <b>Ngày, Giờ bắt đầu, Thời lượng</b>: giờ bắt
+                                đầu cách nhau 30 phút. Giờ có chữ
+                                <b>· bận</b> là người đó đã có buổi khác. Buổi
+                                phải xong trước 22:00.<br /><span class="note"
+                                    >Thời lượng: PT và Recovery 45 phút, 1 giờ
+                                    hoặc 1 giờ 30 · Massage 1 giờ hoặc 1 giờ 30
+                                    · Stretching 30 phút.</span
+                                >
+                            </li>
+                            <li>
+                                <b>Lặp lại</b> (nếu cần): Thứ 2·4·6, Thứ 3·5
+                                hoặc CN hằng tuần, tối đa 8 tuần.
+                            </li>
+                            <li>
+                                <b>Ghi chú</b> (không bắt buộc) → bấm
+                                <b>Tạo booking</b> (hoặc <b>Tạo N buổi</b> khi
+                                lặp lại).
+                            </li>
+                        </ol>
+                        <figure>
+                            <div
+                                class="mock"
+                                role="img"
+                                aria-label="Hình vẽ form Tạo booking"
+                            >
+                                <div class="m-panel" style="min-width: 300px">
+                                    <h4>Tạo booking</h4>
+                                    <div class="sub">
+                                        Buổi mới ở trạng thái
+                                        <b>Chờ xác nhận</b> — chưa trừ buổi cho
+                                        tới khi xác nhận.
+                                    </div>
+                                    <div class="m-field">
+                                        <label>Khách hàng (buổi 1:1)</label>
+                                        <div class="m-input">
+                                            Nguyễn Văn An — 09xx xxx 123
+                                        </div>
+                                    </div>
+                                    <div class="m-field">
+                                        <label>Gói trừ buổi</label>
+                                        <div class="m-input">
+                                            PT 24 buổi · còn 11 buổi
+                                        </div>
+                                    </div>
+                                    <div class="m-2">
+                                        <div class="m-field">
+                                            <label>Loại buổi</label>
+                                            <div class="m-input">PT 1:1</div>
+                                        </div>
+                                        <div class="m-field">
+                                            <label>HLV phụ trách</label>
+                                            <div class="m-input">
+                                                Lê Hoàng Nam
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-3">
+                                        <div class="m-field">
+                                            <label>Ngày</label>
+                                            <div class="m-input">
+                                                22/09/2026
+                                            </div>
+                                        </div>
+                                        <div class="m-field">
+                                            <label>Giờ bắt đầu</label>
+                                            <div class="m-input">10:00</div>
+                                        </div>
+                                        <div class="m-field">
+                                            <label>Thời lượng</label>
+                                            <div class="m-input">1 giờ</div>
+                                        </div>
+                                    </div>
+                                    <div class="m-2">
+                                        <div class="m-field">
+                                            <label
+                                                >Lặp lại (booking định
+                                                kỳ)</label
+                                            >
+                                            <div class="m-input">
+                                                Thứ 3 · 5 hằng tuần
+                                            </div>
+                                        </div>
+                                        <div class="m-field">
+                                            <label>&nbsp;</label>
+                                            <div class="m-input">4 tuần</div>
+                                        </div>
+                                    </div>
+                                    <div class="m-field">
+                                        <label>Ghi chú</label>
+                                        <div class="m-input text ph">
+                                            Không bắt buộc
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="
+                                            display: flex;
+                                            justify-content: flex-end;
+                                            gap: 8px;
+                                        "
+                                    >
+                                        <span class="m-btn">Huỷ</span
+                                        ><span class="m-btn primary"
+                                            >Tạo 8 buổi</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                            <figcaption>
+                                Form Tạo booking, đặt lặp 4 tuần.
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <p class="note">
+                        Khi đặt lặp, chỉ cần một ngày trùng giờ là cả đợt không
+                        được tạo. Đổi giờ hoặc giảm số tuần rồi tạo lại.
+                    </p>
+                </div>
+            </section>
+
+            <section>
+                <span class="who">CS · OM</span>
+                <h2>Dời giờ, đổi người, đổi thời lượng</h2>
+                <div class="box">
+                    <p>
+                        Chỉ dời được buổi <b>Chờ xác nhận</b> hoặc
+                        <b>Khách yêu cầu</b>. Dời buổi không trừ buổi và không
+                        đổi trạng thái.
+                    </p>
+                    <figure>
+                        <div
+                            class="mock"
+                            role="img"
+                            aria-label="Hình vẽ kéo buổi trên lịch ngày"
+                        >
+                            <div class="inner">
+                                <div class="m-grid">
+                                    <div class="m-hours">
+                                        <div></div>
+                                        <div>
+                                            <span>08:00</span><span>09:00</span
+                                            ><span>10:00</span><span>11:00</span
+                                            ><span>12:00</span>
+                                        </div>
+                                    </div>
+                                    <div class="m-row">
+                                        <div class="m-cell">
+                                            <span
+                                                class="av"
+                                                style="background: #14332b"
+                                                >HN</span
+                                            ><span
+                                                ><b>Lê Hoàng Nam</b
+                                                ><small>HLV</small></span
+                                            >
+                                        </div>
+                                        <div class="m-track">
+                                            <div
+                                                class="ghost"
+                                                style="left: 0; width: 19.5%"
+                                            ></div>
+                                            <span
+                                                class="arrow"
+                                                style="left: 12%; width: 24%"
+                                            ></span>
+                                            <div
+                                                class="chip pt dashed"
+                                                style="left: 40%; width: 19.5%"
+                                            >
+                                                <b>Nguyễn Văn An</b
+                                                ><small>10:00 – 11:00</small
+                                                ><span class="grip"></span>
+                                            </div>
+                                            <span
+                                                class="note"
+                                                style="
+                                                    position: absolute;
+                                                    left: 61%;
+                                                    top: 18px;
+                                                    font-size: 11px;
+                                                    color: #e0592a;
+                                                    font-weight: 700;
+                                                "
+                                                >← kéo mép phải để đổi thời
+                                                lượng</span
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="m-row">
+                                        <div class="m-cell">
+                                            <span
+                                                class="av"
+                                                style="background: #2f7a5c"
+                                                >TH</span
+                                            ><span
+                                                ><b>Phạm Thu Hà</b
+                                                ><small>HLV</small></span
+                                            >
+                                        </div>
+                                        <div class="m-track">
+                                            <span
+                                                class="note"
+                                                style="
+                                                    position: absolute;
+                                                    left: 12px;
+                                                    top: 18px;
+                                                    font-size: 11px;
+                                                    color: #e0592a;
+                                                    font-weight: 700;
+                                                "
+                                                >↑↓ kéo sang hàng khác để đổi
+                                                HLV</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <figcaption>
+                            Kéo buổi từ 08:00 sang 10:00. Mép phải đậm hơn là
+                            chỗ kéo để đổi thời lượng.
+                        </figcaption>
+                    </figure>
+                    <ul class="list">
+                        <li>
+                            <b>Đổi giờ:</b> kéo buổi sang trái hoặc phải, mỗi
+                            nấc 15 phút.
+                        </li>
+                        <li>
+                            <b>Đổi HLV/therapist:</b> khi xem Theo HLV, kéo buổi
+                            lên hoặc xuống hàng của người khác. Buổi PT chỉ thả
+                            được vào hàng HLV, buổi trị liệu chỉ vào hàng
+                            therapist.
+                        </li>
+                        <li>
+                            <b>Đổi thời lượng:</b> kéo mép phải của buổi, tối
+                            thiểu 30 phút.
+                        </li>
+                        <li>
+                            <b>Dời sang ngày khác:</b> bấm vào buổi → mục
+                            <b>Dời lịch nhanh</b> → đổi Ngày / Giờ / Thời lượng
+                            → <b>Lưu thay đổi</b>. <b>Hoàn tác</b> chỉ bỏ những
+                            gì vừa sửa trong form, chưa lưu.
+                        </li>
+                    </ul>
+                    <p class="note">
+                        Thả buổi vào giờ người đó đã có buổi khác thì buổi quay
+                        về chỗ cũ và có thông báo lỗi.
+                    </p>
+                </div>
+            </section>
+
+            <section>
+                <span class="who">CS · OM</span>
+                <h2>Xác nhận hoặc huỷ buổi</h2>
+                <div class="box">
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: minmax(0, 1fr) minmax(
+                                    0,
+                                    1fr
+                                );
+                            gap: 18px;
+                            align-items: start;
+                        "
+                        class="create-grid"
+                    >
+                        <div
+                            style="
+                                display: flex;
+                                flex-direction: column;
+                                gap: 12px;
+                            "
+                        >
+                            <p>
+                                Bấm vào buổi để mở <b>Chi tiết buổi</b>. Đọc lại
+                                tên khách, ngày giờ, người phụ trách, gói, rồi
+                                chọn một trong ba nút:
+                            </p>
+                            <div class="compare">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Nút</th>
+                                            <th>Khi nào</th>
+                                            <th>Trừ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><b>Xác nhận — trừ buổi</b></td>
+                                            <td>
+                                                Đã chốt với khách và HLV. Xác
+                                                nhận <b>trước</b> buổi tập,
+                                                không đợi tập xong.
+                                            </td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Huỷ buổi</b></td>
+                                            <td>
+                                                Khách báo huỷ đúng hạn, hoặc xếp
+                                                nhầm.
+                                            </td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Huỷ sát giờ</b></td>
+                                            <td>
+                                                Khách huỷ quá hạn theo quy định
+                                                club, hoặc không đến.
+                                            </td>
+                                            <td>1</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="note">
+                                Gói hết buổi thì sheet ghi "Không xác nhận được
+                                cho tới khi khách có gói còn buổi". Lúc đó chỉ
+                                còn bấm được Huỷ buổi.
+                            </p>
+                        </div>
+                        <figure>
+                            <div
+                                class="mock"
+                                role="img"
+                                aria-label="Hình vẽ Chi tiết buổi"
+                            >
+                                <div class="m-panel" style="min-width: 300px">
+                                    <h4>Nguyễn Văn An</h4>
+                                    <div class="m-banner">
+                                        Chưa xác nhận — chưa trừ buổi. Có thể
+                                        dời lịch hoặc huỷ.
+                                    </div>
+                                    <dl class="m-kv">
+                                        <dt>Ngày</dt>
+                                        <dd>Thứ Ba 22/09 · 08:00 – 09:00</dd>
+                                        <dt>Điện thoại</dt>
+                                        <dd>09xx xxx 123</dd>
+                                        <dt>Phụ trách</dt>
+                                        <dd>Lê Hoàng Nam</dd>
+                                        <dt>Phòng</dt>
+                                        <dd>Phòng PT</dd>
+                                        <dt>Gói đang dùng</dt>
+                                        <dd>
+                                            PT 24 buổi<br /><span class="m-hint"
+                                                >Còn 11 buổi · trừ 1 buổi khi
+                                                xác nhận</span
+                                            >
+                                        </dd>
+                                    </dl>
+                                    <div class="m-sep"></div>
+                                    <b>Dời lịch nhanh</b>
+                                    <div class="m-3">
+                                        <div class="m-field">
+                                            <label>Ngày</label>
+                                            <div class="m-input">22/09</div>
+                                        </div>
+                                        <div class="m-field">
+                                            <label>Giờ</label>
+                                            <div class="m-input">08:00</div>
+                                        </div>
+                                        <div class="m-field">
+                                            <label>Thời lượng</label>
+                                            <div class="m-input">1 giờ</div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="
+                                            display: flex;
+                                            justify-content: flex-end;
+                                            gap: 8px;
+                                        "
+                                    >
+                                        <span class="m-btn">Hoàn tác</span
+                                        ><span class="m-btn">Lưu thay đổi</span>
+                                    </div>
+                                    <div class="m-sep"></div>
+                                    <div class="m-foot">
+                                        <span class="m-btn danger"
+                                            >Huỷ buổi</span
+                                        >
+                                        <span class="m-btn">Huỷ sát giờ</span>
+                                        <span class="m-btn primary full"
+                                            >Xác nhận — trừ buổi</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                            <figcaption>
+                                Chi tiết một buổi đang chờ xác nhận.
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="callout">
+                        <b>Bấm rồi là không sửa được trên app</b>
+                        <p>
+                            Bấm nhầm Xác nhận, Huỷ hoặc Huỷ sát giờ thì báo quản
+                            lý ngay, kèm tên khách và mã buổi (ở tiêu đề Chi
+                            tiết buổi). Không tạo buổi bù để "trả lại".
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Gặp thông báo này thì làm gì</h2>
+                <div class="compare">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Thông báo</th>
+                                <th>Làm gì</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Nhân sự đã có buổi khác trong khung giờ này
+                                </td>
+                                <td>
+                                    Chọn giờ khác hoặc người khác. Buổi đã huỷ
+                                    không chiếm giờ.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Buổi trị liệu chỉ gán cho therapist, buổi PT
+                                    / Pilates / nhóm chỉ gán cho HLV
+                                </td>
+                                <td>Thả hoặc chọn lại người đúng loại.</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Buổi đã xác nhận hoặc đã huỷ thì không sửa
+                                    được
+                                </td>
+                                <td>
+                                    Có thể người khác vừa xử lý buổi này. Tải
+                                    lại trang. Cần sửa thì báo quản lý.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Gói đã chọn không còn buổi cho loại buổi này
+                                </td>
+                                <td>
+                                    Chọn gói khác, hoặc mời khách gia hạn hay
+                                    mua thêm.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Gói không thuộc khách này hoặc không còn
+                                    hoạt động
+                                </td>
+                                <td>
+                                    Kiểm tra gói ở trang khách (hết hạn, bảo
+                                    lưu, tạm dừng).
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Không tải được lịch. Thử lại sau.</td>
+                                <td>
+                                    Bấm <b>Thử lại</b>. Vẫn lỗi thì báo kỹ
+                                    thuật.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section>
+                <h2>Việc mỗi ca</h2>
+                <div class="box">
+                    <ul class="checklist">
+                        <li>
+                            Đầu ca: mở Lịch Booking, kiểm tra đúng club, xem ô
+                            <b>Chờ xác nhận</b>.
+                        </li>
+                        <li>
+                            Xử lý các buổi có nhãn <b>Yêu cầu</b> (khách đặt qua
+                            app): gọi khách và HLV, dời giờ nếu cần.
+                        </li>
+                        <li>Trước giờ tập: xác nhận những buổi đã chốt.</li>
+                        <li>
+                            Khách báo huỷ: còn trong hạn bấm <b>Huỷ buổi</b>;
+                            quá hạn hoặc không đến bấm <b>Huỷ sát giờ</b>.
+                        </li>
+                        <li>
+                            Cuối ca: ô Chờ xác nhận của những buổi đã qua phải
+                            về 0.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Hỏi nhanh</h2>
+                <ul class="list">
+                    <li>
+                        <b>Không có nút + Booking mới?</b> Tài khoản không phải
+                        CS, OM, Admin hay Admin Manager.
+                    </li>
+                    <li>
+                        <b>Không thấy HLV cần xếp?</b> Bật
+                        <b>Tất cả nhân sự</b>.
+                    </li>
+                    <li>
+                        <b>Cần đặt Pilates 2:1 hoặc lớp nhóm?</b> App chưa làm
+                        được, vẫn đặt trên Directus.
+                    </li>
+                    <li>
+                        <b>Buổi đặt trên Directus có hiện ở đây không?</b> Có,
+                        nếu buổi đó có gắn club. Lịch đọc dữ liệu trực tiếp từ
+                        Directus.
+                    </li>
+                    <li>
+                        <b>Lịch cũ còn dùng được không?</b> Trang lịch cũ vẫn
+                        còn trong giai đoạn chuyển đổi, nhưng nên làm trên Lịch
+                        Booking.
+                    </li>
+                </ul>
+            </section>
         </div>
-        <figcaption>Kéo buổi từ 08:00 sang 10:00. Mép phải đậm hơn là chỗ kéo để đổi thời lượng.</figcaption>
-      </figure>
-      <ul class="list">
-        <li><b>Đổi giờ:</b> kéo buổi sang trái hoặc phải, mỗi nấc 15 phút.</li>
-        <li><b>Đổi HLV/therapist:</b> khi xem Theo HLV, kéo buổi lên hoặc xuống hàng của người khác. Buổi PT chỉ thả được vào hàng HLV, buổi trị liệu chỉ vào hàng therapist.</li>
-        <li><b>Đổi thời lượng:</b> kéo mép phải của buổi, tối thiểu 30 phút.</li>
-        <li><b>Dời sang ngày khác:</b> bấm vào buổi → mục <b>Dời lịch nhanh</b> → đổi Ngày / Giờ / Thời lượng → <b>Lưu thay đổi</b>. <b>Hoàn tác</b> chỉ bỏ những gì vừa sửa trong form, chưa lưu.</li>
-      </ul>
-      <p class="note">Thả buổi vào giờ người đó đã có buổi khác thì buổi quay về chỗ cũ và có thông báo lỗi.</p>
-    </div>
-  </section>
-
-  <section>
-    <span class="who">CS · OM</span>
-    <h2>Xác nhận hoặc huỷ buổi</h2>
-    <div class="box">
-      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start" class="create-grid">
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <p>Bấm vào buổi để mở <b>Chi tiết buổi</b>. Đọc lại tên khách, ngày giờ, người phụ trách, gói, rồi chọn một trong ba nút:</p>
-          <div class="compare">
-            <table>
-              <thead><tr><th>Nút</th><th>Khi nào</th><th>Trừ</th></tr></thead>
-              <tbody>
-                <tr><td><b>Xác nhận — trừ buổi</b></td><td>Đã chốt với khách và HLV. Xác nhận <b>trước</b> buổi tập, không đợi tập xong.</td><td>1</td></tr>
-                <tr><td><b>Huỷ buổi</b></td><td>Khách báo huỷ đúng hạn, hoặc xếp nhầm.</td><td>0</td></tr>
-                <tr><td><b>Huỷ sát giờ</b></td><td>Khách huỷ quá hạn theo quy định club, hoặc không đến.</td><td>1</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="note">Gói hết buổi thì sheet ghi "Không xác nhận được cho tới khi khách có gói còn buổi". Lúc đó chỉ còn bấm được Huỷ buổi.</p>
-        </div>
-        <figure>
-          <div class="mock" role="img" aria-label="Hình vẽ Chi tiết buổi">
-            <div class="m-panel" style="min-width:300px">
-              <h4>Nguyễn Văn An</h4>
-              <div class="m-banner">Chưa xác nhận — chưa trừ buổi. Có thể dời lịch hoặc huỷ.</div>
-              <dl class="m-kv">
-                <dt>Ngày</dt><dd>Thứ Ba 22/09 · 08:00 – 09:00</dd>
-                <dt>Điện thoại</dt><dd>09xx xxx 123</dd>
-                <dt>Phụ trách</dt><dd>Lê Hoàng Nam</dd>
-                <dt>Phòng</dt><dd>Phòng PT</dd>
-                <dt>Gói đang dùng</dt><dd>PT 24 buổi<br><span class="m-hint">Còn 11 buổi · trừ 1 buổi khi xác nhận</span></dd>
-              </dl>
-              <div class="m-sep"></div>
-              <b>Dời lịch nhanh</b>
-              <div class="m-3">
-                <div class="m-field"><label>Ngày</label><div class="m-input">22/09</div></div>
-                <div class="m-field"><label>Giờ</label><div class="m-input">08:00</div></div>
-                <div class="m-field"><label>Thời lượng</label><div class="m-input">1 giờ</div></div>
-              </div>
-              <div style="display:flex;justify-content:flex-end;gap:8px"><span class="m-btn">Hoàn tác</span><span class="m-btn">Lưu thay đổi</span></div>
-              <div class="m-sep"></div>
-              <div class="m-foot">
-                <span class="m-btn danger">Huỷ buổi</span>
-                <span class="m-btn">Huỷ sát giờ</span>
-                <span class="m-btn primary full">Xác nhận — trừ buổi</span>
-              </div>
-            </div>
-          </div>
-          <figcaption>Chi tiết một buổi đang chờ xác nhận.</figcaption>
-        </figure>
-      </div>
-      <div class="callout">
-        <b>Bấm rồi là không sửa được trên app</b>
-        <p>Bấm nhầm Xác nhận, Huỷ hoặc Huỷ sát giờ thì báo quản lý ngay, kèm tên khách và mã buổi (ở tiêu đề Chi tiết buổi). Không tạo buổi bù để "trả lại".</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Gặp thông báo này thì làm gì</h2>
-    <div class="compare">
-      <table>
-        <thead><tr><th>Thông báo</th><th>Làm gì</th></tr></thead>
-        <tbody>
-          <tr><td>Nhân sự đã có buổi khác trong khung giờ này</td><td>Chọn giờ khác hoặc người khác. Buổi đã huỷ không chiếm giờ.</td></tr>
-          <tr><td>Buổi trị liệu chỉ gán cho therapist, buổi PT / Pilates / nhóm chỉ gán cho HLV</td><td>Thả hoặc chọn lại người đúng loại.</td></tr>
-          <tr><td>Buổi đã xác nhận hoặc đã huỷ thì không sửa được</td><td>Có thể người khác vừa xử lý buổi này. Tải lại trang. Cần sửa thì báo quản lý.</td></tr>
-          <tr><td>Gói đã chọn không còn buổi cho loại buổi này</td><td>Chọn gói khác, hoặc mời khách gia hạn hay mua thêm.</td></tr>
-          <tr><td>Gói không thuộc khách này hoặc không còn hoạt động</td><td>Kiểm tra gói ở trang khách (hết hạn, bảo lưu, tạm dừng).</td></tr>
-          <tr><td>Không tải được lịch. Thử lại sau.</td><td>Bấm <b>Thử lại</b>. Vẫn lỗi thì báo kỹ thuật.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <section>
-    <h2>Việc mỗi ca</h2>
-    <div class="box">
-      <ul class="checklist">
-        <li>Đầu ca: mở Lịch Booking, kiểm tra đúng club, xem ô <b>Chờ xác nhận</b>.</li>
-        <li>Xử lý các buổi có nhãn <b>Yêu cầu</b> (khách đặt qua app): gọi khách và HLV, dời giờ nếu cần.</li>
-        <li>Trước giờ tập: xác nhận những buổi đã chốt.</li>
-        <li>Khách báo huỷ: còn trong hạn bấm <b>Huỷ buổi</b>; quá hạn hoặc không đến bấm <b>Huỷ sát giờ</b>.</li>
-        <li>Cuối ca: ô Chờ xác nhận của những buổi đã qua phải về 0.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section>
-    <h2>Hỏi nhanh</h2>
-    <ul class="list">
-      <li><b>Không có nút + Booking mới?</b> Tài khoản không phải CS, OM, Admin hay Admin Manager.</li>
-      <li><b>Không thấy HLV cần xếp?</b> Bật <b>Tất cả nhân sự</b>.</li>
-      <li><b>Cần đặt Pilates 2:1 hoặc lớp nhóm?</b> App chưa làm được, vẫn đặt trên Directus.</li>
-      <li><b>Buổi đặt trên Directus có hiện ở đây không?</b> Có, nếu buổi đó có gắn club. Lịch đọc dữ liệu trực tiếp từ Directus.</li>
-      <li><b>Lịch cũ còn dùng được không?</b> Trang lịch cũ vẫn còn trong giai đoạn chuyển đổi, nhưng nên làm trên Lịch Booking.</li>
-    </ul>
-  </section>
-
-</div>
-<style>@media (max-width: 760px) { .create-grid { grid-template-columns: minmax(0,1fr) !important; } }</style>
-</body>
+        <style>
+            @media (max-width: 760px) {
+                .create-grid {
+                    grid-template-columns: minmax(0, 1fr) !important;
+                }
+            }
+        </style>
+    </body>
 </html>
