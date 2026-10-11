@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hướng dẫn Pilates Training 2:1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f7f5; --surface: #ffffff; --ink: #1c2230; --muted: #5a6273; --line: #dfe2e6;
+    --accent: #2f5d8a; --accent-soft: #e6eef6;
+    --crit: #b3261e; --crit-soft: #fbeae8;
+    --warn: #9a5b00; --warn-soft: #fbf0dd;
+    --ok: #2e7d4f; --ok-soft: #e4f3ea;
+    --code-bg: #eef0f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+      --accent: #7fb0e0; --accent-soft: #1d2b3b;
+      --crit: #f08a80; --crit-soft: #3a1f1e;
+      --warn: #e7b25c; --warn-soft: #362a17;
+      --ok: #79c795; --ok-soft: #1a3024;
+      --code-bg: #242a35;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+    --accent: #7fb0e0; --accent-soft: #1d2b3b;
+    --crit: #f08a80; --crit-soft: #3a1f1e;
+    --warn: #e7b25c; --warn-soft: #362a17;
+    --ok: #79c795; --ok-soft: #1a3024;
+    --code-bg: #242a35;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    padding-inline: 16px; padding-block: 32px 64px;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px; }
+  header { display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
+  h2 { font-size: 20px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  p { margin: 0; max-width: 70ch; }
+  .lede { color: var(--muted); font-size: 16px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--muted); font-size: 13px; }
+  section { display: flex; flex-direction: column; gap: 12px; }
+  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+  ul.list, ol.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+
+  .danger { background: var(--crit-soft); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .danger h2 { color: var(--crit); }
+  .danger .box { background: var(--surface); border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; display: grid; grid-template-columns: 34px 1fr; gap: 4px 14px; }
+  .step .n { grid-row: span 2; width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .who { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--bg); }
+  tr:last-child td { border-bottom: 0; }
+  td.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; white-space: nowrap; }
+  td.num { font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12.5px; white-space: nowrap; }
+  tr.known td { background: var(--warn-soft); }
+
+  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .rule { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; font-size: 14px; }
+  .rule > b:first-child { display: block; font-size: 14.5px; margin-bottom: 4px; }
+  .note { font-size: 13.5px; color: var(--muted); max-width: 72ch; }
+
+  .shot { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .shot img { display: block; align-self: flex-start; width: auto; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  .shot figcaption { font-size: 13px; color: var(--muted); max-width: 72ch; }
+  .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; align-items: start; }
+  .step .shot { grid-column: 2; margin-top: 8px; }
+
+  @media (max-width: 520px) {
+    h1 { font-size: 23px; }
+    .step { grid-template-columns: 1fr; }
+    .step .n { grid-row: auto; }
+    .step .shot { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Note cho team vận hành · Pilates Training 2:1</div>
+    <h1>Đặt, check-in và chốt buổi Pilates Training 2:1</h1>
+    <p class="lede">Buổi Pilates 2:1 giờ được đặt, check-in và xác nhận ngay trên app nội bộ. Hệ thống ghi riêng từng khách (có mặt, huỷ, huỷ muộn, không đến) và tự trừ đúng 1 buổi trong gói của khách chính. Không ai phải ghi tay lịch sử tập hay sửa tay số buổi nữa.</p>
+    <div class="meta">
+      <span>Ngày: 11/10/2026</span>
+      <span>Ảnh chụp từ môi trường test, dùng khách test; số điện thoại đã che</span>
+      <span>Áp dụng: internal-app-v2 · Lịch booking, Check-in, trang khách hàng</span>
+    </div>
+  </header>
+
+  <section class="danger">
+    <h2>Đọc trước: 3 điều khác với cách làm cũ</h2>
+    <div class="box">
+      <p><b>1. Hệ thống không tự chốt buổi.</b> Buổi chỉ trừ buổi khi nhân viên bấm <b>Xác nhận buổi tập</b>. Quên bấm thì khách không bị trừ buổi và không có lịch sử tập. Cuối ngày CS và OM phải rà các buổi có nhãn <b>Chưa chốt</b> (xem mục "Cuối ngày").</p>
+      <p><b>2. Mốc huỷ 2 giờ áp dụng cho cả Pilates 2:1 và PT 1:1.</b> Huỷ trong vòng 2 giờ trước giờ tập là huỷ muộn và vẫn trừ buổi. Hệ thống tự xếp theo lúc bấm huỷ, kể cả khi khách huỷ trên member-app. Khách đã được thông báo về mốc này. Khi khách thắc mắc, giải thích lại quy tắc trên.</p>
+      <p><b>3. Không xoá hoặc sửa tay lịch sử tập, số buổi trên Directus Admin.</b> Nếu xoá một dòng lịch sử tập mà Directus báo lỗi, <b>đừng bấm xoá lại</b>: buổi có thể đã được hoàn rồi, bấm lại sẽ hoàn 2 lần. Báo quản lý hoặc dev.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Quy tắc cần nhớ</h2>
+    <div class="rules">
+      <div class="rule"><b>Mỗi buổi trừ đúng 1 buổi</b>Trừ vào buổi 2:1 trong gói của khách chính. Không bao giờ trừ 2 buổi, kể cả khi cả 2 khách đều tập.</div>
+      <div class="rule"><b>Khi nào không trừ</b>Chỉ có 2 trường hợp: cả 2 khách đều huỷ đúng hạn, hoặc phòng tập / HLV huỷ buổi.</div>
+      <div class="rule"><b>Cả 2 khách phải là hội viên</b>Mỗi khách phải có gói membership hoặc unlimited đang hoạt động (là chủ gói hay thành viên chia sẻ đều được). Gói khách mời và gói chỉ có buổi PT/recovery không tính.</div>
+      <div class="rule"><b>Khách thứ 2 không cần gói 2:1</b>Khách thứ 2 tập bằng gói của khách chính. Gói của khách chính phải còn buổi 2:1.</div>
+      <div class="rule"><b>Gói Unlimited không thay buổi 2:1</b>Gói Unlimited Private Training 1:1 chỉ không giới hạn buổi PT 1:1. Muốn đặt Pilates 2:1 thì gói vẫn phải còn buổi 2:1 như mọi gói khác.</div>
+      <div class="rule"><b>Khung check-in</b>Từ 60 phút trước giờ bắt đầu đến giờ kết thúc, đúng chi nhánh của buổi. Check-in ngoài khung hoặc ở chi nhánh khác không được tính cho buổi.</div>
+      <div class="rule"><b>Mốc huỷ 2 giờ</b>Huỷ trước giờ tập ít nhất 2 giờ là huỷ đúng hạn. Còn dưới 2 giờ là huỷ muộn: vẫn trừ buổi.</div>
+      <div class="rule"><b>Cả 2 khách đều được điểm thưởng</b>Khách nào có mặt thì được cộng điểm buổi tập, kể cả khách thứ 2.</div>
+      <div class="rule"><b>Buổi đã xác nhận là khoá</b>Không dời, không huỷ, không đổi khách được nữa. Xác nhận nhầm thì báo quản lý.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Trạng thái của từng khách</h2>
+    <p>Mở một buổi 2:1 trên lịch sẽ thấy mục <b>Khách trong buổi</b>, ghi <b>Khách chính</b>, <b>Khách thứ 2</b> và trạng thái của từng người.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Trạng thái</th><th>Khi nào</th><th>Ảnh hưởng số buổi</th></tr></thead>
+        <tbody>
+          <tr><td><b>Đã đặt</b></td><td>Lúc tạo buổi</td><td>Chưa trừ</td></tr>
+          <tr><td><b>Đã check-in</b></td><td>Khách check-in tại quầy trong khung giờ, buổi chưa xác nhận</td><td>Chưa trừ</td></tr>
+          <tr><td><b>Có mặt</b></td><td>Buổi được xác nhận và khách đã check-in. Khách check-in sau khi buổi đã xác nhận (vẫn trong khung giờ) cũng thành Có mặt</td><td>Buổi trừ 1 lúc xác nhận. Khách đến sau không làm trừ thêm</td></tr>
+          <tr><td><b>Huỷ</b></td><td>Huỷ đúng hạn (trước giờ tập ít nhất 2 giờ)</td><td>Không trừ cho khách này</td></tr>
+          <tr><td><b>Huỷ muộn</b></td><td>Huỷ khi còn dưới 2 giờ</td><td>Buổi vẫn trừ 1</td></tr>
+          <tr><td><b>Không đến</b></td><td>Buổi đã xác nhận, đã hết giờ mà khách chưa check-in. Hệ thống tự ghi sau giờ kết thúc vài phút</td><td>Không đổi (vẫn chỉ 1 buổi)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Ở hộp <b>Buổi tập hôm nay</b> (màn Check-in), khách chưa check-in hiện là <b>Chưa check-in</b> thay vì Đã đặt.</p>
+    <p>Trên lịch, ô của buổi 2:1 ghi tên cả 2 khách ("A &amp; B"). Dấu ✓ là đã xác nhận, ✕ là đã huỷ. Buổi đã chốt ghi số khách có mặt ("Có mặt 2/2") hoặc vắng ("Vắng 2/2"). Nhãn đỏ <b>−1 buổi</b> là buổi huỷ muộn, vẫn trừ buổi. Rê chuột vào ô để xem trạng thái từng người.</p>
+    <div class="shots">
+      <figure class="shot"><img src="images/pt21-02-o-lich.png" alt="Buổi mới tạo: viền nét đứt, chưa xác nhận, chưa trừ buổi." loading="lazy"><figcaption>Buổi mới tạo: viền nét đứt, chưa xác nhận, chưa trừ buổi.</figcaption></figure>
+      <figure class="shot"><img src="images/pt21-11-o-lich-xac-nhan-huy-muon.png" alt="Trái: buổi đã xác nhận, cả 2 khách có mặt. Phải: buổi huỷ muộn, cả 2 vắng, vẫn trừ 1 buổi." loading="lazy"><figcaption>Trái: buổi đã xác nhận, cả 2 khách có mặt. Phải: buổi huỷ muộn, cả 2 vắng, vẫn trừ 1 buổi.</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Đặt buổi</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">CS · Lịch booking</div>
+        <div>Bấm <b>Tạo booking</b>, chọn khách chính, chọn loại <b>Pilates Training 2:1</b>. Ô <b>Khách thứ 2</b> hiện ra: tìm và chọn khách đi cùng.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">CS · chọn gói và HLV</div>
+        <div>Danh sách gói chỉ hiện gói của khách chính còn buổi 2:1. Chọn HLV, giờ tập rồi bấm <b>Tạo booking</b>. Buổi ở trạng thái chưa xác nhận, <b>chưa trừ buổi</b>.</div>
+        <figure class="shot"><img src="images/pt21-01-tao-booking.png" alt="Form Tạo booking khi chọn loại Pilates Training 2:1: có thêm ô Khách thứ 2, gói trừ buổi là gói của khách chính." loading="lazy"><figcaption>Form Tạo booking khi chọn loại Pilates Training 2:1: có thêm ô Khách thứ 2, gói trừ buổi là gói của khách chính.</figcaption></figure>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">Hệ thống · kiểm tra</div>
+        <div>Hệ thống chặn nếu: khách thứ 2 trùng khách chính, một trong 2 khách không có gói thành viên đang hoạt động, gói hết buổi 2:1, HLV hoặc một trong 2 khách đã có buổi khác trùng giờ. Thông báo cụ thể ở mục "Các thông báo thường gặp".</div>
+      </div>
+    </div>
+    <p class="note"><b>Dời buổi:</b> mở buổi, đổi ngày/giờ hoặc HLV rồi bấm <b>Lưu thay đổi</b>. Hệ thống kiểm tra lại trùng giờ và gói thành viên của cả 2 khách. <b>Đổi khách thứ 2:</b> không đổi trực tiếp được. Huỷ buổi cũ (khi còn trước giờ tập ít nhất 2 giờ thì không trừ) rồi tạo buổi mới.</p>
+  </section>
+
+  <section>
+    <h2>Check-in và xác nhận buổi tập</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">CS · màn Check-in</div>
+        <div>Check-in khách như bình thường, cho cả khách chính và khách thứ 2. Nếu khách có buổi 2:1 hôm nay ở chi nhánh này, hộp <b>Buổi tập hôm nay</b> tự mở, ghi giờ, HLV và trạng thái của 2 khách.</div>
+        <figure class="shot"><img src="images/pt21-04-buoi-tap-hom-nay.png" alt="Hộp Buổi tập hôm nay sau khi check-in khách chính. Buổi 11:00 chưa ai check-in nên nút bị khoá; buổi 14:30 đã xác nhận; buổi 17:30 khách chính đã check-in, nút Xác nhận buổi tập bật." loading="lazy"><figcaption>Hộp Buổi tập hôm nay sau khi check-in khách chính. Buổi 11:00 chưa ai check-in nên nút bị khoá; buổi 14:30 đã xác nhận; buổi 17:30 khách chính đã check-in, nút Xác nhận buổi tập bật.</figcaption></figure>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">CS · xác nhận</div>
+        <div>Khi có ít nhất 1 khách <b>Đã check-in</b>, bấm <b>Xác nhận buổi tập</b>. Hộp ghi trước số buổi sẽ trừ ("Xác nhận sẽ trừ 1 buổi từ gói của …, còn N"). Xác nhận xong, khách đã check-in thành <b>Có mặt</b> và lịch sử tập được ghi tự động. Góc trên màn hình hiện "Đã xác nhận buổi tập — trừ 1 buổi 2:1".</div>
+        <figure class="shot"><img src="images/pt21-05-da-xac-nhan.png" alt="Sau khi xác nhận: khách chính Có mặt, khách thứ 2 vẫn Chưa check-in." loading="lazy"><figcaption>Sau khi xác nhận: khách chính Có mặt, khách thứ 2 vẫn Chưa check-in.</figcaption></figure>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">CS · khách thứ 2 đến sau</div>
+        <div>Không cần chờ đủ 2 khách mới xác nhận. Khách đến sau cứ check-in bình thường trong khung giờ: hệ thống tự ghi <b>Có mặt</b>, không trừ thêm buổi.</div>
+        <figure class="shot"><img src="images/pt21-06-khach-den-sau.png" alt="Khách thứ 2 check-in sau khi buổi đã xác nhận: tự thành Có mặt, gói vẫn chỉ trừ 1 buổi." loading="lazy"><figcaption>Khách thứ 2 check-in sau khi buổi đã xác nhận: tự thành Có mặt, gói vẫn chỉ trừ 1 buổi.</figcaption></figure>
+      </div>
+    </div>
+    <p class="note">Cũng có thể xác nhận từ Lịch booking: mở buổi, bấm <b>Xác nhận buổi tập</b>. Nút chỉ bật khi đã có khách check-in. Chưa ai check-in thì nút bị khoá và hộp ghi "Chờ khách check-in tại quầy rồi mới xác nhận được". Consultant thấy hộp Buổi tập hôm nay nhưng không có nút xác nhận.</p>
+    <div class="shots">
+      <figure class="shot"><img src="images/pt21-03-chi-tiet-chua-checkin.png" alt="Chi tiết buổi trên Lịch booking khi chưa ai check-in: nút Xác nhận buổi tập bị khoá." loading="lazy"><figcaption>Chi tiết buổi trên Lịch booking khi chưa ai check-in: nút Xác nhận buổi tập bị khoá.</figcaption></figure>
+      <figure class="shot"><img src="images/pt21-08-chi-tiet-da-xac-nhan.png" alt="Sau khi xác nhận: cả 2 khách Có mặt, gói còn 7 buổi, buổi đã khoá." loading="lazy"><figcaption>Sau khi xác nhận: cả 2 khách Có mặt, gói còn 7 buổi, buổi đã khoá.</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Huỷ buổi</h2>
+    <p>Mở buổi trên Lịch booking. Huỷ riêng 1 khách thì bấm <b>Huỷ</b> cạnh tên khách đó ở mục Khách trong buổi. Huỷ cả buổi thì dùng các nút cuối hộp. Nhãn nút tự đổi theo mốc 2 giờ.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Tình huống</th><th>Bấm</th><th>Kết quả</th></tr></thead>
+        <tbody>
+          <tr><td>1 khách báo nghỉ, còn trước giờ tập ít nhất 2 giờ</td><td><b>Huỷ</b> cạnh tên khách</td><td>Khách đó thành Huỷ. Khách còn lại vẫn tập, buổi vẫn trừ 1 khi xác nhận</td></tr>
+          <tr><td>1 khách báo nghỉ, còn dưới 2 giờ</td><td><b>Huỷ</b> cạnh tên khách</td><td>Khách đó thành Huỷ muộn. Buổi vẫn trừ 1</td></tr>
+          <tr><td>Cả 2 khách nghỉ, còn trước giờ tập ít nhất 2 giờ</td><td><b>Huỷ buổi</b></td><td>Buổi huỷ, không trừ</td></tr>
+          <tr><td>Cả 2 khách nghỉ, còn dưới 2 giờ</td><td><b>Huỷ muộn — trừ buổi</b></td><td>Buổi huỷ muộn, trừ 1</td></tr>
+          <tr><td>HLV nghỉ, phòng tập đóng cửa, sự cố phía phòng tập</td><td><b>Phòng tập huỷ</b></td><td>Buổi huỷ, <b>không trừ</b> dù sát giờ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Huỷ muộn chỉ dùng khi lỗi ở phía khách. Lỗi ở phía phòng tập thì luôn bấm Phòng tập huỷ.</p>
+    <div class="shots">
+      <figure class="shot"><img src="images/pt21-09-huy-dung-han.png" alt="Còn trước giờ tập ít nhất 2 giờ: nút cuối hộp là &quot;Huỷ buổi&quot;, không trừ buổi." loading="lazy"><figcaption>Còn trước giờ tập ít nhất 2 giờ: nút cuối hộp là "Huỷ buổi", không trừ buổi.</figcaption></figure>
+      <figure class="shot"><img src="images/pt21-03-chi-tiet-chua-checkin.png" alt="Còn dưới 2 giờ: hộp báo đỏ, nút đổi thành &quot;Huỷ muộn — trừ buổi&quot;." loading="lazy"><figcaption>Còn dưới 2 giờ: hộp báo đỏ, nút đổi thành "Huỷ muộn — trừ buổi".</figcaption></figure>
+    </div>
+    <div class="shots">
+      <figure class="shot"><img src="images/pt21-10-huy-1-khach.png" alt="Huỷ riêng khách thứ 2 (đúng hạn): khách đó thành Huỷ, khách chính vẫn Đã đặt. Màn hình báo &quot;Đã ghi huỷ — khách còn lại vẫn tập&quot;." loading="lazy"><figcaption>Huỷ riêng khách thứ 2 (đúng hạn): khách đó thành Huỷ, khách chính vẫn Đã đặt. Màn hình báo "Đã ghi huỷ — khách còn lại vẫn tập".</figcaption></figure>
+      <figure class="shot"><img src="images/pt21-12-chi-tiet-huy-muon.png" alt="Buổi huỷ muộn: cả 2 khách Huỷ muộn, vẫn trừ 1 buổi, buổi đã khoá." loading="lazy"><figcaption>Buổi huỷ muộn: cả 2 khách Huỷ muộn, vẫn trừ 1 buổi, buổi đã khoá.</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cuối ngày: CS và OM rà buổi "Chưa chốt"</h2>
+    <p>Buổi đã hết giờ mà chưa xác nhận có nhãn đỏ <b>Chưa chốt</b> trên lịch. Buổi này <b>chưa trừ buổi</b> và không có lịch sử tập. Mỗi buổi Chưa chốt, xử lý như sau:</p>
+    <figure class="shot"><img src="images/pt21-07-chua-chot.png" alt="Buổi 11:00–12:00 đã hết giờ mà chưa xác nhận: nhãn đỏ &quot;Chưa chốt&quot;." loading="lazy"><figcaption>Buổi 11:00–12:00 đã hết giờ mà chưa xác nhận: nhãn đỏ "Chưa chốt".</figcaption></figure>
+    <ul class="list">
+      <li>Khách có đến tập (đã check-in): mở buổi, bấm <b>Xác nhận buổi tập</b>. Khách chưa check-in sẽ được ghi <b>Không đến</b> ngay lúc đó.</li>
+      <li>Khách có đến nhưng quên check-in: nút xác nhận bị khoá. Báo quản lý xử lý, <b>không</b> check-in bù cho khách khi buổi đã hết giờ (check-in sau giờ kết thúc không được tính cho buổi).</li>
+      <li>Cả 2 khách không đến và không báo: hỏi HLV, rồi chọn Huỷ muộn — trừ buổi hoặc Huỷ buổi theo quy định với khách.</li>
+      <li>Buổi không diễn ra vì phía phòng tập: bấm <b>Phòng tập huỷ</b>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Xử lý tình huống</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Tình huống</th><th>Làm gì</th></tr></thead>
+        <tbody>
+          <tr><td>Check-in xong mà hộp Buổi tập hôm nay không mở</td><td>Kiểm tra buổi có đúng chi nhánh, đúng ngày hôm nay, chưa bị huỷ. Có thể xác nhận từ Lịch booking</td></tr>
+          <tr><td>Khách check-in sớm hơn 60 phút</td><td>Lượt check-in đó không gắn vào buổi. Khi tới khung giờ, cho khách check-in lại</td></tr>
+          <tr><td>Khách có 2 buổi 2:1 trong ngày</td><td>Mỗi lần check-in gắn vào buổi gần nhất mà khách chưa có mặt, trong khung giờ</td></tr>
+          <tr><td>Khách check-in ở chi nhánh khác chi nhánh của buổi</td><td>Không được tính. Nếu khách tập ở chi nhánh khác thật, dời buổi sang chi nhánh đó trước khi check-in</td></tr>
+          <tr><td>Đã xác nhận rồi khách thứ 2 mới tới</td><td>Check-in bình thường trong khung giờ. Hệ thống tự ghi Có mặt, không trừ thêm</td></tr>
+          <tr><td>Khách thứ 2 bị ghi Không đến nhưng thật ra có tập</td><td>Thường do không check-in hoặc check-in ngoài khung giờ. Số buổi không đổi; chỉ ảnh hưởng lịch sử và điểm thưởng. Báo quản lý nếu cần chỉnh</td></tr>
+          <tr><td>Gói của khách chính hết buổi 2:1 trước giờ tập</td><td>Không xác nhận được. Mời khách mua thêm buổi 2:1 rồi xác nhận</td></tr>
+          <tr><td>Gói thành viên của một khách hết hạn sau khi đã đặt</td><td>Dời buổi sẽ bị chặn. Khách gia hạn gói trước, hoặc huỷ buổi</td></tr>
+          <tr><td>Xác nhận nhầm buổi</td><td>Buổi đã khoá. Không tự xoá lịch sử tập trên Directus Admin. Báo quản lý hoặc dev hoàn buổi</td></tr>
+          <tr><td>Khách huỷ trên member-app</td><td>Hệ thống tự xếp huỷ hay huỷ muộn theo mốc 2 giờ, giống như CS bấm</td></tr>
+          <tr><td>Buổi 2:1 cũ không có khách thứ 2</td><td>Hộp ghi "Buổi không ghi nhận khách thứ 2". Dữ liệu cũ, xử lý như buổi bình thường</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Các thông báo thường gặp</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Thông báo</th><th>Nghĩa là</th><th>Làm gì</th></tr></thead>
+        <tbody>
+          <tr><td>Buổi Pilates Training 2:1 cần đúng 1 khách thứ 2, khác khách chính</td><td>Chưa chọn khách thứ 2, hoặc chọn trùng khách chính</td><td>Chọn lại khách thứ 2</td></tr>
+          <tr><td>Cả 2 khách của buổi 2:1 phải có gói thành viên (membership / unlimited) đang hoạt động</td><td>Một trong 2 khách không có gói thành viên đang hoạt động</td><td>Kiểm tra gói của từng khách trên trang khách hàng</td></tr>
+          <tr><td>Gói đã chọn không còn buổi cho loại buổi này</td><td>Gói của khách chính hết buổi 2:1</td><td>Chọn gói khác của khách chính, hoặc bán thêm buổi</td></tr>
+          <tr><td>Nhân sự đã có buổi khác trong khung giờ này</td><td>HLV trùng giờ</td><td>Chọn giờ khác hoặc HLV khác</td></tr>
+          <tr><td>Khách đã có buổi khác trong khung giờ này</td><td>Khách chính hoặc khách thứ 2 đã có buổi trùng giờ</td><td>Chọn giờ khác</td></tr>
+          <tr><td>Chưa có khách nào check-in tại quầy — chưa xác nhận buổi được</td><td>Chưa ai check-in trong khung giờ</td><td>Cho khách check-in rồi xác nhận</td></tr>
+          <tr><td>Khách không thuộc buổi này hoặc đã huỷ rồi</td><td>Khách đã huỷ trước đó, hoặc người khác vừa thao tác</td><td>Tải lại trang để xem trạng thái mới</td></tr>
+          <tr><td>Buổi đã xác nhận hoặc đã huỷ thì không sửa được</td><td>Buổi đã khoá</td><td>Không cần làm gì. Nhầm thì báo quản lý</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Xem lịch sử tập trên trang khách</h2>
+    <p>Tab <b>Tập luyện</b> của trang khách giờ có giờ tập, loại buổi (<b>PT 1:1</b>, <b>PT 2:1</b>…), cột <b>Trạng thái</b> (Có mặt, Huỷ muộn, Không đến) và cột <b>Tập cùng</b> (chỉ hiện khi khách từng tập 2:1). Với khách thứ 2, cột gói ghi "Gói của &lt;tên khách chính&gt;" vì buổi trừ vào gói của khách chính. Dòng lịch sử cũ (trước khi áp dụng) vẫn hiện, ghi loại là PT.</p>
+    <figure class="shot"><img src="images/pt21-13-tab-tap-luyen.png" alt="Tab Tập luyện của khách chính: buổi 2:1 có cột Tập cùng; buổi huỷ muộn hiện nhãn Huỷ muộn." loading="lazy"><figcaption>Tab Tập luyện của khách chính: buổi 2:1 có cột Tập cùng; buổi huỷ muộn hiện nhãn Huỷ muộn.</figcaption></figure>
+  </section>
+
+  <section>
+    <h2>Ai được làm gì</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Vai trò</th><th>Được làm</th></tr></thead>
+        <tbody>
+          <tr><td>CS, OM, Admin Manager, Admin</td><td>Đặt, dời, huỷ, Phòng tập huỷ, xác nhận buổi tập</td></tr>
+          <tr><td>Consultant</td><td>Check-in khách, xem hộp Buổi tập hôm nay và lịch sử tập. Không xác nhận, không huỷ</td></tr>
+          <tr><td>Sales Support</td><td>Không cần xem lịch tập</td></tr>
+          <tr><td>HLV</td><td>Chỉ xem lịch của mình. Không điểm danh, không xác nhận</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+
+</div>
+</body>
+</html>
