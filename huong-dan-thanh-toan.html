@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thanh toán</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f7f5; --surface: #ffffff; --ink: #1c2230; --muted: #5a6273; --line: #dfe2e6;
+    --accent: #2f5d8a; --accent-soft: #e6eef6;
+    --warn: #9a5b00; --warn-soft: #fbf0dd;
+    --ok: #2e7d4f; --ok-soft: #e4f3ea;
+    --code-bg: #eef0f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+      --accent: #7fb0e0; --accent-soft: #1d2b3b;
+      --warn: #e7b25c; --warn-soft: #362a17;
+      --ok: #79c795; --ok-soft: #1a3024;
+      --code-bg: #242a35;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+    --accent: #7fb0e0; --accent-soft: #1d2b3b;
+    --warn: #e7b25c; --warn-soft: #362a17;
+    --ok: #79c795; --ok-soft: #1a3024;
+    --code-bg: #242a35;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    padding-inline: 16px; padding-block: 32px 64px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+  header { display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
+  h2 { font-size: 21px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  p { margin: 0; max-width: 72ch; }
+  .lede { color: var(--muted); font-size: 16px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--muted); font-size: 13px; }
+  section { display: flex; flex-direction: column; gap: 18px; }
+  ul.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+  .note { font-size: 13px; color: var(--muted); }
+
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; display: grid; grid-template-columns: 34px 1fr; gap: 4px 14px; }
+  .step .n { grid-row: span 2; width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .who { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+
+  .callout { background: var(--warn-soft); border-radius: 8px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; }
+  .callout b:first-child { color: var(--warn); }
+  .callout.ok { background: var(--ok-soft); }
+  .callout.ok b:first-child { color: var(--ok); }
+
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--bg); }
+  tr:last-child td { border-bottom: 0; }
+
+  .shot { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .shot img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  .shot img.narrow { max-width: min(100%, 640px); }
+  .shot figcaption { font-size: 13px; color: var(--muted); max-width: 72ch; }
+
+  @media (max-width: 520px) {
+    h1 { font-size: 23px; }
+    .step { grid-template-columns: 1fr; }
+    .step .n { grid-row: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Hướng dẫn thao tác · Thanh toán</div>
+    <h1>Thanh toán: Full Payment, Đặt cọc, Đợt 1, thu phần còn lại</h1>
+    <p class="lede"><b>CS</b> chọn kỳ ở bước 4 và nhập khoản thu ở bước 5 của wizard Tạo Gói (xem <a href="huong-dan-tao-giao-dich.html">Tạo giao dịch &amp; Upgrade</a>). Phần còn lại thu ở card gói của khách. <b>Kế toán</b> xác nhận từng khoản ở Đối soát.</p>
+    <div class="meta">
+      <span>Ngày: 13/10/2026</span>
+      <span>Áp dụng: STEEL Internal App · Tạo Gói, Khách hàng, Đối soát giao dịch</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Chọn kỳ thanh toán (bước 4)</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Giỏ</th><th>Kỳ chọn được</th></tr></thead>
+        <tbody>
+          <tr><td>Có gói chính</td><td>Full Payment · Monthly (tháng đầu) · <b>Deposit</b> (đặt cọc giữ chỗ) · <b>First Payment</b> (khoản đầu)</td></tr>
+          <tr><td>Chỉ dịch vụ lẻ (add-on)</td><td>Chỉ Full Payment</td></tr>
+          <tr><td>Từ báo giá upgrade</td><td>Chỉ Full Payment</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Kỳ</th><th>Thu lần này</th><th>Thu phần còn lại bằng</th><th>Tên kỳ ở Đối soát</th></tr></thead>
+        <tbody>
+          <tr><td>Full Payment</td><td>100% giá sau CK</td><td>—</td><td>Thanh toán đủ</td></tr>
+          <tr><td>Deposit</td><td>Số cọc bất kỳ, &gt; 0 và &lt; giá</td><td>Trả phần còn lại</td><td>Đặt cọc → <b>Cọc → đủ</b></td></tr>
+          <tr><td>First Payment</td><td>50% giá sau CK</td><td>Trả phần còn lại</td><td>Đợt 1 (50%) → <b>Đợt 2</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>1. Full Payment</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">Bước 4</div>
+        <div>Chọn <b>Full Payment</b>.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">Bước 5</div>
+        <div>Một hình thức: chọn Hình thức, ô Số tiền tự khoá = Phải trả. Nhập <b>Mã đối soát</b> (mã chuyển khoản / bill).</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">Bước 5</div>
+        <div>Nhiều hình thức (vd 5tr tiền mặt + 15tr chuyển khoản): bấm <b>Thêm dòng</b>, tự chia số tiền.</div>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <div class="who">Bước 6-7</div>
+        <div>Tạo Transaction → nộp Proof.</div>
+      </div>
+    </div>
+    <div class="callout">
+      <b>Chỗ dễ sai: Full Payment</b>
+      <ul class="list">
+        <li>Tổng các dòng phải <b>bằng đúng</b> Phải trả, nếu không bị chặn: <i>Tổng các khoản thanh toán chưa khớp số phải trả</i>.</li>
+        <li>Một dòng thì số tiền khoá. Muốn chia phải bấm <b>Thêm dòng</b> trước, không gõ đè.</li>
+        <li>Mỗi lần thu thật = 1 dòng với mã đối soát riêng. Kế toán đối soát từng dòng.</li>
+        <li>Dòng 0đ bị bỏ khi ghi. Không thể xoá dòng cuối cùng.</li>
+      </ul>
+    </div>
+    <div class="callout">
+      <b>Chỗ dễ sai: Điểm thưởng</b>
+      <ul class="list">
+        <li>Điểm là <b>một khoản thu</b>, không phải giảm giá. Điểm + các dòng tiền = Phải trả.</li>
+        <li>Chỉ dùng khi đơn <b>không có</b> chiết khấu / voucher. Bị khoá sẽ hiện lý do.</li>
+        <li>Không dùng điểm cho đặt cọc.</li>
+        <li><b>Dùng tối đa</b> = min(số dư, đủ trả trọn). Điểm bị trừ khi kế toán xác nhận.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Đặt cọc (Deposit)</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">Bước 4</div>
+        <div>Chọn <b>Deposit — Đặt cọc giữ chỗ</b>.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">Bước 5</div>
+        <div>Nhập số tiền cọc (ô không khoá). Dưới bảng: <b>Phải trả (đủ gói)</b> và phần <i>còn lại thu sau</i>.</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">Bước 6-7</div>
+        <div>Tạo Transaction → nộp Proof. Kế toán xác nhận khoản cọc.</div>
+      </div>
+    </div>
+    <div class="callout">
+      <b>Chỗ dễ sai: Đặt cọc</b>
+      <ul class="list">
+        <li>Cọc phải &gt; 0 và không vượt giá gói sau CK.</li>
+        <li>Nhập cọc <b>đủ 100%</b> → hệ thống tự chuyển sang Full Payment (<i>Đã nhập đủ số phải trả — chuyển sang Full Payment</i>). Kiểm lại kỳ ở bước 4.</li>
+        <li>Phải trả của giao dịch cọc ở Đối soát = <b>số tiền cọc</b>, không phải giá gói. Đúng như thiết kế.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. First Payment (Đợt 1 — 50%)</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">Bước 4</div>
+        <div>Chọn <b>First Payment</b>.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">Bước 5</div>
+        <div>Phải trả = <b>50%</b> giá sau CK. Nhập các dòng tiền như Full Payment.</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">Bước 6-7</div>
+        <div>Tạo Transaction → nộp Proof.</div>
+      </div>
+    </div>
+    <div class="callout">
+      <b>Chỗ dễ sai: First Payment</b>
+      <ul class="list">
+        <li>Luôn kiểm Phải trả ở bước 5 = <b>50%</b> giá gói. Thấy 100% → dừng, báo kỹ thuật (chưa tạo giao dịch).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>4. Thu phần còn lại (Đợt 2 / Cọc → đủ)</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">CS</div>
+        <div>Menu <b>Khách hàng</b> → mở hồ sơ khách → card gói có nút <b>Trả phần còn lại</b>.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">CS</div>
+        <div>Hộp <b>Trả phần còn lại</b>: xem Gói · Giá gói · Đã thanh toán · <b>Còn lại phải thu</b>.</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">CS</div>
+        <div>Nhập dòng tiền (Thêm dòng nếu chia). Tổng = Còn lại phải thu.</div>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <div class="who">CS</div>
+        <div>Bấm <b>Xác nhận thu …</b>. Báo <i>Đã thu phần còn lại — gói đã thanh toán đủ</i>.</div>
+      </div>
+      <div class="step">
+        <div class="n">5</div>
+        <div class="who">Kế toán</div>
+        <div>Xác nhận khoản ở Đối soát giao dịch.</div>
+      </div>
+    </div>
+    <figure class="shot"><img src="images/thanh-toan-01-card-goi-con-no.jpg" alt="Card gói của khách đang đặt cọc với nút Trả phần còn lại" loading="lazy"><figcaption>Card gói của khách đang đặt cọc / đợt 1: nút <b>Trả phần còn lại</b> (khung đỏ) chỉ hiện với CS khi gói còn nợ. Dữ liệu minh hoạ.</figcaption></figure>
+    <figure class="shot"><img class="narrow" src="images/thanh-toan-02-hop-tra-phan-con-lai.jpg" alt="Hộp Trả phần còn lại" loading="lazy"><figcaption>Hộp Trả phần còn lại: Giá gói · Đã thanh toán (đã xác nhận) · Còn lại phải thu. Một dòng thì Số tiền tự khoá. Dữ liệu minh hoạ.</figcaption></figure>
+    <div class="callout">
+      <b>Chỗ dễ sai: thu phần còn lại (quan trọng nhất)</b>
+      <ul class="list">
+        <li><b>Đã thanh toán</b> chỉ tính khoản <b>kế toán đã xác nhận</b>. Cọc chưa được xác nhận → Còn lại phải thu = cả giá gói. <b>Không thu</b> khi số này sai; nhờ Kế toán xác nhận khoản cọc / đợt 1 trước.</li>
+        <li>Phải thu <b>đủ một lần</b> đúng số Còn lại; không thu tiếp một phần.</li>
+        <li>Nút chỉ hiện với CS và khi gói còn nợ. Thu xong nút biến mất ngay (dù kế toán chưa xác nhận): không thu lại.</li>
+        <li>Mua thêm dịch vụ khác trên cùng sub <b>không</b> trả nợ phần còn lại của gói.</li>
+        <li>Không làm phần còn lại trong wizard Tạo Gói, chỉ ở card gói của khách.</li>
+        <li>Khách muốn upgrade thay vì trả nốt: được, nếu cọc đã xác nhận và còn trong 30 ngày. Khách trả theo báo giá upgrade, không cần trả nốt kỳ cũ.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>5. Kiểm tra dữ liệu thanh toán</h2>
+    <p>Menu <b>Đối soát giao dịch</b> → mở giao dịch → xem <b>Phải trả</b>, <b>Đã thu</b>, <b>Kỳ thanh toán</b> và bảng <b>Các khoản thanh toán</b>. Sau đó xem card gói ở <b>Khách hàng</b>.</p>
+    <figure class="shot"><img class="narrow" src="images/thanh-toan-03-chi-tiet-giao-dich.jpg" alt="Chi tiết giao dịch với bảng Các khoản thanh toán" loading="lazy"><figcaption>Chi tiết giao dịch: Kỳ thanh toán, bảng Các khoản thanh toán, Đã xác nhận / Chờ đối soát / Phải trả.</figcaption></figure>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Kỳ</th><th>Phải trả đúng</th><th>Tổng các khoản</th><th>Card gói của khách</th></tr></thead>
+        <tbody>
+          <tr><td>Thanh toán đủ</td><td>Giá sau CK</td><td>= Phải trả</td><td>Không có nút Trả phần còn lại</td></tr>
+          <tr><td>Đặt cọc</td><td>= Số cọc</td><td>= Số cọc</td><td>Có nút Trả phần còn lại sau khi cọc được xác nhận</td></tr>
+          <tr><td>Đợt 1 (50%)</td><td>= 50% giá sau CK</td><td>= Phải trả</td><td>Có nút Trả phần còn lại</td></tr>
+          <tr><td>Cọc → đủ / Đợt 2</td><td>= Còn lại phải thu</td><td>= Phải trả</td><td>Nút biến mất</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Ví dụ: gói 20.000.000đ</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Trường hợp</th><th>Lần 1</th><th>Lần 2</th><th>Kiểm</th></tr></thead>
+        <tbody>
+          <tr><td>Full, chia 2 hình thức</td><td>5.000.000 tiền mặt + 15.000.000 CK</td><td>—</td><td>2 dòng, tổng 20.000.000</td></tr>
+          <tr><td>Đặt cọc 5tr</td><td>Đặt cọc 5.000.000</td><td>Cọc → đủ 15.000.000</td><td>5 + 15 = 20.000.000</td></tr>
+          <tr><td>Đợt 1</td><td>Đợt 1 10.000.000</td><td>Đợt 2 10.000.000</td><td>10 + 10 = 20.000.000</td></tr>
+          <tr><td>Điểm 1tr + tiền</td><td>Điểm thưởng 1.000.000 + Tiền mặt 19.000.000</td><td>—</td><td>Điểm trừ đúng 1 lần</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Trạng thái từng khoản</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Trạng thái</th><th>Nghĩa</th></tr></thead>
+        <tbody>
+          <tr><td>Chờ đối soát</td><td>CS đã ghi, kế toán chưa xác nhận. Đã thu chưa cộng khoản này.</td></tr>
+          <tr><td>Đã xác nhận</td><td>Kế toán xác nhận. Đã thu tăng. Đủ hết → giao dịch Received → gói active.</td></tr>
+          <tr><td>Đã trừ điểm</td><td>Khoản điểm thưởng đã trừ số dư khách.</td></tr>
+          <tr><td>Đã hoàn / Đã huỷ / Thất bại</td><td>Khoản không còn tính. Kiểm lại với kế toán.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout ok">
+      <b>Checklist nhanh sau mỗi lần thu</b>
+      <ul class="list">
+        <li>Số dòng ở Các khoản thanh toán = số lần khách trả thực tế; mã đối soát khớp bill / sao kê.</li>
+        <li>Tổng các khoản = Phải trả (cọc: = số cọc).</li>
+        <li>Kỳ thanh toán đúng tên (Thanh toán đủ / Đặt cọc / Đợt 1 / Đợt 2 / Cọc → đủ).</li>
+        <li>Đã thu = 0 trước xác nhận là bình thường. Gói active chỉ sau Received.</li>
+        <li>Lần 1 + lần 2 = giá gói sau CK.</li>
+        <li>Điểm thưởng: số dư khách giảm đúng một lần.</li>
+        <li>Sai: không tạo thêm giao dịch. Ghi Mã giao dịch → báo Kế toán.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

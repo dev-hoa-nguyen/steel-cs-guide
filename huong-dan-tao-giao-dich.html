@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tạo giao dịch &amp; Upgrade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f7f5; --surface: #ffffff; --ink: #1c2230; --muted: #5a6273; --line: #dfe2e6;
+    --accent: #2f5d8a; --accent-soft: #e6eef6;
+    --warn: #9a5b00; --warn-soft: #fbf0dd;
+    --ok: #2e7d4f; --ok-soft: #e4f3ea;
+    --code-bg: #eef0f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+      --accent: #7fb0e0; --accent-soft: #1d2b3b;
+      --warn: #e7b25c; --warn-soft: #362a17;
+      --ok: #79c795; --ok-soft: #1a3024;
+      --code-bg: #242a35;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+    --accent: #7fb0e0; --accent-soft: #1d2b3b;
+    --warn: #e7b25c; --warn-soft: #362a17;
+    --ok: #79c795; --ok-soft: #1a3024;
+    --code-bg: #242a35;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    padding-inline: 16px; padding-block: 32px 64px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+  header { display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
+  h2 { font-size: 21px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  p { margin: 0; max-width: 72ch; }
+  .lede { color: var(--muted); font-size: 16px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--muted); font-size: 13px; }
+  section { display: flex; flex-direction: column; gap: 18px; }
+  ul.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+  .note { font-size: 13px; color: var(--muted); }
+
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; display: grid; grid-template-columns: 34px 1fr; gap: 4px 14px; }
+  .step .n { grid-row: span 2; width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .who { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+
+  .callout { background: var(--warn-soft); border-radius: 8px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; }
+  .callout b:first-child { color: var(--warn); }
+  .callout.ok { background: var(--ok-soft); }
+  .callout.ok b:first-child { color: var(--ok); }
+
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--bg); }
+  tr:last-child td { border-bottom: 0; }
+
+  .shot { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .shot img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  .shot img.narrow { max-width: min(100%, 640px); }
+  .shot figcaption { font-size: 13px; color: var(--muted); max-width: 72ch; }
+
+  @media (max-width: 520px) {
+    h1 { font-size: 23px; }
+    .step { grid-template-columns: 1fr; }
+    .step .n { grid-row: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Hướng dẫn thao tác · Giao dịch</div>
+    <h1>Tạo giao dịch mới &amp; Upgrade</h1>
+    <p class="lede"><b>CS</b> tạo gói và thu tiền qua wizard 7 bước. <b>Sale</b> tạo báo giá upgrade, <b>Sale Manager</b> duyệt, <b>Kế toán</b> xác nhận tiền ở Đối soát. Thu tiền theo từng kỳ: xem <a href="huong-dan-thanh-toan.html">hướng dẫn Thanh toán</a>.</p>
+    <div class="meta">
+      <span>Ngày: 10/10/2026</span>
+      <span>Áp dụng: STEEL Internal App · Tạo/báo giá gói tập, Báo giá, Đối soát giao dịch</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>A. Tạo giao dịch mới</h2>
+    <h3>Bắt đầu</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">CS</div>
+        <div>Menu <b>Quầy → Tạo/báo giá gói tập</b>. Chọn dịch vụ vào giỏ.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">CS</div>
+        <div>Giỏ <b>không</b> chiết khấu → bấm <b>Tạo Gói</b> → mở wizard 7 bước.</div>
+      </div>
+      <div class="step">
+        <div class="n">2b</div>
+        <div class="who">CS → SM</div>
+        <div>Giỏ <b>có</b> chiết khấu → nút Tạo Gói bị khoá. Bấm <b>Tạo Báo giá</b> → chờ Sale Manager duyệt → menu <b>Báo giá</b> → bấm <b>Tạo Gói</b> trên dòng đã duyệt → mở wizard.</div>
+      </div>
+    </div>
+    <figure class="shot"><img src="images/giao-dich-01-tao-bao-gia.jpg" alt="Màn Tạo/báo giá gói tập với giỏ dịch vụ và hai nút Tạo Gói, Tạo Báo giá" loading="lazy"><figcaption>Tạo/báo giá gói tập: chọn dịch vụ vào giỏ, rồi bấm Tạo Gói hoặc Tạo Báo giá.</figcaption></figure>
+
+    <div class="callout">
+      <b>Chỗ dễ sai: duyệt báo giá</b>
+      <ul class="list">
+        <li>Báo giá tạo từ giỏ, không chiết khấu: <b>tự duyệt</b>, Tạo Gói được ngay.</li>
+        <li>Phải chờ Sale Manager duyệt: báo giá có chiết khấu, NEW ADD-ON, báo giá upgrade, báo giá tạo ở trang Báo giá.</li>
+        <li>Báo giá bị từ chối / hết hạn: chỉ còn nút <b>Tạo lại</b>. Tạo lại sẽ lưu trữ (archive) báo giá cũ.</li>
+        <li>Báo giá đã tạo gói: Tạo Gói khoá (<i>Báo giá đã gắn gói</i>). Mỗi báo giá chỉ ra 1 gói.</li>
+      </ul>
+    </div>
+    <figure class="shot"><img src="images/giao-dich-02-menu-bao-gia.jpg" alt="Danh sách Báo giá với cột Duyệt CK" loading="lazy"><figcaption>Menu Báo giá: cột Duyệt CK hiện Đã duyệt / Chờ duyệt / Từ chối.</figcaption></figure>
+
+    <h3>Wizard 7 bước</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">Tình huống</div>
+        <div>Chọn NEW / NEW ADD-ON / RENEW / RENEW ADD-ON.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">Khách hàng</div>
+        <div>NEW: tạo khách mới. Còn lại: chọn khách có sẵn. Từ báo giá: khách đã khoá.</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">Gói &amp; Sub.</div>
+        <div>Kiểm dịch vụ trong giỏ.</div>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <div class="who">Kỳ thanh toán</div>
+        <div>Chọn Payment Term (xem <a href="huong-dan-thanh-toan.html">Thanh toán</a>).</div>
+      </div>
+      <div class="step">
+        <div class="n">5</div>
+        <div class="who">Thanh toán</div>
+        <div>Nhập các khoản thu (xem <a href="huong-dan-thanh-toan.html">Thanh toán</a>).</div>
+      </div>
+      <div class="step">
+        <div class="n">6</div>
+        <div class="who">Tạo Transaction</div>
+        <div>Xem lại → bấm tạo. Báo <i>Đã tạo giao dịch — trạng thái Draft</i>.</div>
+      </div>
+      <div class="step">
+        <div class="n">7</div>
+        <div class="who">Vòng đời</div>
+        <div><b>Chọn file để nộp</b> (Proof) → Pending. Kế toán xác nhận → Received → gói tự <b>active</b>.</div>
+      </div>
+    </div>
+    <figure class="shot"><img class="narrow" src="images/giao-dich-03-wizard-tinh-huong.jpg" alt="Wizard bước 1 Tình huống, NEW và RENEW bị mờ" loading="lazy"><figcaption>Wizard bước 1: giỏ không có gói chính nên NEW / RENEW bị mờ.</figcaption></figure>
+
+    <div class="callout">
+      <b>Chỗ dễ sai: bước 1 Tình huống</b>
+      <ul class="list">
+        <li>Giỏ có gói chính → chỉ chọn được NEW / RENEW. Giỏ không có gói chính → chỉ NEW ADD-ON / RENEW ADD-ON.</li>
+        <li>Mỗi khách chỉ <b>1 NEW</b> và <b>1 NEW ADD-ON</b>. Sau NEW ADD-ON đầu tiên, mọi lần mua dịch vụ lẻ là <b>RENEW ADD-ON</b>, kể cả dịch vụ chưa từng mua. Ví dụ: MBS (NEW) → PT (NEW ADD-ON) → Massage lần đầu = RENEW ADD-ON.</li>
+        <li>Chọn sai sẽ báo <i>Khách đã có giao dịch NEW — chọn RENEW</i> hoặc <i>Khách đã có giao dịch NEW ADD-ON — chọn RENEW ADD-ON</i> và không đi tiếp được.</li>
+      </ul>
+    </div>
+    <div class="callout">
+      <b>Chỗ dễ sai: bước 3 Gói &amp; Sub.</b>
+      <ul class="list">
+        <li>Giỏ add-on (không gói chính) của khách có sẵn: phải chọn <b>Subscription cần cộng thêm dịch vụ</b>. Dịch vụ cộng vào sub đó, không tạo sub mới.</li>
+        <li>Gói vào nhiều club: phải chọn ít nhất 1 club (<i>Chọn ít nhất một club cho gói vào nhiều chi nhánh</i>).</li>
+      </ul>
+    </div>
+    <div class="callout">
+      <b>Chỗ dễ sai: bước 6 / 7</b>
+      <ul class="list">
+        <li>Chỉ bấm nút tạo giao dịch <b>một lần</b>. Nếu mất mạng và bấm lại, góc màn hình hiện thông báo <b>«Giao dịch này đã được tạo ở lần bấm trước — không tạo thêm»</b>: giao dịch đã có, không tạo trùng. Không bán lại.</li>
+        <li>Góc màn hình hiện thông báo vàng <b>«Chỉ ghi được 1/2 khoản thanh toán — kiểm lại ở bước 7»</b> (số có thể khác, vd 2/3): giao dịch <b>đã tạo</b> nhưng <b>thiếu</b> một số khoản tiền vừa nhập. Xem bảng khoản thu ở bước 7, ghi Mã giao dịch, báo Kế toán. Không bán lại.</li>
+        <li>Góc màn hình hiện thông báo vàng <b>«Giao dịch đã tạo nhưng chưa cập nhật được trạng thái gói — báo kỹ thuật»</b>: tiền đã ghi nhưng gói chưa chuyển trạng thái. Ghi Mã giao dịch, báo kỹ thuật. Không bán lại.</li>
+        <li>Việc của CS dừng ở nộp Proof. Xác nhận tiền là việc của Kế toán ở <b>Đối soát giao dịch</b>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>B. Upgrade giao dịch</h2>
+    <p>Khách nâng gói đã mua; tiền đã trả được trừ, khách trả phần chênh lệch. Nút Upgrade chỉ Sale / Admin Manager thấy; CS làm bước tạo gói và thu tiền.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">Sale</div>
+        <div>Menu <b>Đối soát giao dịch</b> → mở giao dịch gói <b>gốc</b> → bấm <b>Upgrade</b>.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">Sale</div>
+        <div>Tăng số buổi / thời hạn / hạng → nhập chiết khấu (nếu có) + <b>Discount Notes</b> → <b>Lưu báo giá</b>.</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">SM</div>
+        <div>Menu <b>Báo giá</b> → <b>✓ Duyệt</b> hoặc <b>✕</b>.</div>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <div class="who">Sale</div>
+        <div><b>Xem PDF</b> → gửi khách. Chưa duyệt thì không gửi.</div>
+      </div>
+      <div class="step">
+        <div class="n">5</div>
+        <div class="who">CS</div>
+        <div>Menu <b>Báo giá</b> → <b>Tạo Gói</b> trên báo giá upgrade đã duyệt → wizard điền sẵn.</div>
+      </div>
+      <div class="step">
+        <div class="n">6</div>
+        <div class="who">CS</div>
+        <div>Bước 4: chỉ có <b>Full Payment</b>. Bước 5: thu đúng số <b>Khách trả thêm</b>. Bước 6 tạo → bước 7 nộp Proof.</div>
+      </div>
+      <div class="step">
+        <div class="n">7</div>
+        <div class="who">Kế toán</div>
+        <div>Xác nhận khoản ở Đối soát → số buổi / thời hạn mới cộng vào sub hiện có.</div>
+      </div>
+    </div>
+    <figure class="shot"><img src="images/giao-dich-04-nut-upgrade.jpg" alt="Nút Upgrade ở chi tiết giao dịch" loading="lazy"><figcaption>Nút Upgrade ở chi tiết giao dịch. Bị mờ thì đọc dòng chữ dưới nút (bảng bên dưới).</figcaption></figure>
+
+    <div class="callout">
+      <b>Chỗ dễ sai: điều kiện Upgrade</b>
+      <ul class="list">
+        <li>Trong <b>30 ngày</b> kể từ ngày thanh toán <b>sớm nhất đã được kế toán xác nhận</b> (không phải ngày tạo). Dưới nút có dòng <i>Upgrade được đến hết dd/mm/yyyy</i>.</li>
+        <li>Mỗi giao dịch upgrade <b>1 lần</b>. Lượt bị dùng khi CS tạo gói thành công. Báo giá bị từ chối không mất lượt.</li>
+        <li>Chỉ upgrade trên giao dịch <b>gốc</b> (Đặt cọc / Đợt 1 / Thanh toán đủ). Không trên kỳ trả nốt, không trên gói trả theo tháng.</li>
+        <li>Chỉ được <b>tăng</b>: không bớt dòng, không giảm số lượng, không thêm dịch vụ khác (bán riêng thành giao dịch mới). Dịch vụ đi kèm (quà theo gói) không sửa được.</li>
+        <li>Đổi gói MBS chỉ lên hạng <b>cao hơn</b>: Wellness &lt; Solo &lt; Club &lt; House. PT / Massage chỉ tăng số buổi.</li>
+      </ul>
+    </div>
+    <div class="callout">
+      <b>Chỗ dễ sai: tiền upgrade</b>
+      <ul class="list">
+        <li><b>Khách trả thêm = Giá gói mới sau chiết khấu − Tiền mặt đã trả</b> cho giao dịch gốc (cả chuỗi cọc + trả nốt).</li>
+        <li>Chiết khấu mới áp lên <b>cả gói mới</b>; chiết khấu cũ <b>không giữ</b>. CK mới thấp hơn → khách mất phần giảm cũ. Báo khách trước.</li>
+        <li>Chiết khấu: cả giỏ <b>hoặc</b> từng dòng, không dùng cả hai.</li>
+        <li>Điểm thưởng đã dùng <b>không</b> tính vào Đã trả.</li>
+        <li>Khách trả thêm ≤ 0 → không lưu được. Thường do CK quá lớn.</li>
+        <li>Upgrade luôn trả đủ một lần, không cọc / trả góp phần chênh lệch.</li>
+        <li>Discount Notes = ghi chú nội bộ cho SM, không in PDF. Khuyến mãi = in trên PDF.</li>
+      </ul>
+    </div>
+
+    <h3>Nút Upgrade bị mờ</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Dòng chữ dưới nút</th><th>Làm gì</th></tr></thead>
+        <tbody>
+          <tr><td>Quá 30 ngày kể từ ngày thanh toán (hết hạn …)</td><td>Không upgrade. Tư vấn gói mới / RENEW.</td></tr>
+          <tr><td>Giao dịch này đã được upgrade</td><td>Hết lượt. Tư vấn gói mới.</td></tr>
+          <tr><td>Giao dịch upgrade không được upgrade tiếp</td><td>Đây là giao dịch upgrade, không phải gốc.</td></tr>
+          <tr><td>Đây là kỳ trả nốt — upgrade trên giao dịch gốc</td><td>Mở giao dịch Đặt cọc / Đợt 1 của khách.</td></tr>
+          <tr><td>Giao dịch chưa có khoản thanh toán được xác nhận</td><td>Nhờ Kế toán xác nhận, rồi thử lại.</td></tr>
+          <tr><td>Giao dịch trả theo tháng không upgrade được …</td><td>Tạo subscription mới.</td></tr>
+          <tr><td>Đã có báo giá - Update ở trang Báo giá</td><td>Vào Báo giá → <b>Tạo lại</b> báo giá cũ (báo giá cũ bị lưu trữ).</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>C. Kiểm tra dữ liệu đúng chưa</h2>
+    <p>Mở menu <b>Đối soát giao dịch</b> → tìm theo tên / SĐT → mở giao dịch. Sau đó mở <b>Khách hàng</b> → hồ sơ khách.</p>
+    <figure class="shot"><img src="images/giao-dich-05-doi-soat.jpg" alt="Danh sách Đối soát giao dịch với ô tìm kiếm" loading="lazy"><figcaption>Đối soát giao dịch: tìm theo tên / SĐT / mã GD, bấm dòng để mở chi tiết.</figcaption></figure>
+
+    <h3>Giao dịch mới</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Chỗ xem</th><th>Đúng khi</th></tr></thead>
+        <tbody>
+          <tr><td>Đối soát → <b>Phải trả</b></td><td>Bằng <i>Số tiền giao dịch</i> ở bước 6 (= giá báo giá nếu tạo từ báo giá).</td></tr>
+          <tr><td><b>Kỳ thanh toán</b></td><td>Đúng kỳ đã chọn: Thanh toán đủ / Đặt cọc / Đợt 1 (50%) / Theo tháng.</td></tr>
+          <tr><td><b>Chiết khấu</b></td><td>Bằng % trên báo giá đã duyệt. Không có báo giá → không có chiết khấu.</td></tr>
+          <tr><td><b>Các khoản thanh toán</b></td><td>Đủ số dòng đã nhập; hình thức, số tiền, mã đối soát đúng. Tổng = Phải trả.</td></tr>
+          <tr><td><b>Đã thu</b></td><td>= 0đ trước khi kế toán xác nhận: <b>bình thường</b>. Sau xác nhận = Phải trả.</td></tr>
+          <tr><td><b>Subscription</b> (badge)</td><td>Chỉ <b>active</b> sau khi giao dịch Received. Declined → suspended.</td></tr>
+          <tr><td>Khách hàng → card gói</td><td>Đúng loại gói, đúng club. Hiệu lực có ngày bắt đầu → kết thúc sau khi active.</td></tr>
+          <tr><td>Add-on</td><td>Dịch vụ nằm trong <b>sub đã chọn ở bước 3</b>, không sinh card gói mới.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Giao dịch upgrade</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Chỗ xem</th><th>Đúng khi</th></tr></thead>
+        <tbody>
+          <tr><td>Báo giá upgrade</td><td><b>Khách trả thêm + Đã trả = Giá mới</b>. Lệch → báo SM trước khi gửi khách.</td></tr>
+          <tr><td>Giao dịch upgrade → Phải trả</td><td>Bằng <b>Khách trả thêm</b> trên báo giá. Kỳ = Thanh toán đủ.</td></tr>
+          <tr><td>Subscription</td><td><b>Cùng sub</b> với giao dịch gốc, không có sub mới.</td></tr>
+          <tr><td>Sau Received</td><td>Số buổi / thời hạn tăng đúng phần nâng. Buổi đã dùng + ngày bắt đầu giữ nguyên.</td></tr>
+          <tr><td>Giao dịch gốc</td><td>Dưới nút Upgrade hiện <i>Giao dịch này đã được upgrade</i>.</td></tr>
+          <tr><td>Báo giá</td><td>Nút Tạo Gói đã khoá (<i>Báo giá đã gắn gói</i>).</td></tr>
+          <tr><td>Cảnh báo <i>Hoá đơn gốc chưa xác nhận đủ</i></td><td>Khoản ở giao dịch gốc còn chờ: Kế toán xác nhận khoản gốc trước.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout ok">
+      <b>Thấy sai thì làm gì</b>
+      <ul class="list">
+        <li>Không tạo giao dịch thứ hai để "sửa". Ghi lại <b>Mã giao dịch</b> → báo Kế toán (tiền) hoặc kỹ thuật (gói / sub).</li>
+        <li>Sai loại NEW / RENEW, sai sub cộng thêm, sai số tiền: báo ngay trước khi kế toán xác nhận.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
