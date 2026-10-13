@@ -13,7 +13,6 @@
     --accent: #2f5d8a; --accent-soft: #e6eef6;
     --crit: #b3261e; --crit-soft: #fbeae8;
     --warn: #9a5b00; --warn-soft: #fbf0dd;
-    --ok: #2e7d4f; --ok-soft: #e4f3ea;
     --code-bg: #eef0f2;
   }
   @media (prefers-color-scheme: dark) {
@@ -23,7 +22,6 @@
       --accent: #7fb0e0; --accent-soft: #1d2b3b;
       --crit: #f08a80; --crit-soft: #3a1f1e;
       --warn: #e7b25c; --warn-soft: #362a17;
-      --ok: #79c795; --ok-soft: #1a3024;
       --code-bg: #242a35;
     }
   }
@@ -33,7 +31,6 @@
     --accent: #7fb0e0; --accent-soft: #1d2b3b;
     --crit: #f08a80; --crit-soft: #3a1f1e;
     --warn: #e7b25c; --warn-soft: #362a17;
-    --ok: #79c795; --ok-soft: #1a3024;
     --code-bg: #242a35;
   }
   * { box-sizing: border-box; }
@@ -43,27 +40,37 @@
     font-size: 15px; line-height: 1.6;
     padding-inline: 16px; padding-block: 32px 64px;
   }
-  .wrap { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px; }
+  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
   header { display: flex; flex-direction: column; gap: 10px; }
   .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
   h1 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
-  h2 { font-size: 20px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
+  h2 { font-size: 21px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
   h3 { font-size: 16px; margin: 0; font-weight: 600; }
-  p { margin: 0; max-width: 70ch; }
+  p { margin: 0; max-width: 72ch; }
   .lede { color: var(--muted); font-size: 16px; }
   .meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--muted); font-size: 13px; }
-  section { display: flex; flex-direction: column; gap: 12px; }
   code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
-  ul.list, ol.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+  section { display: flex; flex-direction: column; gap: 18px; }
+  .who { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 2px 10px; border-radius: 999px; width: fit-content; }
+  ul.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+  .note { font-size: 13px; color: var(--muted); max-width: 72ch; }
 
   .danger { background: var(--crit-soft); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
   .danger h2 { color: var(--crit); }
   .danger .box { background: var(--surface); border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
 
-  .steps { display: flex; flex-direction: column; gap: 10px; }
-  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; display: grid; grid-template-columns: 34px 1fr; gap: 4px 14px; }
-  .step .n { grid-row: span 2; width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-  .who { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+  .step { display: grid; grid-template-columns: 34px 1fr; gap: 6px 14px; }
+  .step .n { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .step .body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  figure { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+  figure img.narrow { max-width: min(100%, 560px); }
+  figcaption { font-size: 13px; color: var(--muted); }
+
+  .cards { display: flex; flex-direction: column; gap: 10px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; display: grid; grid-template-columns: 34px 1fr; gap: 4px 14px; }
+  .card .n { grid-row: span 2; width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .card .role { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
 
   .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
   table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
@@ -77,12 +84,11 @@
   .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
   .rule { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; font-size: 14px; }
   .rule > b:first-child { display: block; font-size: 14.5px; margin-bottom: 4px; }
-  .note { font-size: 13.5px; color: var(--muted); max-width: 72ch; }
 
-  @media (max-width: 520px) {
+  @media (max-width: 560px) {
     h1 { font-size: 23px; }
-    .step { grid-template-columns: 1fr; }
-    .step .n { grid-row: auto; }
+    .step, .card { grid-template-columns: 1fr; }
+    .card .n { grid-row: auto; }
   }
 </style>
 </head>
@@ -90,16 +96,17 @@
 <div class="wrap">
 
   <header>
-    <div class="eyebrow">Note cho team vận hành · Chuyển buổi</div>
-    <h1>Chuyển buổi từ gói cũ sang gói mới</h1>
-    <p class="lede">Buổi còn dư trong gói đã hết hạn giờ được chuyển sang gói khác của cùng khách ngay trên app nội bộ: CS tạo yêu cầu, quản lý (OM) duyệt. Không ai phải sửa tay số buổi nữa.</p>
+    <div class="eyebrow">Hướng dẫn · Chuyển buổi</div>
+    <h1>Chuyển buổi còn dư sang gói mới</h1>
+    <p class="lede">Buổi còn dư trong gói đã hết hạn được chuyển sang gói khác của cùng khách ngay trên app nội bộ: CS tạo yêu cầu trên trang khách hàng, quản lý (OM) duyệt trên trang Duyệt yêu cầu. Nếu duyệt nhầm, OM hoàn tác được ngay trên trang khách. Không ai phải sửa tay số buổi nữa.</p>
     <div class="meta">
       <span>Ngày: 28/09/2026</span>
       <span>Áp dụng: internal-app-v2 · trang khách hàng và trang Duyệt yêu cầu</span>
     </div>
+    <p class="note">Ảnh chụp trên môi trường thử nghiệm. Tên, số điện thoại, email, số CCCD và ngày sinh của khách đã được thay bằng dữ liệu giả.</p>
   </header>
 
-  <section class="danger">
+  <section class="danger" id="chuyen-tay">
     <h2>Đọc trước: gói đã được "chuyển tay" thì KHÔNG tạo yêu cầu</h2>
     <p>Trước đây, khi khách gia hạn, nhân viên thường <b>cộng tay số buổi còn lại vào gói mới trên Directus Admin</b> nhưng <b>không trừ ở gói cũ</b>. Gói cũ vì vậy vẫn hiện còn buổi, dù số buổi đó đã được chuyển rồi.</p>
     <p>Nếu tạo yêu cầu chuyển buổi từ gói cũ đó, khách sẽ được <b>cộng hai lần</b>. Ví dụ: gói cũ còn 29 PT đã được cộng tay sang gói mới, chuyển thêm lần nữa thì gói mới có 55 PT.</p>
@@ -107,6 +114,7 @@
       <h3>Cách nhận biết</h3>
       <ul class="list">
         <li>Gói mới của khách từng được cộng thêm buổi <b>bằng tay</b>, và số buổi cộng thêm <b>trùng với số buổi còn lại</b> ở gói cũ.</li>
+        <li>Khách nằm trong <a href="#danh-sach">danh sách cần kiểm tra</a> bên dưới.</li>
         <li>Không chắc thì hỏi người phụ trách khách hoặc quản lý trước khi tạo yêu cầu.</li>
       </ul>
       <h3>Nếu đã chuyển tay rồi</h3>
@@ -117,7 +125,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="danh-sach">
     <h2>Danh sách khách cần kiểm tra trước khi dùng</h2>
     <p>Dev rà lịch sử sửa tay và tìm ra các khách dưới đây. Mỗi khách có một gói đang hoạt động từng được cộng tay đúng bằng số buổi còn lại ở một gói hết hạn, nên nhiều khả năng đã chuyển tay. Mở trang khách bằng đường dẫn <code>/customers/&lt;mã khách&gt;</code> trên app.</p>
     <div class="scroll">
@@ -149,27 +157,6 @@
   </section>
 
   <section>
-    <h2>Quy trình</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="n">1</div>
-        <div class="who">CS · trang khách hàng</div>
-        <div>Bấm <b>Chuyển buổi</b> trên thẻ gói đã hết hạn (hoặc ở đầu mục "Gói hội viên &amp; quyền lợi"). Chọn gói nhận, số buổi từng loại, ghi <b>lý do</b>, rồi bấm <b>Gửi yêu cầu duyệt</b>. Lúc này số buổi <b>chưa thay đổi</b>.</div>
-      </div>
-      <div class="step">
-        <div class="n">2</div>
-        <div class="who">OM · trang Duyệt yêu cầu → tab Chuyển buổi</div>
-        <div>Đọc lý do, kiểm tra khách không nằm trong trường hợp "chuyển tay" ở trên, rồi bấm <b>Duyệt</b> hoặc <b>Từ chối</b> (từ chối phải ghi lý do). Bấm duyệt xong thì buổi được chuyển ngay.</div>
-      </div>
-      <div class="step">
-        <div class="n">3</div>
-        <div class="who">OM · khi duyệt nhầm</div>
-        <div>Mở tab <b>Đã duyệt</b> và bấm <b>Hoàn tác</b> (phải ghi lý do). Buổi được trả về gói cũ.</div>
-      </div>
-    </div>
-  </section>
-
-  <section>
     <h2>Quy tắc cần nhớ</h2>
     <div class="rules">
       <div class="rule"><b>Gói cũ phải đã hết hạn</b>Gói nhận có thể đang hoạt động, chưa bắt đầu, bảo lưu hoặc tạm ngưng. Hai gói phải cùng một chủ gói.</div>
@@ -177,29 +164,182 @@
       <div class="rule"><b>Gói nhận đang bảo lưu hoặc tạm ngưng</b>Buổi vẫn được cộng vào, nhưng khách chỉ dùng được khi có gói đang hoạt động.</div>
       <div class="rule"><b>Hoàn tác có giới hạn</b>Không hoàn tác được nếu khách đã dùng một phần số buổi được chuyển sang.</div>
       <div class="rule"><b>Số buổi đang chờ duyệt bị giữ chỗ</b>Một gói cũ còn 6 PT, đã có yêu cầu 4 PT đang chờ, thì chỉ tạo thêm được tối đa 2 PT.</div>
-      <div class="rule"><b>Không sửa tay số buổi nữa</b>Bảng số dư (<code>subscription_balances</code>) đã bị khoá trên Directus Admin với mọi tài khoản. Cần điều chỉnh thì báo quản lý hoặc dev để ghi một dòng điều chỉnh có lý do.</div>
+      <div class="rule"><b>Không sửa tay số buổi nữa</b>Bảng số dư (<code>subscription_balances</code>) đã bị khoá trên Directus Admin với mọi tài khoản. Cần cộng hoặc trừ buổi không phải do chuyển gói thì báo quản lý hoặc dev để ghi một dòng điều chỉnh có lý do.</div>
     </div>
   </section>
 
   <section>
+    <span class="who">Phần 1 · CS</span>
+    <h2>Tạo yêu cầu chuyển buổi</h2>
+
+    <div class="step">
+      <div class="n">1</div>
+      <div class="body">
+        <h3>Mở trang khách hàng, bấm "Chuyển buổi"</h3>
+        <p>Nút nằm ở đầu mục <b>Gói hội viên &amp; quyền lợi</b>. Nút chỉ hiện với CS, quản lý và admin.</p>
+        <figure>
+          <img src="images/01-trang-khach-nut-chuyen-buoi.png" alt="Trang khách hàng, nút Chuyển buổi ở đầu mục gói hội viên">
+          <figcaption>Nút "Chuyển buổi" ở đầu mục gói. Bên dưới là các thẻ gói, trong đó có gói đã hết hạn.</figcaption>
+        </figure>
+        <p>Hoặc bấm <b>Chuyển buổi</b> ngay trên thẻ của <b>gói đã hết hạn</b>. Cách này chọn sẵn gói đó làm gói cũ.</p>
+        <figure>
+          <img src="images/02-the-goi-het-han.png" alt="Thẻ gói đã hết hạn có nút Chuyển buổi">
+          <figcaption>Thẻ gói hết hạn có nút "Chuyển buổi". Nút "Sang tên gói" là tính năng khác (chuyển cả gói cho người khác).</figcaption>
+        </figure>
+        <p class="note">Số buổi trên thẻ gói hết hạn có thể hiện 0 dù khách vẫn còn buổi, vì gói cũ chưa có sổ số buổi. Form chuyển buổi luôn hiện đúng số còn lại.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="n">2</div>
+      <div class="body">
+        <h3>Chọn gói, số buổi và ghi lý do</h3>
+        <ul class="list">
+          <li><b>Gói cũ (đã hết hạn):</b> chỉ liệt kê gói hết hạn còn buổi mà khách đứng tên chủ gói. Không thấy gói cần chuyển? Xem <a href="#goi-cu">gói cũ 2023–2024</a>.</li>
+          <li><b>Gói nhận:</b> gói đang hoạt động, chưa bắt đầu, bảo lưu hoặc tạm ngưng của khách.</li>
+          <li><b>Số buổi chuyển:</b> mỗi loại buổi một dòng, ghi "còn N buổi". Buổi đang nằm trong yêu cầu khác chờ duyệt thì không chọn được. Dòng "Gói nhận: 140 → 144" cho biết số buổi của gói nhận sau khi duyệt.</li>
+          <li><b>Lý do chuyển:</b> bắt buộc. Quản lý đọc câu này trước khi duyệt.</li>
+        </ul>
+        <figure>
+          <img class="narrow" src="images/03-form-chuyen-buoi.png" alt="Form chuyển buổi khi vừa mở">
+          <figcaption>Form khi vừa mở: gói cũ và gói nhận đã được chọn sẵn.</figcaption>
+        </figure>
+        <figure>
+          <img class="narrow" src="images/04-form-da-dien.png" alt="Form chuyển buổi đã điền số buổi và lý do">
+          <figcaption>Đã chọn 4 buổi PT và ghi lý do. Nút ghi rõ tổng số buổi sẽ gửi duyệt.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="n">3</div>
+      <div class="body">
+        <h3>Bấm "Gửi yêu cầu duyệt"</h3>
+        <p>Số buổi <b>chưa thay đổi</b>. Yêu cầu hiện trong mục <b>Chuyển buổi</b> trên trang khách, ở trạng thái "Chờ duyệt".</p>
+        <figure>
+          <img src="images/05-gui-yeu-cau-thanh-cong.png" alt="Thông báo đã gửi yêu cầu chuyển buổi">
+          <figcaption>Thông báo "Đã gửi yêu cầu chuyển buổi — chờ quản lý duyệt".</figcaption>
+        </figure>
+        <figure>
+          <img src="images/06-lich-su-cho-duyet.png" alt="Mục Chuyển buổi trên trang khách, yêu cầu đang chờ duyệt">
+          <figcaption>Mục "Chuyển buổi" trên trang khách. Người tạo có nút <b>Huỷ yêu cầu</b> nếu cần rút lại (phải ghi lý do).</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="who">Phần 2 · Quản lý (OM)</span>
+    <h2>Duyệt hoặc từ chối</h2>
+
+    <div class="step">
+      <div class="n">4</div>
+      <div class="body">
+        <h3>Mở "Duyệt yêu cầu" → tab "Chuyển buổi" → "Chờ duyệt"</h3>
+        <p>Mỗi yêu cầu là một thẻ: khách (bấm vào tên để mở trang khách), gói cũ → gói nhận, số buổi từng loại, lý do và người tạo.</p>
+        <figure>
+          <img src="images/07-trang-duyet-yeu-cau.png" alt="Trang Duyệt yêu cầu, tab Chuyển buổi, một yêu cầu chờ duyệt">
+          <figcaption>Yêu cầu chờ duyệt có hai nút <b>Từ chối</b> và <b>Duyệt</b>. Yêu cầu do chính bạn tạo thì không có nút Duyệt: nhờ một quản lý khác duyệt.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="n">5</div>
+      <div class="body">
+        <h3>Kiểm tra trước khi duyệt</h3>
+        <ul class="list">
+          <li>Lý do có hợp lý không? Khách có đồng ý không?</li>
+          <li>Gói nhận đã từng được <b>cộng tay</b> số buổi này chưa? Mở trang khách, xem lịch sử gói và đối chiếu <a href="#danh-sach">danh sách cần kiểm tra</a>. Nếu đã cộng tay rồi thì <b>từ chối</b>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="n">6</div>
+      <div class="body">
+        <h3>Từ chối: bắt buộc ghi lý do</h3>
+        <p>Số buổi của cả hai gói giữ nguyên. Người tạo sẽ thấy lý do.</p>
+        <figure>
+          <img class="narrow" src="images/08-hop-tu-choi.png" alt="Hộp xác nhận từ chối yêu cầu">
+          <figcaption>Hộp từ chối: nút xác nhận chỉ bấm được khi đã ghi lý do.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="n">7</div>
+      <div class="body">
+        <h3>Duyệt: buổi được chuyển ngay</h3>
+        <p>Ghi chú khi duyệt không bắt buộc. Bấm <b>Duyệt &amp; chuyển buổi</b>: gói cũ bị trừ, gói nhận được cộng, và thẻ gói trên trang khách cập nhật số buổi mới.</p>
+        <figure>
+          <img class="narrow" src="images/09-hop-duyet.png" alt="Hộp xác nhận duyệt chuyển buổi">
+          <figcaption>Hộp duyệt: nhắc lại chuyển từ gói nào sang gói nào, và cho biết buổi sẽ được chuyển ngay.</figcaption>
+        </figure>
+        <figure>
+          <img src="images/10-duyet-thanh-cong.png" alt="Thông báo đã duyệt">
+          <figcaption>Thông báo "Đã duyệt — buổi đã chuyển sang gói nhận". Yêu cầu chuyển sang tab "Đã duyệt".</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="who">Phần 3 · Quản lý (OM)</span>
+    <h2>Xem lịch sử và hoàn tác trên trang khách</h2>
+
+    <div class="step">
+      <div class="n">8</div>
+      <div class="body">
+        <h3>Mục "Chuyển buổi" trên trang khách</h3>
+        <p>Sau khi duyệt, thẻ gói nhận hiện số buổi mới. Mục <b>Chuyển buổi</b> (ngay dưới các thẻ gói) liệt kê mọi yêu cầu của khách: chờ duyệt, đã duyệt, đã từ chối, đã hoàn tác.</p>
+        <figure>
+          <img src="images/11-trang-khach-sau-khi-duyet.png" alt="Trang khách sau khi duyệt, gói nhận đã được cộng buổi">
+          <figcaption>Gói nhận đã được cộng 4 buổi (140 → 144).</figcaption>
+        </figure>
+        <figure>
+          <img src="images/12-lich-su-da-duyet.png" alt="Mục Chuyển buổi, yêu cầu đã duyệt có nút Hoàn tác">
+          <figcaption>Yêu cầu đã duyệt: có người duyệt, ghi chú và nút <b>Hoàn tác</b> (chỉ quản lý thấy).</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="n">9</div>
+      <div class="body">
+        <h3>Hoàn tác khi duyệt nhầm</h3>
+        <p>Bắt buộc ghi lý do. Buổi được trả về gói cũ. <b>Không hoàn tác được</b> nếu khách đã dùng một phần số buổi được chuyển sang (hệ thống sẽ báo).</p>
+        <figure>
+          <img class="narrow" src="images/13-hop-hoan-tac.png" alt="Hộp xác nhận hoàn tác chuyển buổi">
+          <figcaption>Hộp hoàn tác.</figcaption>
+        </figure>
+        <figure>
+          <img src="images/14-lich-su-da-hoan-tac.png" alt="Yêu cầu đã hoàn tác, có người và lý do hoàn tác">
+          <figcaption>Yêu cầu chuyển sang "Đã hoàn tác", ghi rõ ai duyệt, ai hoàn tác, lúc nào và vì sao.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="goi-cu">
     <h2>Gói cũ (2023–2024) không hiện trong danh sách chuyển buổi</h2>
     <p>Khoảng 200 gói tạo từ 10/2023 đến 05/2024 chưa có <b>chủ gói</b>: hồi đó khách chỉ được gắn vào danh sách thành viên của gói. Chuyển buổi chỉ làm được giữa hai gói cùng một chủ gói, nên các gói này không hiện trong form, và nếu cố chuyển thì hệ thống báo "Hai gói phải cùng một chủ gói".</p>
     <p>Không xử lý hàng loạt. Khi có khách hỏi thì làm như sau:</p>
-    <div class="steps">
-      <div class="step">
+    <div class="cards">
+      <div class="card">
         <div class="n">1</div>
-        <div class="who">OM · xác minh</div>
+        <div class="role">OM · xác minh</div>
         <div>Mở gói cũ trên Directus Admin (<code>customer_subscriptions</code>), xem danh sách thành viên. Xác nhận khách đang hỏi đúng là người mua gói: đối chiếu hợp đồng hoặc hoá đơn, hoặc hỏi người phụ trách. Gói có nhiều thành viên thì phải hỏi rõ ai là chủ.</div>
       </div>
-      <div class="step">
+      <div class="card">
         <div class="n">2</div>
-        <div class="who">OM · điền chủ gói</div>
+        <div class="role">OM · điền chủ gói</div>
         <div>Chọn khách đó ở trường <b>Chủ gói</b> (<code>subscription_owner</code>) của gói cũ rồi lưu. <b>Chỉ sửa trường này</b>, không sửa số buổi.</div>
       </div>
-      <div class="step">
+      <div class="card">
         <div class="n">3</div>
-        <div class="who">CS · chuyển buổi như bình thường</div>
-        <div>Tải lại trang khách. Gói cũ giờ hiện trong form Chuyển buổi. Tạo yêu cầu, rồi quản lý duyệt như mọi yêu cầu khác. Nhớ kiểm tra trước xem gói này đã từng được "chuyển tay" chưa (mục đầu trang).</div>
+        <div class="role">CS · chuyển buổi như bình thường</div>
+        <div>Tải lại trang khách. Gói cũ giờ hiện trong form Chuyển buổi. Tạo yêu cầu, rồi quản lý duyệt như mọi yêu cầu khác. Nhớ kiểm tra trước xem gói này đã từng được <a href="#chuyen-tay">"chuyển tay"</a> chưa.</div>
       </div>
     </div>
   </section>
@@ -215,7 +355,7 @@
           <tr><td>Khách đã dùng một phần số buổi được chuyển sang</td><td>Không hoàn tác được vì gói nhận không còn đủ buổi để trả</td><td>Báo quản lý xử lý riêng</td></tr>
           <tr><td>Số buổi của gói đang bị âm</td><td>Dữ liệu gói đã sai từ trước</td><td>Báo quản lý hoặc dev sửa dữ liệu trước khi chuyển</td></tr>
           <tr><td>Số dư sổ cái của gói không khớp dữ liệu</td><td>Sổ số buổi của gói đang lệch, thường do sửa tay trước đây</td><td><b>Đừng bấm lại</b>. Báo dev kiểm tra gói đó</td></tr>
-          <tr><td>Hai gói phải cùng một chủ gói</td><td>Gói cũ chưa có chủ gói (gói 2023–2024), hoặc hai gói của hai người khác nhau</td><td>Xem mục "Gói cũ (2023–2024)…" ở trên</td></tr>
+          <tr><td>Hai gói phải cùng một chủ gói</td><td>Gói cũ chưa có chủ gói (gói 2023–2024), hoặc hai gói của hai người khác nhau</td><td>Xem mục <a href="#goi-cu">Gói cũ (2023–2024)</a> ở trên</td></tr>
           <tr><td>Yêu cầu này đã được xử lý</td><td>Người khác vừa duyệt, từ chối hoặc huỷ</td><td>Tải lại trang để xem trạng thái mới</td></tr>
         </tbody>
       </table>

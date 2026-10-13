@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Thao tác chuyển buổi</title>
+<title>Hướng dẫn CS · Steel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -11,241 +11,134 @@
     color-scheme: light;
     --bg: #f6f7f5; --surface: #ffffff; --ink: #1c2230; --muted: #5a6273; --line: #dfe2e6;
     --accent: #2f5d8a; --accent-soft: #e6eef6;
-    --warn: #9a5b00; --warn-soft: #fbf0dd;
-    --code-bg: #eef0f2;
   }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
+    :root {
       color-scheme: dark;
       --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
       --accent: #7fb0e0; --accent-soft: #1d2b3b;
-      --warn: #e7b25c; --warn-soft: #362a17;
-      --code-bg: #242a35;
     }
   }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
-    --accent: #7fb0e0; --accent-soft: #1d2b3b;
-    --warn: #e7b25c; --warn-soft: #362a17;
-    --code-bg: #242a35;
-  }
   * { box-sizing: border-box; }
+  html, body { height: 100%; }
   body {
     margin: 0; background: var(--bg); color: var(--ink);
     font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    font-size: 15px; line-height: 1.6;
-    padding-inline: 16px; padding-block: 32px 64px;
+    font-size: 15px; line-height: 1.5;
+    display: grid; grid-template-columns: 280px 1fr;
   }
-  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
-  header { display: flex; flex-direction: column; gap: 10px; }
+  nav {
+    background: var(--surface); border-right: 1px solid var(--line);
+    padding: 24px 16px; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .brand { display: flex; flex-direction: column; gap: 4px; padding-inline: 8px; }
   .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
-  h1 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
-  h2 { font-size: 21px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
-  h3 { font-size: 16px; margin: 0; font-weight: 600; }
-  p { margin: 0; max-width: 72ch; }
-  .lede { color: var(--muted); font-size: 16px; }
-  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
-  section { display: flex; flex-direction: column; gap: 18px; }
-  .who { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 2px 10px; border-radius: 999px; width: fit-content; }
+  .brand b { font-size: 18px; }
+  #groups { display: flex; flex-direction: column; gap: 22px; }
+  .group { display: flex; flex-direction: column; gap: 2px; }
+  .group h2 { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 4px; padding-inline: 8px; }
+  .group a {
+    display: flex; flex-direction: column; gap: 1px;
+    padding: 7px 8px; border-radius: 6px; color: var(--ink); text-decoration: none;
+  }
+  .group a span { font-size: 12px; color: var(--muted); }
+  .group a:hover { background: var(--bg); }
+  .group a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .group a[aria-current="page"] span { color: var(--accent); font-weight: 400; }
+  .open-tab { font-size: 13px; color: var(--muted); padding-inline: 8px; }
+  .open-tab a { color: var(--accent); }
+  main { min-width: 0; height: 100%; }
+  iframe { display: block; width: 100%; height: 100%; border: 0; background: var(--bg); }
+  select { display: none; }
 
-  .step { display: grid; grid-template-columns: 34px 1fr; gap: 6px 14px; }
-  .step .n { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-  .step .body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-  figure { margin: 0; display: flex; flex-direction: column; gap: 6px; }
-  figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
-  figure img.narrow { max-width: min(100%, 560px); }
-  figcaption { font-size: 13px; color: var(--muted); }
-
-  .callout { background: var(--warn-soft); border-radius: 8px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; }
-  .callout b:first-child { color: var(--warn); }
-  ul.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
-  .note { font-size: 13px; color: var(--muted); }
-
-  @media (max-width: 560px) {
-    h1 { font-size: 23px; }
-    .step { grid-template-columns: 1fr; }
+  @media (max-width: 760px) {
+    body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    nav { border-right: 0; border-bottom: 1px solid var(--line); padding: 12px 16px; gap: 8px; }
+    .group, .open-tab { display: none; }
+    .brand b { font-size: 16px; }
+    select {
+      display: block; width: 100%; font: inherit; padding: 8px 10px;
+      border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink);
+    }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <header>
-    <div class="eyebrow">Hướng dẫn thao tác · Chuyển buổi</div>
-    <h1>Chuyển buổi còn dư sang gói mới, từng bước</h1>
-    <p class="lede">CS tạo yêu cầu trên trang khách hàng, quản lý (OM) duyệt trên trang Duyệt yêu cầu. Nếu duyệt nhầm, OM hoàn tác được ngay trên trang khách.</p>
-    <p class="note">Ảnh chụp trên môi trường thử nghiệm. Tên, số điện thoại, email, số CCCD và ngày sinh của khách đã được thay bằng dữ liệu giả.</p>
-  </header>
-
-  <div class="callout">
-    <b>Trước khi tạo yêu cầu</b>
-    <p>Đọc <a href="huong-dan-chuyen-buoi.html">note cho team vận hành</a>, nhất là phần <b>gói đã được "chuyển tay"</b>. Nếu số buổi của gói cũ đã từng được cộng tay sang gói mới trên Directus Admin thì <b>không</b> tạo yêu cầu, vì khách sẽ được cộng hai lần.</p>
+<nav>
+  <div class="brand">
+    <div class="eyebrow">Steel · CS</div>
+    <b>Hướng dẫn thao tác</b>
   </div>
+  <select id="picker" aria-label="Chọn hướng dẫn"></select>
+  <div id="groups"></div>
+  <p class="open-tab"><a id="open-tab" href="#" target="_blank" rel="noopener">Mở trang này trong tab mới</a></p>
+</nav>
 
-  <section>
-    <span class="who">Phần 1 · CS</span>
-    <h2>Tạo yêu cầu chuyển buổi</h2>
+<main>
+  <iframe id="view" title="Nội dung hướng dẫn"></iframe>
+</main>
 
-    <div class="step">
-      <div class="n">1</div>
-      <div class="body">
-        <h3>Mở trang khách hàng, bấm "Chuyển buổi"</h3>
-        <p>Nút nằm ở đầu mục <b>Gói hội viên &amp; quyền lợi</b>. Nút chỉ hiện với CS, quản lý và admin.</p>
-        <figure>
-          <img src="images/01-trang-khach-nut-chuyen-buoi.png" alt="Trang khách hàng, nút Chuyển buổi ở đầu mục gói hội viên">
-          <figcaption>Nút "Chuyển buổi" ở đầu mục gói. Bên dưới là các thẻ gói, trong đó có gói đã hết hạn.</figcaption>
-        </figure>
-        <p>Hoặc bấm <b>Chuyển buổi</b> ngay trên thẻ của <b>gói đã hết hạn</b>. Cách này chọn sẵn gói đó làm gói cũ.</p>
-        <figure>
-          <img src="images/02-the-goi-het-han.png" alt="Thẻ gói đã hết hạn có nút Chuyển buổi">
-          <figcaption>Thẻ gói hết hạn có nút "Chuyển buổi". Nút "Sang tên gói" là tính năng khác (chuyển cả gói cho người khác).</figcaption>
-        </figure>
-        <p class="note">Số buổi trên thẻ gói hết hạn có thể hiện 0 dù khách vẫn còn buổi, vì gói cũ chưa có sổ số buổi. Form chuyển buổi luôn hiện đúng số còn lại.</p>
-      </div>
-    </div>
+<script>
+  // Thêm guide mới: thêm một dòng vào đây.
+  const GUIDES = [
+    { group: "Gói & buổi tập", id: "chuyen-buoi", file: "huong-dan-chuyen-buoi.html", title: "Chuyển buổi", sub: "Từ gói cũ hết hạn sang gói mới" },
+    { group: "Gói & buổi tập", id: "chuyen-nhuong", file: "huong-dan-thao-tac.html", title: "Chuyển nhượng", sub: "Chuyển buổi cho khách khác, sang tên gói" },
+    { group: "Gói & buổi tập", id: "khach-moi", file: "ban-goi-khach-moi.html", title: "Bán gói khách mời", sub: "Thao tác bán gói" },
+    { group: "Lịch & booking", id: "lich-booking", file: "huong-dan-lich-booking.html", title: "Lịch Booking", sub: "Thao tác trên lịch" },
+    { group: "Lịch & booking", id: "pilates-2-1", file: "huong-dan-pilates-2-1.html", title: "Pilates Training 2:1", sub: "Note cho team vận hành" },
+  ];
 
-    <div class="step">
-      <div class="n">2</div>
-      <div class="body">
-        <h3>Chọn gói, số buổi và ghi lý do</h3>
-        <ul class="list">
-          <li><b>Gói cũ (đã hết hạn):</b> chỉ liệt kê gói hết hạn còn buổi mà khách đứng tên chủ gói.</li>
-          <li><b>Gói nhận:</b> gói đang hoạt động, chưa bắt đầu, bảo lưu hoặc tạm ngưng của khách.</li>
-          <li><b>Số buổi chuyển:</b> mỗi loại buổi một dòng, ghi "còn N buổi". Buổi đang nằm trong yêu cầu khác chờ duyệt thì không chọn được. Dòng "Gói nhận: 140 → 144" cho biết số buổi của gói nhận sau khi duyệt.</li>
-          <li><b>Lý do chuyển:</b> bắt buộc. Quản lý đọc câu này trước khi duyệt.</li>
-        </ul>
-        <figure>
-          <img class="narrow" src="images/03-form-chuyen-buoi.png" alt="Form chuyển buổi khi vừa mở">
-          <figcaption>Form khi vừa mở: gói cũ và gói nhận đã được chọn sẵn.</figcaption>
-        </figure>
-        <figure>
-          <img class="narrow" src="images/04-form-da-dien.png" alt="Form chuyển buổi đã điền số buổi và lý do">
-          <figcaption>Đã chọn 4 buổi PT và ghi lý do. Nút ghi rõ tổng số buổi sẽ gửi duyệt.</figcaption>
-        </figure>
-      </div>
-    </div>
+  const view = document.getElementById("view");
+  const picker = document.getElementById("picker");
+  const groups = document.getElementById("groups");
+  const openTab = document.getElementById("open-tab");
+  const byId = Object.fromEntries(GUIDES.map(g => [g.id, g]));
+  const byFile = Object.fromEntries(GUIDES.map(g => [g.file, g]));
 
-    <div class="step">
-      <div class="n">3</div>
-      <div class="body">
-        <h3>Bấm "Gửi yêu cầu duyệt"</h3>
-        <p>Số buổi <b>chưa thay đổi</b>. Yêu cầu hiện trong mục <b>Chuyển buổi</b> trên trang khách, ở trạng thái "Chờ duyệt".</p>
-        <figure>
-          <img src="images/05-gui-yeu-cau-thanh-cong.png" alt="Thông báo đã gửi yêu cầu chuyển buổi">
-          <figcaption>Thông báo "Đã gửi yêu cầu chuyển buổi — chờ quản lý duyệt".</figcaption>
-        </figure>
-        <figure>
-          <img src="images/06-lich-su-cho-duyet.png" alt="Mục Chuyển buổi trên trang khách, yêu cầu đang chờ duyệt">
-          <figcaption>Mục "Chuyển buổi" trên trang khách. Người tạo có nút <b>Huỷ yêu cầu</b> nếu cần rút lại (phải ghi lý do).</figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
+  for (const name of [...new Set(GUIDES.map(g => g.group))]) {
+    const box = document.createElement("div");
+    box.className = "group";
+    box.innerHTML = `<h2>${name}</h2>`;
+    const optgroup = document.createElement("optgroup");
+    optgroup.label = name;
+    for (const g of GUIDES.filter(g => g.group === name)) {
+      const a = document.createElement("a");
+      a.href = "#" + g.id;
+      a.dataset.id = g.id;
+      a.innerHTML = `${g.title}<span>${g.sub}</span>`;
+      box.append(a);
+      optgroup.append(new Option(`${g.title} · ${g.sub}`, g.id));
+    }
+    groups.append(box);
+    picker.append(optgroup);
+  }
 
-  <section>
-    <span class="who">Phần 2 · Quản lý (OM)</span>
-    <h2>Duyệt hoặc từ chối</h2>
+  function show(id) {
+    const g = byId[id] || GUIDES[0];
+    for (const a of groups.querySelectorAll("a")) {
+      if (a.dataset.id === g.id) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+    }
+    picker.value = g.id;
+    openTab.href = g.file;
+    document.title = `${g.title} · Hướng dẫn CS`;
+    if (!view.src.endsWith("/" + g.file)) view.src = g.file;
+  }
 
-    <div class="step">
-      <div class="n">4</div>
-      <div class="body">
-        <h3>Mở "Duyệt yêu cầu" → tab "Chuyển buổi" → "Chờ duyệt"</h3>
-        <p>Mỗi yêu cầu là một thẻ: khách (bấm vào tên để mở trang khách), gói cũ → gói nhận, số buổi từng loại, lý do và người tạo.</p>
-        <figure>
-          <img src="images/07-trang-duyet-yeu-cau.png" alt="Trang Duyệt yêu cầu, tab Chuyển buổi, một yêu cầu chờ duyệt">
-          <figcaption>Yêu cầu chờ duyệt có hai nút <b>Từ chối</b> và <b>Duyệt</b>. Yêu cầu do chính bạn tạo thì không có nút Duyệt: nhờ một quản lý khác duyệt.</figcaption>
-        </figure>
-      </div>
-    </div>
+  // Link chéo bên trong một guide (vd. sang note vận hành) thì cập nhật menu theo.
+  view.addEventListener("load", () => {
+    let file;
+    try { file = view.contentWindow.location.pathname.split("/").pop(); } catch { return; }
+    const g = byFile[file];
+    if (g && location.hash.slice(1) !== g.id) history.replaceState(null, "", "#" + g.id);
+    if (g) show(g.id);
+  });
 
-    <div class="step">
-      <div class="n">5</div>
-      <div class="body">
-        <h3>Kiểm tra trước khi duyệt</h3>
-        <ul class="list">
-          <li>Lý do có hợp lý không? Khách có đồng ý không?</li>
-          <li>Gói nhận đã từng được <b>cộng tay</b> số buổi này chưa? Mở trang khách và xem lịch sử gói. Nếu đã cộng tay rồi thì <b>từ chối</b>.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="n">6</div>
-      <div class="body">
-        <h3>Từ chối: bắt buộc ghi lý do</h3>
-        <p>Số buổi của cả hai gói giữ nguyên. Người tạo sẽ thấy lý do.</p>
-        <figure>
-          <img class="narrow" src="images/08-hop-tu-choi.png" alt="Hộp xác nhận từ chối yêu cầu">
-          <figcaption>Hộp từ chối: nút xác nhận chỉ bấm được khi đã ghi lý do.</figcaption>
-        </figure>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="n">7</div>
-      <div class="body">
-        <h3>Duyệt: buổi được chuyển ngay</h3>
-        <p>Ghi chú khi duyệt không bắt buộc. Bấm <b>Duyệt &amp; chuyển buổi</b>: gói cũ bị trừ, gói nhận được cộng, và thẻ gói trên trang khách cập nhật số buổi mới.</p>
-        <figure>
-          <img class="narrow" src="images/09-hop-duyet.png" alt="Hộp xác nhận duyệt chuyển buổi">
-          <figcaption>Hộp duyệt: nhắc lại chuyển từ gói nào sang gói nào, và cho biết buổi sẽ được chuyển ngay.</figcaption>
-        </figure>
-        <figure>
-          <img src="images/10-duyet-thanh-cong.png" alt="Thông báo đã duyệt">
-          <figcaption>Thông báo "Đã duyệt — buổi đã chuyển sang gói nhận". Yêu cầu chuyển sang tab "Đã duyệt".</figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <span class="who">Phần 3 · Quản lý (OM)</span>
-    <h2>Xem lịch sử và hoàn tác trên trang khách</h2>
-
-    <div class="step">
-      <div class="n">8</div>
-      <div class="body">
-        <h3>Mục "Chuyển buổi" trên trang khách</h3>
-        <p>Sau khi duyệt, thẻ gói nhận hiện số buổi mới. Mục <b>Chuyển buổi</b> (ngay dưới các thẻ gói) liệt kê mọi yêu cầu của khách: chờ duyệt, đã duyệt, đã từ chối, đã hoàn tác.</p>
-        <figure>
-          <img src="images/11-trang-khach-sau-khi-duyet.png" alt="Trang khách sau khi duyệt, gói nhận đã được cộng buổi">
-          <figcaption>Gói nhận đã được cộng 4 buổi (140 → 144).</figcaption>
-        </figure>
-        <figure>
-          <img src="images/12-lich-su-da-duyet.png" alt="Mục Chuyển buổi, yêu cầu đã duyệt có nút Hoàn tác">
-          <figcaption>Yêu cầu đã duyệt: có người duyệt, ghi chú và nút <b>Hoàn tác</b> (chỉ quản lý thấy).</figcaption>
-        </figure>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="n">9</div>
-      <div class="body">
-        <h3>Hoàn tác khi duyệt nhầm</h3>
-        <p>Bắt buộc ghi lý do. Buổi được trả về gói cũ. <b>Không hoàn tác được</b> nếu khách đã dùng một phần số buổi được chuyển sang (hệ thống sẽ báo).</p>
-        <figure>
-          <img class="narrow" src="images/13-hop-hoan-tac.png" alt="Hộp xác nhận hoàn tác chuyển buổi">
-          <figcaption>Hộp hoàn tác.</figcaption>
-        </figure>
-        <figure>
-          <img src="images/14-lich-su-da-hoan-tac.png" alt="Yêu cầu đã hoàn tác, có người và lý do hoàn tác">
-          <figcaption>Yêu cầu chuyển sang "Đã hoàn tác", ghi rõ ai duyệt, ai hoàn tác, lúc nào và vì sao.</figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Hỏi nhanh</h2>
-    <ul class="list">
-      <li><b>Không thấy gói cũ trong form?</b> Gói phải đã hết hạn, còn buổi, và khách đứng tên chủ gói. Gói 2023–2024 thường chưa có chủ gói: xem mục "Gói cũ (2023–2024)" trong <a href="huong-dan-chuyen-buoi.html">note cho team vận hành</a>.</li>
-      <li><b>Không thấy nút Duyệt trên yêu cầu của mình?</b> Không ai tự duyệt được yêu cầu do chính mình tạo, kể cả admin. Nhờ một quản lý khác duyệt.</li>
-      <li><b>Báo "Số dư sổ cái của gói không khớp dữ liệu"?</b> Đừng bấm lại. Báo dev kiểm tra gói đó.</li>
-      <li><b>Cần cộng hoặc trừ buổi không phải do chuyển gói?</b> Không sửa tay trên Directus Admin (số dư đã bị khoá). Báo quản lý hoặc dev để ghi một dòng điều chỉnh có lý do.</li>
-    </ul>
-  </section>
-
-</div>
+  picker.addEventListener("change", () => { location.hash = picker.value; });
+  window.addEventListener("hashchange", () => show(location.hash.slice(1)));
+  show(location.hash.slice(1));
+</script>
 </body>
 </html>
