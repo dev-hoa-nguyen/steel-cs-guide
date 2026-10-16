@@ -124,7 +124,7 @@
       <div class="rule"><b>Cả 2 khách phải là hội viên</b>Mỗi khách phải có gói membership hoặc unlimited đang hoạt động (là chủ gói hay thành viên chia sẻ đều được). Gói khách mời và gói chỉ có buổi PT/recovery không tính.</div>
       <div class="rule"><b>Khách thứ 2 không cần gói 2:1</b>Khách thứ 2 tập bằng gói của khách chính. Gói của khách chính phải còn buổi 2:1.</div>
       <div class="rule"><b>Gói Unlimited không thay buổi 2:1</b>Gói Unlimited Private Training 1:1 chỉ không giới hạn buổi PT 1:1. Muốn đặt Pilates 2:1 thì gói vẫn phải còn buổi 2:1 như mọi gói khác.</div>
-      <div class="rule"><b>Khung check-in</b>Check-in trong ngày tập, từ sáng tới giờ kết thúc buổi, đúng chi nhánh của buổi, đều được tính. Check-in hôm khác, sau giờ kết thúc hoặc ở chi nhánh khác thì không.</div>
+      <div class="rule"><b>Khung check-in</b>Một lần check-in tính cho buổi gần nhất chưa kết thúc và các buổi liền sau nó (cách nhau tối đa 30 phút), đúng chi nhánh của buổi. Check-in sớm hơn 3 tiếng trước buổi, sau giờ kết thúc, hôm khác hoặc ở chi nhánh khác thì không. Khách quay lại buổi chiều thì check-in lại.</div>
       <div class="rule"><b>Mốc huỷ 2 giờ</b>Huỷ trước giờ tập ít nhất 2 giờ là huỷ đúng hạn. Còn dưới 2 giờ là huỷ muộn: vẫn trừ buổi.</div>
       <div class="rule"><b>Cả 2 khách đều được điểm thưởng</b>Khách nào có mặt thì được cộng điểm buổi tập, kể cả khách thứ 2.</div>
       <div class="rule"><b>Đổi khách thứ 2 trước 2 giờ</b>Buổi chưa xác nhận, còn trước giờ tập ít nhất 2 giờ, khách thứ 2 hiện tại chưa check-in thì đổi được người khác. Không trừ buổi. Sau mốc 2 giờ thì không đổi được nữa.</div>
@@ -148,7 +148,7 @@
         </tbody>
       </table>
     </div>
-    <p class="note">Ở hộp <b>Buổi tập hôm nay</b> (màn Check-in), khách chưa check-in hiện là <b>Chưa check-in</b> thay vì Đã đặt.</p>
+    <p class="note">Ở thẻ <b>Buổi tập hôm nay</b> (màn Check-in), khách chưa check-in hiện là <b>Chưa check-in</b> thay vì Đã đặt.</p>
     <p>Trên lịch, ô của buổi 2:1 ghi tên cả 2 khách ("A &amp; B"). Dấu ✓ là đã xác nhận, ✕ là đã huỷ. Buổi đã chốt ghi số khách có mặt ("Có mặt 2/2") hoặc vắng ("Vắng 2/2"). Nhãn đỏ <b>−1 buổi</b> là buổi huỷ muộn, vẫn trừ buổi. Rê chuột vào ô để xem trạng thái từng người.</p>
     <div class="shots">
       <figure class="shot"><img src="images/pt21-02-o-lich.png" alt="Buổi mới tạo: viền nét đứt, chưa xác nhận, chưa trừ buổi." loading="lazy"><figcaption>Buổi mới tạo: viền nét đứt, chưa xác nhận, chưa trừ buổi.</figcaption></figure>
@@ -192,7 +192,7 @@
       <div class="step">
         <div class="n">2</div>
         <div class="who">Hệ thống · kiểm tra</div>
-        <div>Khách mới phải có gói thành viên đang hoạt động, khác khách chính và không trùng lịch. Nếu khách mới đã check-in trong ngày ở đúng chi nhánh thì hệ thống tự ghi "Đã check-in" sau khi đổi.
+        <div>Khách mới phải có gói thành viên đang hoạt động, khác khách chính và không trùng lịch. Nếu khách mới đã check-in ở đúng chi nhánh, cho lượt đến có buổi này (xem Khung check-in), thì hệ thống tự ghi "Đã check-in" sau khi đổi.
         <figure class="shot"><img src="images/pt21-15-khach-moi-khong-hop-le.png" alt="Khách mới chưa có gói thành viên: báo đỏ ngay dưới ô chọn, nút Lưu khách mới bị khoá." loading="lazy"><figcaption>Khách mới chưa có gói thành viên: báo đỏ ngay dưới ô chọn, nút Lưu khách mới bị khoá.</figcaption></figure></div>
       </div>
     </div>
@@ -211,14 +211,14 @@
       <div class="step">
         <div class="n">1</div>
         <div class="who">CS · màn Check-in</div>
-        <div>Check-in khách như bình thường, cho cả khách chính và khách thứ 2. Nếu khách có buổi 2:1 hôm nay ở chi nhánh này, hộp <b>Buổi tập hôm nay</b> tự mở, ghi giờ, HLV và trạng thái của 2 khách.</div>
-        <figure class="shot"><img src="images/pt21-04-buoi-tap-hom-nay.png" alt="Hộp Buổi tập hôm nay sau khi check-in khách chính. Buổi 14:00 đã xác nhận; buổi 17:00 đã kết thúc mà chưa ai check-in nên nút bị khoá; buổi 20:00 khách chính đã check-in (khách thứ 2 đã huỷ), nút Xác nhận buổi tập bật." loading="lazy"><figcaption>Hộp Buổi tập hôm nay sau khi check-in khách chính. Buổi 14:00 đã xác nhận; buổi 17:00 đã kết thúc mà chưa ai check-in nên nút bị khoá; buổi 20:00 khách chính đã check-in (khách thứ 2 đã huỷ), nút Xác nhận buổi tập bật.</figcaption></figure>
+        <div>Check-in khách như bình thường, cho cả khách chính và khách thứ 2. Khi chọn khách, nếu khách có buổi 2:1 hôm nay ở chi nhánh này, thẻ <b>Buổi tập hôm nay</b> hiện ngay dưới thông tin khách, ghi giờ, HLV và trạng thái của 2 khách (trạng thái lúc trước khi check-in). Thẻ chỉ để báo tin, không có nút xác nhận.</div>
+        <figure class="shot"><img src="images/pt21-16-the-buoi-tap-hom-nay.png" alt="Màn Check-in khi chọn khách thứ 2: thẻ Buổi tập hôm nay ghi buổi Pilates 2:1 09:00, HLV, khách chính và khách thứ 2 cùng trạng thái Chưa check-in." loading="lazy"><figcaption>Chọn khách thứ 2 trên màn Check-in: thẻ Buổi tập hôm nay ghi buổi 2:1, HLV và trạng thái của cả 2 khách. Thẻ không có nút xác nhận.</figcaption></figure>
       </div>
       <div class="step">
         <div class="n">2</div>
-        <div class="who">CS · xác nhận</div>
-        <div>Khi có ít nhất 1 khách <b>Đã check-in</b>, bấm <b>Xác nhận buổi tập</b>. Hộp ghi trước số buổi sẽ trừ ("Xác nhận sẽ trừ 1 buổi từ gói của …, còn N"). Xác nhận xong, khách đã check-in thành <b>Có mặt</b> và lịch sử tập được ghi tự động. Góc trên màn hình hiện "Đã xác nhận buổi tập — trừ 1 buổi 2:1".</div>
-        <figure class="shot"><img src="images/pt21-05-da-xac-nhan.png" alt="Sau khi xác nhận: khách chính Có mặt, khách thứ 2 vẫn Chưa check-in." loading="lazy"><figcaption>Sau khi xác nhận: khách chính Có mặt, khách thứ 2 vẫn Chưa check-in.</figcaption></figure>
+        <div class="who">CS quầy Private · Lịch booking</div>
+        <div>Mở buổi trên Lịch booking. Khi có ít nhất 1 khách <b>Đã check-in</b>, bấm <b>Xác nhận buổi tập</b>. Sheet ghi trước số buổi sẽ trừ. Xác nhận xong, khách đã check-in thành <b>Có mặt</b> và lịch sử tập được ghi tự động.</div>
+        <figure class="shot"><img src="images/pt21-03-chi-tiet-chua-checkin.png" alt="Chi tiết buổi trên Lịch booking khi chưa ai check-in: nút Xác nhận buổi tập bị khoá." loading="lazy"><figcaption>Chi tiết buổi trên Lịch booking khi chưa ai check-in: nút Xác nhận buổi tập bị khoá.</figcaption></figure>
       </div>
       <div class="step">
         <div class="n">3</div>
@@ -227,9 +227,8 @@
         <figure class="shot"><img src="images/pt21-06-khach-den-sau.png" alt="Khách thứ 2 check-in sau khi buổi đã xác nhận: tự thành Có mặt, gói vẫn chỉ trừ 1 buổi." loading="lazy"><figcaption>Khách thứ 2 check-in sau khi buổi đã xác nhận: tự thành Có mặt, gói vẫn chỉ trừ 1 buổi.</figcaption></figure>
       </div>
     </div>
-    <p class="note">Cũng có thể xác nhận từ Lịch booking: mở buổi, bấm <b>Xác nhận buổi tập</b>. Nút chỉ bật khi đã có khách check-in. Chưa ai check-in thì nút bị khoá và hộp ghi "Chờ khách check-in tại quầy rồi mới xác nhận được". Consultant thấy hộp Buổi tập hôm nay nhưng không có nút xác nhận.</p>
+    <p class="note">Xác nhận chỉ làm trên Lịch booking. Chưa ai check-in thì nút bị khoá và sheet ghi "Chờ khách check-in tại quầy rồi mới xác nhận được".</p>
     <div class="shots">
-      <figure class="shot"><img src="images/pt21-03-chi-tiet-chua-checkin.png" alt="Chi tiết buổi trên Lịch booking khi chưa ai check-in: nút Xác nhận buổi tập bị khoá." loading="lazy"><figcaption>Chi tiết buổi trên Lịch booking khi chưa ai check-in: nút Xác nhận buổi tập bị khoá.</figcaption></figure>
       <figure class="shot"><img src="images/pt21-08-chi-tiet-da-xac-nhan.png" alt="Sau khi xác nhận: cả 2 khách Có mặt, gói còn 7 buổi, buổi đã khoá." loading="lazy"><figcaption>Sau khi xác nhận: cả 2 khách Có mặt, gói còn 7 buổi, buổi đã khoá.</figcaption></figure>
     </div>
   </section>
@@ -278,11 +277,11 @@
       <table>
         <thead><tr><th>Tình huống</th><th>Làm gì</th></tr></thead>
         <tbody>
-          <tr><td>Check-in xong mà hộp Buổi tập hôm nay không mở</td><td>Kiểm tra buổi có đúng chi nhánh, đúng ngày hôm nay, chưa bị huỷ. Có thể xác nhận từ Lịch booking</td></tr>
+          <tr><td>Chọn khách mà không thấy thẻ Buổi tập hôm nay</td><td>Kiểm tra buổi có đúng chi nhánh, đúng ngày hôm nay, chưa bị huỷ. Thẻ chỉ để báo tin; việc xác nhận vẫn làm trên Lịch booking</td></tr>
           <tr><td>Khách chính muốn đổi người tập cùng, còn trước giờ tập ít nhất 2 giờ</td><td>Bấm <b>Đổi</b> cạnh khách thứ 2 (xem mục "Đổi khách thứ 2"). Không trừ buổi</td></tr>
           <tr><td>Khách thứ 2 báo nghỉ khi còn dưới 2 giờ</td><td>Không đổi người được nữa. Hoặc khách chính tập một mình (bấm <b>Huỷ</b> cạnh tên khách thứ 2), hoặc huỷ cả buổi (<b>Huỷ muộn — trừ buổi</b>). Cả 2 cách đều trừ 1 buổi</td></tr>
-          <tr><td>Khách check-in từ sáng, buổi tập vào buổi chiều</td><td>Vẫn được tính: check-in trong ngày, trước giờ kết thúc buổi, đều gắn vào buổi</td></tr>
-          <tr><td>Khách có 2 buổi 2:1 trong ngày</td><td>Mỗi lần check-in gắn vào buổi gần nhất mà khách chưa có mặt, trong khung giờ</td></tr>
+          <tr><td>Khách check-in từ sáng, buổi tập vào buổi chiều</td><td>Không tính nếu buổi bắt đầu sau lúc check-in hơn 3 tiếng, hoặc có buổi sáng mà buổi chiều bắt đầu sau khi buổi sáng kết thúc hơn 30 phút. Khách check-in lại khi quay lại tập</td></tr>
+          <tr><td>Khách có 2 buổi 2:1 trong ngày</td><td>Hai buổi liền nhau (cách tối đa 30 phút): check-in 1 lần. Hai lượt đến (sáng, chiều): check-in mỗi lượt 1 lần</td></tr>
           <tr><td>Khách check-in ở chi nhánh khác chi nhánh của buổi</td><td>Không được tính. Nếu khách tập ở chi nhánh khác thật, dời buổi sang chi nhánh đó trước khi check-in</td></tr>
           <tr><td>Đã xác nhận rồi khách thứ 2 mới tới</td><td>Check-in bình thường trong khung giờ. Hệ thống tự ghi Có mặt, không trừ thêm</td></tr>
           <tr><td>Khách thứ 2 bị ghi Không đến nhưng thật ra có tập</td><td>Thường do không check-in hoặc check-in ngoài khung giờ. Số buổi không đổi; chỉ ảnh hưởng lịch sử và điểm thưởng. Báo quản lý nếu cần chỉnh</td></tr>
@@ -330,7 +329,7 @@
         <thead><tr><th>Vai trò</th><th>Được làm</th></tr></thead>
         <tbody>
           <tr><td>CS, OM, Admin Manager, Admin</td><td>Đặt, dời, huỷ, Phòng tập huỷ, xác nhận buổi tập</td></tr>
-          <tr><td>Consultant</td><td>Check-in khách, xem hộp Buổi tập hôm nay và lịch sử tập. Không xác nhận, không huỷ</td></tr>
+          <tr><td>Consultant</td><td>Check-in khách, xem thẻ Buổi tập hôm nay và lịch sử tập. Không xác nhận, không huỷ</td></tr>
           <tr><td>Sales Support</td><td>Không cần xem lịch tập</td></tr>
           <tr><td>HLV</td><td>Chỉ xem lịch của mình. Không điểm danh, không xác nhận</td></tr>
         </tbody>

@@ -150,6 +150,22 @@
                 font-size: 13px;
                 color: var(--muted);
             }
+            .shots {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 16px;
+                align-items: start;
+            }
+            .shot img {
+                display: block;
+                align-self: flex-start;
+                width: auto;
+                max-width: 100%;
+                height: auto;
+                border: 1px solid var(--line);
+                border-radius: 8px;
+                background: #fff;
+            }
             .callout {
                 background: var(--warn-soft);
                 border-radius: 8px;
@@ -786,8 +802,9 @@
                 <p class="lede">
                     <b>CS / OM</b> tạo lịch và chốt buổi ở
                     <b>Lịch → Lịch Booking</b>. Gói của khách chỉ bị trừ khi bấm
-                    <b>Xác nhận</b> hoặc <b>Huỷ sát giờ</b>. Sau khi bấm thì
-                    buổi bị khoá.
+                    <b>Xác nhận</b> hoặc <b>Huỷ sát giờ</b>. Xác nhận được sau
+                    khi khách check-in tại quầy (lớp nhóm không cần). Sau khi
+                    bấm thì buổi bị khoá.
                 </p>
             </header>
 
@@ -1731,9 +1748,10 @@
                                         <tr>
                                             <td><b>Xác nhận — trừ buổi</b></td>
                                             <td>
-                                                Đã chốt với khách và HLV. Xác
-                                                nhận <b>trước</b> buổi tập,
-                                                không đợi tập xong.
+                                                Khách <b>đã check-in tại
+                                                quầy</b>, đúng chi nhánh, cho lượt đến có
+                                                buổi này (xem note bên dưới).
+                                                Chưa check-in thì nút bị khoá.
                                             </td>
                                             <td>1</td>
                                         </tr>
@@ -1749,7 +1767,7 @@
                                             <td><b>Huỷ sát giờ</b></td>
                                             <td>
                                                 Khách huỷ quá hạn theo quy định
-                                                club, hoặc không đến.
+                                                club, hoặc không đến (lịch ghi "Không đến").
                                             </td>
                                             <td>1</td>
                                         </tr>
@@ -1760,6 +1778,36 @@
                                 Gói hết buổi thì sheet ghi "Không xác nhận được
                                 cho tới khi khách có gói còn buổi". Lúc đó chỉ
                                 còn bấm được Huỷ buổi.
+                            </p>
+                            <p class="note">
+                                Áp dụng cho PT 1:1, Pilates 2:1, massage,
+                                stretching, recovery (lớp nhóm không cần).
+                                Khách check-in trước rồi mới tạo lịch hôm đó
+                                thì hệ thống tự ghi nhận. Một lần check-in tính cho cả các buổi liền nhau
+                                (buổi sau bắt đầu không quá 30 phút sau khi buổi
+                                trước kết thúc), ví dụ PT 8:00–9:00 rồi massage
+                                9:15. Khách check-in sớm hơn 3 tiếng trước
+                                buổi, hoặc rời đi rồi quay lại sau hơn 30 phút
+                                giữa 2 buổi, thì mời khách check-in lại gần giờ
+                                tập (cách lần check-in trước ít nhất 10 phút). Dời buổi sang ngày khác thì khách phải
+                                check-in lại vào ngày mới. Buổi nhập vào hệ
+                                thống sau giờ tập (buổi đã kết thúc) thì không
+                                nhận check-in được nữa — báo OM. Khách đã
+                                check-in cho lượt này mà nút vẫn khoá thì tải
+                                lại trang (F5) trước, đừng cho khách check-in thêm lần nữa.
+                            </p>
+                            <p class="note">
+                                Ở màn Check-in, khi chọn khách (tìm tên hoặc
+                                quét QR), thẻ <b>Buổi tập hôm nay</b> hiện ngay
+                                dưới thông tin khách nếu khách có buổi hôm nay ở
+                                chi nhánh này (trừ lớp nhóm). Thẻ ghi giờ, loại
+                                buổi, HLV/KTV và trạng thái check-in. Thẻ này chỉ
+                                để chào khách và báo quầy Private, không có nút
+                                xác nhận. Quầy Private xác nhận buổi trên Lịch
+                                booking. Khách đã check-in hôm nay ở chi nhánh
+                                này thì hồ sơ hiện dòng "Khách đã check-in hôm
+                                nay lúc …": chỉ check-in lại khi khách quay lại
+                                cho lượt tập mới.
                             </p>
                         </div>
                         <figure>
@@ -1831,6 +1879,56 @@
                             </div>
                             <figcaption>
                                 Chi tiết một buổi đang chờ xác nhận.
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="shots">
+                        <figure class="shot">
+                            <img
+                                src="images/checkin-01-chua-checkin-khoa-xac-nhan.png"
+                                alt="Chi tiết buổi PT 1:1 khi khách chưa check-in: khách ở trạng thái Đã đặt, cuối sheet ghi &quot;Chờ khách check-in tại quầy rồi mới xác nhận được&quot;, nút Xác nhận — trừ buổi bị khoá."
+                                loading="lazy"
+                            />
+                            <figcaption>
+                                Khách chưa check-in: cuối sheet ghi "Chờ khách
+                                check-in tại quầy rồi mới xác nhận được", nút
+                                <b>Xác nhận — trừ buổi</b> bị khoá.
+                            </figcaption>
+                        </figure>
+                        <figure class="shot">
+                            <img
+                                src="images/checkin-04-da-checkin-xac-nhan-duoc.png"
+                                alt="Cùng buổi sau khi khách check-in tại quầy: khách hiện Đã check-in, cuối sheet ghi số buổi sẽ trừ, nút Xác nhận — trừ buổi bật."
+                                loading="lazy"
+                            />
+                            <figcaption>
+                                Khách đã check-in: nhãn <b>Đã check-in</b>, sheet
+                                ghi trước số buổi sẽ trừ, nút Xác nhận bật.
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="shots">
+                        <figure class="shot">
+                            <img
+                                src="images/checkin-02-the-buoi-tap-hom-nay.png"
+                                alt="Màn Check-in sau khi chọn khách: thẻ Buổi tập hôm nay liệt kê buổi PT 1:1 07:00 và Pilates 2:1 09:00, mỗi khách ghi Chưa check-in. Thẻ không có nút xác nhận."
+                                loading="lazy"
+                            />
+                            <figcaption>
+                                Màn Check-in: thẻ <b>Buổi tập hôm nay</b> hiện
+                                dưới thông tin khách, chỉ để báo tin, không có
+                                nút xác nhận.
+                            </figcaption>
+                        </figure>
+                        <figure class="shot">
+                            <img
+                                src="images/checkin-03-khach-da-checkin-hom-nay.png"
+                                alt="Hồ sơ khách trên màn Check-in hiện dòng: Khách đã check-in hôm nay lúc 06:52 ở chi nhánh này. Chỉ check-in lại khi khách quay lại cho lượt tập mới."
+                                loading="lazy"
+                            />
+                            <figcaption>
+                                Khách đã check-in hôm nay ở chi nhánh này: chỉ
+                                check-in lại khi khách quay lại cho lượt tập mới.
                             </figcaption>
                         </figure>
                     </div>
@@ -1908,6 +2006,27 @@
                                     thuật.
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    Khách chưa check-in tại quầy — chưa xác
+                                    nhận buổi được
+                                </td>
+                                <td>
+                                    Khách đã check-in thì tải lại trang (F5)
+                                    rồi mở lại buổi. Khách chưa check-in thì
+                                    mời khách check-in ở trang Check-in, đúng
+                                    chi nhánh của buổi. Không cần cho khách check-in thêm lần nữa:
+                                    lần check-in đầu đã tính cho cả các buổi
+                                    liền nhau. Trừ khi khách check-in sớm hơn 3
+                                    tiếng trước buổi, hoặc đã rời đi rồi quay lại
+                                    sau hơn 30 phút: khi đó mời khách check-in
+                                    lại (cách lần trước ít nhất 10 phút). Tải lại vẫn khoá thì báo kỹ
+                                    thuật. Khách có gói đang
+                                    tạm ngưng hoặc hết hạn thì không check-in
+                                    được, báo OM. Khách không đến thì bấm Huỷ
+                                    sát giờ (nút ghi "Huỷ muộn").
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -1925,7 +2044,10 @@
                             Xử lý các buổi có nhãn <b>Yêu cầu</b> (khách đặt qua
                             app): gọi khách và HLV, dời giờ nếu cần.
                         </li>
-                        <li>Trước giờ tập: xác nhận những buổi đã chốt.</li>
+                        <li>
+                            Khi khách check-in tại quầy: xác nhận buổi (lớp nhóm
+                            thì không cần check-in).
+                        </li>
                         <li>
                             Khách báo huỷ: còn trong hạn bấm <b>Huỷ buổi</b>;
                             quá hạn hoặc không đến bấm <b>Huỷ sát giờ</b>.
