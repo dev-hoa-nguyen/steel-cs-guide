@@ -150,6 +150,22 @@
                 font-size: 13px;
                 color: var(--muted);
             }
+            .shots {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 16px;
+                align-items: start;
+            }
+            .shot img {
+                display: block;
+                align-self: flex-start;
+                width: auto;
+                max-width: 100%;
+                height: auto;
+                border: 1px solid var(--line);
+                border-radius: 8px;
+                background: #fff;
+            }
             .callout {
                 background: var(--warn-soft);
                 border-radius: 8px;
@@ -1863,6 +1879,56 @@
                             </div>
                             <figcaption>
                                 Chi tiết một buổi đang chờ xác nhận.
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="shots">
+                        <figure class="shot">
+                            <img
+                                src="images/checkin-01-chua-checkin-khoa-xac-nhan.png"
+                                alt="Chi tiết buổi PT 1:1 khi khách chưa check-in: khách ở trạng thái Đã đặt, cuối sheet ghi &quot;Chờ khách check-in tại quầy rồi mới xác nhận được&quot;, nút Xác nhận — trừ buổi bị khoá."
+                                loading="lazy"
+                            />
+                            <figcaption>
+                                Khách chưa check-in: cuối sheet ghi "Chờ khách
+                                check-in tại quầy rồi mới xác nhận được", nút
+                                <b>Xác nhận — trừ buổi</b> bị khoá.
+                            </figcaption>
+                        </figure>
+                        <figure class="shot">
+                            <img
+                                src="images/checkin-04-da-checkin-xac-nhan-duoc.png"
+                                alt="Cùng buổi sau khi khách check-in tại quầy: khách hiện Đã check-in, cuối sheet ghi số buổi sẽ trừ, nút Xác nhận — trừ buổi bật."
+                                loading="lazy"
+                            />
+                            <figcaption>
+                                Khách đã check-in: nhãn <b>Đã check-in</b>, sheet
+                                ghi trước số buổi sẽ trừ, nút Xác nhận bật.
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="shots">
+                        <figure class="shot">
+                            <img
+                                src="images/checkin-02-the-buoi-tap-hom-nay.png"
+                                alt="Màn Check-in sau khi chọn khách: thẻ Buổi tập hôm nay liệt kê buổi PT 1:1 07:00 và Pilates 2:1 09:00, mỗi khách ghi Chưa check-in. Thẻ không có nút xác nhận."
+                                loading="lazy"
+                            />
+                            <figcaption>
+                                Màn Check-in: thẻ <b>Buổi tập hôm nay</b> hiện
+                                dưới thông tin khách, chỉ để báo tin, không có
+                                nút xác nhận.
+                            </figcaption>
+                        </figure>
+                        <figure class="shot">
+                            <img
+                                src="images/checkin-03-khach-da-checkin-hom-nay.png"
+                                alt="Hồ sơ khách trên màn Check-in hiện dòng: Khách đã check-in hôm nay lúc 06:52 ở chi nhánh này. Chỉ check-in lại khi khách quay lại cho lượt tập mới."
+                                loading="lazy"
+                            />
+                            <figcaption>
+                                Khách đã check-in hôm nay ở chi nhánh này: chỉ
+                                check-in lại khi khách quay lại cho lượt tập mới.
                             </figcaption>
                         </figure>
                     </div>
