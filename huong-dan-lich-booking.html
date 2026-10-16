@@ -786,8 +786,9 @@
                 <p class="lede">
                     <b>CS / OM</b> tạo lịch và chốt buổi ở
                     <b>Lịch → Lịch Booking</b>. Gói của khách chỉ bị trừ khi bấm
-                    <b>Xác nhận</b> hoặc <b>Huỷ sát giờ</b>. Sau khi bấm thì
-                    buổi bị khoá.
+                    <b>Xác nhận</b> hoặc <b>Huỷ sát giờ</b>. Xác nhận được sau
+                    khi khách check-in tại quầy (lớp nhóm không cần). Sau khi
+                    bấm thì buổi bị khoá.
                 </p>
             </header>
 
@@ -1731,9 +1732,10 @@
                                         <tr>
                                             <td><b>Xác nhận — trừ buổi</b></td>
                                             <td>
-                                                Đã chốt với khách và HLV. Xác
-                                                nhận <b>trước</b> buổi tập,
-                                                không đợi tập xong.
+                                                Khách <b>đã check-in tại
+                                                quầy</b>, đúng chi nhánh, trong
+                                                ngày, trước giờ kết thúc. Chưa
+                                                check-in thì nút bị khoá.
                                             </td>
                                             <td>1</td>
                                         </tr>
@@ -1749,7 +1751,7 @@
                                             <td><b>Huỷ sát giờ</b></td>
                                             <td>
                                                 Khách huỷ quá hạn theo quy định
-                                                club, hoặc không đến.
+                                                club, hoặc không đến (lịch ghi "Không đến").
                                             </td>
                                             <td>1</td>
                                         </tr>
@@ -1760,6 +1762,17 @@
                                 Gói hết buổi thì sheet ghi "Không xác nhận được
                                 cho tới khi khách có gói còn buổi". Lúc đó chỉ
                                 còn bấm được Huỷ buổi.
+                            </p>
+                            <p class="note">
+                                Áp dụng cho PT 1:1, Pilates 2:1, massage,
+                                stretching, recovery (lớp nhóm không cần).
+                                Khách check-in trước rồi mới tạo lịch hôm đó
+                                thì hệ thống tự ghi nhận. Khách có 2 buổi trong
+                                ngày phải check-in 2 lần, cách nhau ít nhất 10
+                                phút. Dời buổi sang ngày khác thì khách phải
+                                check-in lại vào ngày mới. Buổi nhập vào hệ
+                                thống sau ngày tập thì không nhận check-in được
+                                nữa — báo OM.
                             </p>
                         </div>
                         <figure>
@@ -1908,6 +1921,20 @@
                                     thuật.
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    Khách chưa check-in tại quầy — chưa xác
+                                    nhận buổi được
+                                </td>
+                                <td>
+                                    Mời khách check-in ở trang Check-in, đúng
+                                    chi nhánh của buổi. Vẫn khoá thì cho khách
+                                    check-in lại sau 10 phút. Khách có gói đang
+                                    tạm ngưng hoặc hết hạn thì không check-in
+                                    được, báo OM. Khách không đến thì bấm Huỷ
+                                    sát giờ (nút ghi "Huỷ muộn").
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -1925,7 +1952,10 @@
                             Xử lý các buổi có nhãn <b>Yêu cầu</b> (khách đặt qua
                             app): gọi khách và HLV, dời giờ nếu cần.
                         </li>
-                        <li>Trước giờ tập: xác nhận những buổi đã chốt.</li>
+                        <li>
+                            Khi khách check-in tại quầy: xác nhận buổi (lớp nhóm
+                            thì không cần check-in).
+                        </li>
                         <li>
                             Khách báo huỷ: còn trong hạn bấm <b>Huỷ buổi</b>;
                             quá hạn hoặc không đến bấm <b>Huỷ sát giờ</b>.
