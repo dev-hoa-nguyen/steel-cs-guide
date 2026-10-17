@@ -1944,6 +1944,67 @@
             </section>
 
             <section>
+                <h2>Admin: xác nhận không cần check-in</h2>
+                <div class="box">
+                    <p>
+                        Dành cho <b>Administrator</b> và <b>Admin Manager</b>.
+                        Các role khác không thấy nút này. Dùng khi buổi đã
+                        diễn ra nhưng hệ thống không gắn được check-in: khách
+                        quên check-in, máy hoặc quầy check-in lỗi, buổi nhập từ
+                        hôm sau, hoặc nhập muộn mà trùng lớp nhóm khách đã đặt.
+                    </p>
+                    <ol class="steps">
+                        <li>
+                            Mở <b>Chi tiết buổi</b>. Bấm chữ nhỏ
+                            <b>Chốt buổi tập</b> ở cuối sheet, bên phải dòng
+                            "Chờ khách check-in tại quầy…". Chữ này chỉ hiện khi
+                            buổi đã bắt đầu, chưa xác nhận và chưa ai check-in.
+                        </li>
+                        <li>
+                            Chọn lý do: <b>Khách quên check-in</b>,
+                            <b>Máy/quầy check-in lỗi</b>,
+                            <b>Buổi nhập muộn, hệ thống không gắn được</b> hoặc
+                            <b>Khác</b>. Chọn Khác thì bắt buộc ghi chú; các lý
+                            do còn lại ghi chú tuỳ chọn (tối đa 150 ký tự).
+                        </li>
+                        <li>
+                            Buổi 2:1: chọn khách có mặt (ít nhất 1 người).
+                            Khách không chọn giữ nguyên trạng thái.
+                        </li>
+                        <li>
+                            Bấm xác nhận. Buổi được xác nhận và trừ 1 buổi như
+                            xác nhận thường. Giờ check-in ghi là lần check-in
+                            sớm nhất trong ngày trước giờ bắt đầu (cùng chi
+                            nhánh), không có thì lấy giờ bắt đầu buổi.
+                        </li>
+                    </ol>
+                    <div class="shots">
+                        <figure class="shot">
+                            <img
+                                src="images/checkin-05-xac-nhan-khong-can-checkin.png"
+                                alt="Hộp thoại Xác nhận không cần check-in: bốn lý do (Khách quên check-in, Máy/quầy check-in lỗi, Buổi nhập muộn hệ thống không gắn được, Khác), ô Ghi chú tối đa 150 ký tự, danh sách khách được xác nhận và nút Xác nhận."
+                                loading="lazy"
+                            />
+                            <figcaption>
+                                Hộp thoại xác nhận tay: chọn lý do, ghi chú nếu
+                                cần, chọn khách có mặt rồi bấm <b>Xác nhận</b>.
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="callout">
+                        <b>Có dấu vết, không sửa được trên app</b>
+                        <p>
+                            Lý do được ghi vào Ghi chú của buổi dạng "[Xác nhận
+                            tay] lý do — ghi chú" và chi tiết buổi hiện nhãn
+                            <b>Xác nhận tay</b>. Hệ thống cũng lưu ai bấm và
+                            lúc nào. Chỉ dùng khi khách thật sự đã tập; bấm rồi
+                            thì báo quản lý như các nút xác nhận khác.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
                 <h2>Gặp thông báo này thì làm gì</h2>
                 <div class="compare">
                     <table>
@@ -2020,7 +2081,14 @@
                                     liền nhau. Trừ khi khách check-in sớm hơn 3
                                     tiếng trước buổi, hoặc đã rời đi rồi quay lại
                                     sau hơn 30 phút: khi đó mời khách check-in
-                                    lại (cách lần trước ít nhất 10 phút). Tải lại vẫn khoá thì báo kỹ
+                                    lại (cách lần trước ít nhất 10 phút). Buổi
+                                    bạn nhập muộn sau giờ kết thúc nhưng
+                                    <b>cùng ngày tập</b> thì hệ thống tự gắn
+                                    lần check-in của khách, không cần làm gì
+                                    thêm (tải lại trang là thấy). Buổi nhập từ
+                                    hôm sau, hoặc đã tải lại mà vẫn khoá: báo
+                                    Admin để xác nhận tay (xem mục
+                                    "Admin: xác nhận không cần check-in"). Tải lại vẫn khoá thì báo kỹ
                                     thuật. Khách có gói đang
                                     tạm ngưng hoặc hết hạn thì không check-in
                                     được, báo OM. Khách không đến thì bấm Huỷ
@@ -2051,6 +2119,12 @@
                         <li>
                             Khách báo huỷ: còn trong hạn bấm <b>Huỷ buổi</b>;
                             quá hạn hoặc không đến bấm <b>Huỷ sát giờ</b>.
+                        </li>
+                        <li>
+                            Nút <b>Xác nhận</b> nằm riêng ở trên, các nút huỷ nhỏ
+                            hơn và nằm dưới vạch kẻ. Bấm nút nào cũng hiện hộp
+                            hỏi lại (tên khách, giờ, có trừ buổi không). Đọc kỹ
+                            rồi mới bấm; bấm nhầm thì chọn <b>Quay lại</b>.
                         </li>
                         <li>
                             Cuối ca: ô Chờ xác nhận của những buổi đã qua phải
