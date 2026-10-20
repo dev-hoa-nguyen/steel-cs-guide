@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hướng dẫn Lịch Group Class</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f7f5; --surface: #ffffff; --ink: #1c2230; --muted: #5a6273; --line: #dfe2e6;
+    --accent: #2f5d8a; --accent-soft: #e6eef6;
+    --crit: #b3261e; --crit-soft: #fbeae8;
+    --warn: #9a5b00; --warn-soft: #fbf0dd;
+    --ok: #2e7d4f; --ok-soft: #e4f3ea;
+    --code-bg: #eef0f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+      --accent: #7fb0e0; --accent-soft: #1d2b3b;
+      --crit: #f08a80; --crit-soft: #3a1f1e;
+      --warn: #e7b25c; --warn-soft: #362a17;
+      --ok: #79c795; --ok-soft: #1a3024;
+      --code-bg: #242a35;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+    --accent: #7fb0e0; --accent-soft: #1d2b3b;
+    --crit: #f08a80; --crit-soft: #3a1f1e;
+    --warn: #e7b25c; --warn-soft: #362a17;
+    --ok: #79c795; --ok-soft: #1a3024;
+    --code-bg: #242a35;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    padding-inline: 16px; padding-block: 32px 64px;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px; }
+  header { display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
+  h2 { font-size: 20px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  p { margin: 0; max-width: 70ch; }
+  .lede { color: var(--muted); font-size: 16px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--muted); font-size: 13px; }
+  section { display: flex; flex-direction: column; gap: 12px; }
+  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+  ul.list, ol.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+
+  .danger { background: var(--crit-soft); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .danger h2 { color: var(--crit); }
+  .danger .box { background: var(--surface); border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; display: grid; grid-template-columns: 34px 1fr; gap: 4px 14px; }
+  .step .n { grid-row: span 2; width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .who { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--bg); }
+  tr:last-child td { border-bottom: 0; }
+  td.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; white-space: nowrap; }
+  td.num { font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12.5px; white-space: nowrap; }
+  tr.known td { background: var(--warn-soft); }
+
+  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .rule { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; font-size: 14px; }
+  .rule > b:first-child { display: block; font-size: 14.5px; margin-bottom: 4px; }
+  .note { font-size: 13.5px; color: var(--muted); max-width: 72ch; }
+
+  .shot { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .shot img { display: block; align-self: flex-start; width: auto; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  .shot figcaption { font-size: 13px; color: var(--muted); max-width: 72ch; }
+  .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; align-items: start; }
+  .step .shot { grid-column: 2; margin-top: 8px; }
+
+  @media (max-width: 520px) {
+    h1 { font-size: 23px; }
+    .step { grid-template-columns: 1fr; }
+    .step .n { grid-row: auto; }
+    .step .shot { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Note cho team vận hành · Lịch Group Class</div>
+    <h1>Lên lịch lớp nhóm, ghi danh và điểm danh khách</h1>
+    <p class="lede">Lớp nhóm (Yoga, Pilates mat, Kettlebell…) giờ được lên lịch, ghi danh và điểm danh ngay trên app nội bộ, ở trang <b>Lịch Group Class</b>. Điểm danh dùng chung luật với Lịch booking: khách phải check-in tại quầy trước. Hệ thống tự trừ và hoàn class pass, tự cộng điểm thưởng.</p>
+    <div class="meta">
+      <span>Ngày: 20/10/2026</span>
+      <span>Áp dụng: internal-app-v2 · Lịch Group Class, Check-in, Lịch booking</span>
+      <span>Ảnh chụp màn hình sẽ bổ sung sau khi lên staging</span>
+    </div>
+  </header>
+
+  <section class="danger">
+    <h2>Đọc trước: 4 điều khác với cách làm cũ</h2>
+    <div class="box">
+      <p><b>1. Chưa check-in tại quầy thì chưa điểm danh được.</b> Nút <b>Điểm danh</b> chỉ mở sau khi khách check-in ở đúng chi nhánh của lớp, trong khoảng từ 3 giờ trước giờ lớp đến hết lớp. Coach cũng vậy, không có lối bỏ qua. Khách quên check-in thì mời khách check-in tại quầy; trường hợp đặc biệt báo Admin.</p>
+      <p><b>2. Ghi danh lớp có phí sẽ trừ class pass.</b> Mỗi khách ghi danh trừ 1 class pass trong gói (nếu gói có class pass). Huỷ ghi danh hoặc huỷ lớp thì hoàn lại. Lớp <b>FREE</b> không trừ.</p>
+      <p><b>3. Huỷ lớp là xoá hết ghi danh.</b> Mọi khách trong lớp bị xoá khỏi danh sách và được hoàn class pass. "Khôi phục lớp" trả về một lớp <b>trống</b>, phải ghi danh lại từ đầu.</p>
+      <p><b>4. Không ghi danh trùng giờ buổi PT.</b> Khách đang có buổi PT, Pilates 2:1 hoặc trị liệu trùng giờ thì không ghi danh được, và ngược lại: không tạo / dời buổi PT đè lên lớp khách đã ghi danh. Hai khung chỉ chạm nhau (lớp xong 13:00, PT bắt đầu 13:00) thì được.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Quy tắc cần nhớ</h2>
+    <div class="rules">
+      <div class="rule"><b>Ai được ghi danh</b>Lớp có phí: khách có gói đang hoạt động (chủ gói hoặc thành viên chia sẻ). Lớp FREE: cả khách chưa có gói (khách mời).</div>
+      <div class="rule"><b>Khung check-in</b>Check-in tính cho lớp nếu cùng chi nhánh, cùng ngày, từ 3 giờ trước giờ lớp đến hết lớp. Một lần check-in tính được cho nhiều lớp và cả buổi PT trong ngày. Quầy chưa chọn chi nhánh thì check-in không được tính.</div>
+      <div class="rule"><b>Điểm thưởng</b>Có mặt → +5 điểm, chỉ cho khách có gói đang hoạt động, mỗi lần ghi danh chỉ 1 lần. Bỏ tick "Có mặt" không thu hồi điểm, tick lại không cộng thêm. Khách gói Unlimited đã đủ 50 điểm trong ngày thì không cộng.</div>
+      <div class="rule"><b>Lớp đầy</b>Đủ số chỗ thì lớp chuyển "Đầy", không ghi danh thêm. Sức chứa lấy theo lớp trong danh mục, không chỉnh riêng từng buổi.</div>
+      <div class="rule"><b>Lớp FREE</b>Đổi được FREE chỉ khi lớp chưa có buổi sắp tới nào có người ghi danh. Khách mời lớp FREE check-in được tại quầy khi có ghi danh lớp FREE hôm nay, nhưng không được cộng điểm check-in.</div>
+      <div class="rule"><b>Lớp ẩn</b>Lớp "Đang ẩn" không hiện cho khách và không lên poster. Bật "Hiển thị" trong chi tiết lớp nếu tạo nhầm.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Đọc lịch</h2>
+    <p>Mở <b>Lịch Group Class</b> trong menu <b>Lịch</b> (HLV: menu <b>Huấn luyện</b>). Mỗi cột là một ngày trong tuần, lớp xếp theo giờ. Dùng ‹ › để chuyển tuần, <b>Tuần này</b> để quay về.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Màu card</th><th>Nghĩa</th></tr></thead>
+        <tbody>
+          <tr><td><b>Đen</b></td><td>Còn chỗ</td></tr>
+          <tr><td><b>Xanh lá</b></td><td>Đầy</td></tr>
+          <tr><td><b>Xám, gạch ngang</b></td><td>Đã huỷ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Trên card: giờ, loại lớp, tag <b>VN</b> / <b>EN</b> (ngôn ngữ HLV dạy) và <b>FREE</b>, tên lớp, HLV, chi nhánh, khách đã ghi danh (ô xanh là đã có mặt) và số chỗ. Chữ "· ẩn" cạnh tên HLV là lớp đang ẩn với khách. Bấm card để mở chi tiết bên phải.</p>
+  </section>
+
+  <section>
+    <h2>Ghi danh khách</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">CS · chi tiết lớp</div>
+        <div>Mở lớp, bấm <b>+ Thêm khách</b>. Tìm khách theo tên hoặc số điện thoại (ít nhất 2 ký tự).</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">CS · chọn khách</div>
+        <div>Bấm <b>Ghi danh</b> ở dòng khách. Khách không ghi danh được thì dòng đó hiện lý do màu đỏ thay cho nút: <b>Không có gói active</b> (lớp có phí) hoặc <b>Lớp đã đầy</b>.</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">CS · khách chưa có hồ sơ</div>
+        <div>Bấm <b>Khách mới</b>, nhập họ tên, số điện thoại (email không bắt buộc), bấm <b>Tạo khách</b>. Lớp FREE: hệ thống tạo khách và ghi danh luôn. Lớp có phí: chỉ tạo khách, báo "khách chưa có gói" — khách cần mua gói trước. Số điện thoại đã có người dùng thì báo <b>SĐT đã được sử dụng</b>: tìm lại khách theo số đó.</div>
+      </div>
+    </div>
+    <p class="note">Huỷ ghi danh: tab <b>Ghi danh</b>, bấm biểu tượng thùng rác cuối dòng khách, xác nhận lại. Class pass được hoàn nếu đã trừ.</p>
+  </section>
+
+  <section>
+    <h2>Check-in và điểm danh</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">CS · màn Check-in</div>
+        <div>Check-in khách như bình thường. Khi chọn khách, thẻ <b>Buổi tập hôm nay</b> hiện cả lớp nhóm khách đã ghi danh hôm nay ở chi nhánh này: "Lớp nhóm · tên lớp", HLV và trạng thái. Thẻ chỉ để báo tin.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">CS hoặc HLV · tab Ghi danh</div>
+        <div>Mỗi khách có một trong 3 trạng thái: <b>Chờ khách check-in tại quầy</b> (nút Điểm danh khoá), <b>Đã check-in HH:mm</b> (nút mở), <b>Có mặt</b>. Bấm <b>Điểm danh</b> khi khách vào lớp. Khách có gói được cộng +5 điểm.</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">Bấm nhầm</div>
+        <div>Bấm <b>Có mặt</b> để bỏ điểm danh, xác nhận lại. Điểm đã cộng không thu hồi; tick lại cũng không cộng thêm.</div>
+      </div>
+    </div>
+    <p class="note">Khách đã check-in mà vẫn hiện "Chờ khách check-in": đóng và mở lại lớp, hoặc chuyển tab rồi quay lại. Vẫn chưa được thì kiểm tra lượt check-in có đúng chi nhánh và đúng khung giờ không.</p>
+    <p><b>HLV</b> chỉ điểm danh được lớp mình dạy, và cũng phải chờ khách check-in. HLV không thêm khách, không huỷ lớp.</p>
+  </section>
+
+  <section>
+    <h2>Chốt điểm danh (chỉ Admin)</h2>
+    <p>Dùng khi khách thật sự có mặt nhưng không check-in được (quên check-in, máy hoặc quầy check-in lỗi). Chỉ Administrator và Admin Manager thấy chữ <b>Chốt điểm danh</b> cạnh dòng "Chờ khách check-in tại quầy", và chỉ khi lớp đã bắt đầu.</p>
+    <ol class="list">
+      <li>Bấm <b>Chốt điểm danh</b>, chọn lý do: <b>Khách quên check-in</b>, <b>Máy/quầy check-in lỗi</b> hoặc <b>Khác</b> (bắt buộc ghi chú, tối đa 150 ký tự).</li>
+      <li>Bấm <b>Xác nhận</b>. Khách thành <b>Có mặt</b>, dòng khách có nhãn <b>Xác nhận tay</b> kèm lý do. Thao tác được ghi lại để tra sau.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Tạo, huỷ, khôi phục lớp</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Việc</th><th>Cách làm</th><th>Kết quả</th></tr></thead>
+        <tbody>
+          <tr><td>Tạo buổi lớp</td><td><b>+ Lớp</b> trên thanh công cụ: chọn lớp, ngày, giờ, HLV (bật <b>Tất cả HLV</b> nếu không thấy người cần), bật / tắt <b>Hiển thị lớp cho khách</b></td><td>Lớp mới hiện trên lịch, board nhảy tới tuần của lớp. Sức chứa theo lớp, không sửa ở đây</td></tr>
+          <tr><td>Ẩn / hiện lớp</td><td>Tab <b>Chi tiết</b>, công tắc ở dòng <b>Hiển thị</b></td><td>Lớp ẩn không hiện cho khách, không lên poster</td></tr>
+          <tr><td>Huỷ lớp</td><td><b>Huỷ lớp</b> (nút nhỏ dưới vạch kẻ), xác nhận lại</td><td>Xoá mọi ghi danh, hoàn class pass, lớp thành "Đã huỷ"</td></tr>
+          <tr><td>Khôi phục lớp</td><td>Mở lớp đã huỷ, <b>Khôi phục lớp</b>, xác nhận lại</td><td>Lớp mở lại, <b>trống</b></td></tr>
+          <tr><td>Đổi giờ / HLV</td><td>Chưa có trên app</td><td>Huỷ lớp rồi tạo buổi mới (ghi danh phải làm lại)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Danh mục lớp và poster</h2>
+    <p>Tab <b>Danh mục lớp</b> liệt kê các lớp: loại lớp, thời lượng, sức chứa, tag, mô tả và giáo án. <b>+ Lớp mới</b> để thêm lớp: tên, loại lớp, thời lượng, sức chứa, ngôn ngữ (VN / EN, mặc định VN), mô tả, và <b>Lớp miễn phí (FREE)</b>.</p>
+    <p>Nút <b>Export</b> trên thanh công cụ tải ảnh PNG "GROUP SCHEDULE" của tuần đang xem để gửi khách. Tuần có lớp ẩn thì app báo số lớp không lên poster.</p>
+  </section>
+
+  <section>
+    <h2>Gặp thông báo này thì làm gì</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Thông báo</th><th>Nghĩa</th><th>Làm gì</th></tr></thead>
+        <tbody>
+          <tr><td>Khách chưa check-in tại quầy — chưa điểm danh được</td><td>Chưa có lượt check-in hợp lệ</td><td>Mời khách check-in ở quầy đúng chi nhánh; đặc biệt thì báo Admin chốt tay</td></tr>
+          <tr><td>Khách chưa có gói còn hiệu lực — chỉ ghi danh được lớp FREE</td><td>Khách không có gói đang hoạt động</td><td>Mời mua gói, hoặc chọn lớp FREE</td></tr>
+          <tr><td>Lớp đã đầy — mở thêm buổi nếu còn nhu cầu</td><td>Hết chỗ</td><td>Tạo thêm buổi lớp</td></tr>
+          <tr><td>Khách đã có buổi khác trong khung giờ này</td><td>Trùng buổi PT / 2:1 / trị liệu</td><td>Dời buổi PT hoặc chọn lớp khác giờ</td></tr>
+          <tr><td>Khách có lớp group trùng giờ (ở Lịch booking)</td><td>Buổi PT đè lên lớp khách đã ghi danh</td><td>Chọn giờ khác, hoặc huỷ ghi danh lớp trước</td></tr>
+          <tr><td>Khách đã có trong danh sách lớp này</td><td>Đã ghi danh rồi</td><td>Không cần làm gì</td></tr>
+          <tr><td>Lớp đã huỷ — không ghi danh hay điểm danh được</td><td>Lớp đã huỷ</td><td>Khôi phục lớp (lớp trống) rồi ghi danh lại</td></tr>
+          <tr><td>SĐT đã được sử dụng</td><td>Số đã thuộc một tài khoản</td><td>Tìm khách theo số đó thay vì tạo mới</td></tr>
+          <tr><td>Khách đã check-in — dùng nút Điểm danh thường</td><td>Admin chốt tay cho khách đã check-in</td><td>Bấm Điểm danh</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Khách ghi danh trên member app mà bị trùng giờ buổi PT sẽ chỉ thấy lỗi chung. Khi khách hỏi, giải thích là đang có buổi PT cùng giờ.</p>
+  </section>
+
+  <section>
+    <h2>Ai được làm gì</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Vai trò</th><th>Được làm</th></tr></thead>
+        <tbody>
+          <tr><td>CS, OM, Admin Manager, Admin</td><td>Tạo / huỷ / khôi phục lớp, ẩn / hiện, ghi danh, huỷ ghi danh, điểm danh, tạo lớp mới, xuất poster</td></tr>
+          <tr><td>Admin Manager, Admin</td><td>Thêm: Chốt điểm danh không cần check-in</td></tr>
+          <tr><td>HLV</td><td>Xem lịch, điểm danh lớp mình dạy (sau khi khách check-in), xuất poster</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
