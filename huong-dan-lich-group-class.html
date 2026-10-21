@@ -55,10 +55,21 @@
   section { display: flex; flex-direction: column; gap: 12px; }
   code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
   ul.list, ol.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+  a { color: var(--accent); }
+
+  .toc { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; }
+  .toc ol { margin: 6px 0 0; padding-left: 22px; columns: 2 260px; column-gap: 28px; font-size: 14px; }
+
+  .summary { background: var(--accent-soft); border-radius: 8px; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; }
+  .summary h2 { color: var(--accent); font-size: 17px; }
 
   .danger { background: var(--crit-soft); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
   .danger h2 { color: var(--crit); }
   .danger .box { background: var(--surface); border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+  .tip { background: var(--ok-soft); border-radius: 6px; padding: 10px 14px; font-size: 14px; max-width: 72ch; }
+  .warn { background: var(--warn-soft); border-radius: 6px; padding: 10px 14px; font-size: 14px; max-width: 72ch; }
+  .tip b:first-child, .warn b:first-child { margin-right: 4px; }
 
   .steps { display: flex; flex-direction: column; gap: 10px; }
   .step { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; display: grid; grid-template-columns: 34px 1fr; gap: 4px 14px; }
@@ -70,18 +81,21 @@
   th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
   th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--bg); }
   tr:last-child td { border-bottom: 0; }
-  td.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; white-space: nowrap; }
-  td.num { font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12.5px; white-space: nowrap; }
-  tr.known td { background: var(--warn-soft); }
 
   .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
   .rule { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; font-size: 14px; }
   .rule > b:first-child { display: block; font-size: 14.5px; margin-bottom: 4px; }
   .note { font-size: 13.5px; color: var(--muted); max-width: 72ch; }
 
+  .qa { display: flex; flex-direction: column; gap: 8px; }
+  .qa details { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 10px 16px; }
+  .qa summary { cursor: pointer; font-weight: 600; }
+  .qa details p { margin-top: 8px; font-size: 14.5px; }
+
   .shot { margin: 0; display: flex; flex-direction: column; gap: 6px; }
   .shot img { display: block; align-self: flex-start; width: auto; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
   .shot figcaption { font-size: 13px; color: var(--muted); max-width: 72ch; }
+  .shot.wide img { width: 100%; }
   .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; align-items: start; }
   .step .shot { grid-column: 2; margin-top: 8px; }
 
@@ -97,139 +111,257 @@
 <div class="wrap">
 
   <header>
-    <div class="eyebrow">Note cho team vận hành · Lịch Group Class</div>
+    <div class="eyebrow">Hướng dẫn cho CS và OM · Lịch Group Class</div>
     <h1>Lên lịch lớp nhóm, ghi danh và điểm danh khách</h1>
-    <p class="lede">Lớp nhóm (Yoga, Pilates mat, Kettlebell…) giờ được lên lịch, ghi danh và điểm danh ngay trên app nội bộ, ở trang <b>Lịch Group Class</b>. Điểm danh dùng chung luật với Lịch booking: khách phải check-in tại quầy trước. Hệ thống tự trừ và hoàn class pass, tự cộng điểm thưởng.</p>
+    <p class="lede">Từ nay lớp nhóm (Pilates mat, Yoga, Running Club…) được lên lịch, ghi danh và điểm danh ngay trên app nội bộ, ở trang <b>Lịch Group Class</b>. Bài này đi theo đúng thứ tự công việc trong ngày: mở lịch → tạo buổi → ghi danh → khách check-in → điểm danh.</p>
     <div class="meta">
-      <span>Ngày: 20/10/2026</span>
-      <span>Áp dụng: internal-app-v2 · Lịch Group Class, Check-in, Lịch booking</span>
-      <span>Ảnh chụp màn hình sẽ bổ sung sau khi lên staging</span>
+      <span>Cập nhật: 22/10/2026</span>
+      <span>Áp dụng: internal-app-v2 · Lịch Group Class, Check-in</span>
+      <span>Ảnh chụp từ dữ liệu mẫu, tên khách là tên giả</span>
     </div>
   </header>
 
+  <div class="summary">
+    <h2>Nhớ 5 điều này là đủ dùng</h2>
+    <ol class="list">
+      <li><b>Khách phải check-in tại quầy trước</b>, rồi mới bấm được <b>Điểm danh</b> trong lớp. Giống hệt Lịch booking.</li>
+      <li>Ghi danh lớp <b>có phí</b> chỉ cho khách có gói đang hoạt động, và trừ 1 class pass (nếu gói có). Lớp <b>FREE</b> thì ai cũng ghi danh được, không trừ gì.</li>
+      <li><b>Huỷ lớp là xoá hết ghi danh</b> (có hoàn class pass). Khôi phục lớp thì lớp trống, phải ghi danh lại.</li>
+      <li>Khách đang có buổi <b>PT / Pilates 2:1 / trị liệu trùng giờ</b> thì không ghi danh lớp được, và ngược lại.</li>
+      <li>Điểm danh do <b>CS hoặc OM</b> quản lý lớp làm. HLV không điểm danh. Chỉ <b>Admin</b> mới "Chốt điểm danh" khi khách quên check-in.</li>
+    </ol>
+  </div>
+
+  <nav class="toc">
+    <b>Nội dung</b>
+    <ol>
+      <li><a href="#doc-lich">Mở trang và đọc lịch</a></li>
+      <li><a href="#tao-buoi">Tạo buổi lớp</a></li>
+      <li><a href="#ghi-danh">Ghi danh khách</a></li>
+      <li><a href="#check-in">Khách check-in tại quầy</a></li>
+      <li><a href="#diem-danh">Điểm danh</a></li>
+      <li><a href="#chot-tay">Chốt điểm danh (Admin)</a></li>
+      <li><a href="#huy-lop">Huỷ, khôi phục, ẩn / hiện lớp</a></li>
+      <li><a href="#danh-muc">Danh mục lớp và tạo lớp mới</a></li>
+      <li><a href="#xuat-lich">Xuất lịch tuần gửi khách</a></li>
+      <li><a href="#tinh-huong">Tình huống hay gặp</a></li>
+      <li><a href="#thong-bao">Gặp thông báo này thì làm gì</a></li>
+      <li><a href="#vai-tro">Ai được làm gì</a></li>
+    </ol>
+  </nav>
+
   <section class="danger">
-    <h2>Đọc trước: 4 điều khác với cách làm cũ</h2>
+    <h2>Khác với cách làm cũ</h2>
     <div class="box">
-      <p><b>1. Chưa check-in tại quầy thì chưa điểm danh được.</b> Nút <b>Điểm danh</b> chỉ mở sau khi khách check-in ở đúng chi nhánh của lớp, trong khoảng từ 3 giờ trước giờ lớp đến hết lớp. Coach cũng vậy, không có lối bỏ qua. Khách quên check-in thì mời khách check-in tại quầy; trường hợp đặc biệt báo Admin.</p>
-      <p><b>2. Ghi danh lớp có phí sẽ trừ class pass.</b> Mỗi khách ghi danh trừ 1 class pass trong gói (nếu gói có class pass). Huỷ ghi danh hoặc huỷ lớp thì hoàn lại. Lớp <b>FREE</b> không trừ.</p>
-      <p><b>3. Huỷ lớp là xoá hết ghi danh.</b> Mọi khách trong lớp bị xoá khỏi danh sách và được hoàn class pass. "Khôi phục lớp" trả về một lớp <b>trống</b>, phải ghi danh lại từ đầu.</p>
-      <p><b>4. Không ghi danh trùng giờ buổi PT.</b> Khách đang có buổi PT, Pilates 2:1 hoặc trị liệu trùng giờ thì không ghi danh được, và ngược lại: không tạo / dời buổi PT đè lên lớp khách đã ghi danh. Hai khung chỉ chạm nhau (lớp xong 13:00, PT bắt đầu 13:00) thì được.</p>
+      <p><b>1. Chưa check-in thì chưa điểm danh được.</b> Nút <b>Điểm danh</b> chỉ mở sau khi khách check-in ở <b>đúng chi nhánh của lớp</b>, trong khoảng <b>3 giờ trước giờ lớp đến hết lớp</b>. Khách quên check-in thì mời khách ra quầy check-in; trường hợp đặc biệt báo Admin.</p>
+      <p><b>2. Ghi danh lớp có phí sẽ trừ class pass.</b> Mỗi lượt ghi danh trừ 1 class pass trong gói (nếu gói có class pass). Huỷ ghi danh hoặc huỷ lớp thì hoàn lại. Lớp FREE không trừ.</p>
+      <p><b>3. Huỷ lớp là xoá hết ghi danh.</b> "Khôi phục lớp" trả về một lớp <b>trống</b>.</p>
+      <p><b>4. Không ghi danh trùng giờ buổi PT.</b> Hai khung chỉ chạm nhau (lớp xong 13:00, PT bắt đầu 13:00) thì vẫn được.</p>
     </div>
   </section>
 
-  <section>
-    <h2>Quy tắc cần nhớ</h2>
-    <div class="rules">
-      <div class="rule"><b>Ai được ghi danh</b>Lớp có phí: khách có gói đang hoạt động (chủ gói hoặc thành viên chia sẻ). Lớp FREE: cả khách chưa có gói (khách mời).</div>
-      <div class="rule"><b>Khung check-in</b>Check-in tính cho lớp nếu cùng chi nhánh, cùng ngày, từ 3 giờ trước giờ lớp đến hết lớp. Một lần check-in tính được cho nhiều lớp và cả buổi PT trong ngày. Quầy chưa chọn chi nhánh thì check-in không được tính.</div>
-      <div class="rule"><b>Điểm thưởng</b>Có mặt → +5 điểm, chỉ cho khách có gói đang hoạt động, mỗi lần ghi danh chỉ 1 lần. Bỏ tick "Có mặt" không thu hồi điểm, tick lại không cộng thêm. Khách gói Unlimited đã đủ 50 điểm trong ngày thì không cộng.</div>
-      <div class="rule"><b>Lớp đầy</b>Đủ số chỗ thì lớp chuyển "Đầy", không ghi danh thêm. Sức chứa lấy theo lớp trong danh mục, không chỉnh riêng từng buổi.</div>
-      <div class="rule"><b>Lớp FREE</b>Đổi được FREE chỉ khi lớp chưa có buổi sắp tới nào có người ghi danh. Khách mời lớp FREE check-in được tại quầy khi có ghi danh lớp FREE hôm nay, nhưng không được cộng điểm check-in.</div>
-      <div class="rule"><b>Lớp ẩn</b>Lớp "Đang ẩn" không hiện cho khách và không lên poster. Bật "Hiển thị" trong chi tiết lớp nếu tạo nhầm.</div>
+  <section id="doc-lich">
+    <h2>1. Mở trang và đọc lịch</h2>
+    <p>Chọn đúng <b>chi nhánh</b> ở góc phải trên, rồi mở menu <b>Lịch → Lịch Group Class</b>. Mỗi cột là một ngày, lớp xếp từ sáng đến tối. Ngày hôm nay được tô nền.</p>
+    <figure class="shot wide"><img src="images/gc-01-lich-tuan.png" alt="Trang Lịch Group Class: thanh chọn tuần, 4 ô số liệu, chú thích màu và lịch 7 ngày." loading="lazy"><figcaption>Trang Lịch Group Class. Trên cùng là thanh chọn tuần và các nút, rồi 4 ô số liệu của tuần, chú thích màu, và lịch 7 ngày.</figcaption></figure>
+
+    <h3>Thanh công cụ</h3>
+    <figure class="shot"><img src="images/gc-02-thanh-cong-cu.png" alt="Thanh công cụ: nút tuần trước / sau, Tuần này, Xuất Lịch, Thêm Lớp." loading="lazy"></figure>
+    <ul class="list">
+      <li><b>‹ ›</b> chuyển tuần trước / tuần sau. <b>Tuần này</b> quay về tuần hiện tại.</li>
+      <li><b>Xuất Lịch</b> tải ảnh lịch tuần để gửi khách (mục 9).</li>
+      <li><b>Thêm Lớp</b> tạo một buổi lớp mới (mục 2).</li>
+    </ul>
+
+    <h3>Đọc một thẻ lớp</h3>
+    <div class="shots">
+      <figure class="shot"><img src="images/gc-03-card-lop.png" alt="Thẻ lớp Community Run 01:30–02:30, FREE, đã đầy 3/3." loading="lazy"><figcaption>Giờ học · loại lớp · tag ngôn ngữ (VN / EN) và FREE · tên lớp · HLV · chi nhánh · khách đã ghi danh · số chỗ.</figcaption></figure>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Màu thẻ</th><th>Nghĩa</th></tr></thead>
+          <tbody>
+            <tr><td><b>Đen</b></td><td>Còn chỗ</td></tr>
+            <tr><td><b>Xanh lá</b>, chữ "ĐẦY"</td><td>Đủ chỗ, không ghi danh thêm</td></tr>
+            <tr><td><b>Xám, gạch ngang</b>, chữ "ĐÃ HUỶ"</td><td>Lớp đã huỷ</td></tr>
+            <tr><td>Chữ <b>"· ẩn"</b> cạnh tên HLV</td><td>Lớp đang ẩn với khách, không lên ảnh lịch</td></tr>
+            <tr><td>Ô tròn <b>xanh</b> ở cuối thẻ</td><td>Khách đã được điểm danh có mặt</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+    <p>Bấm vào thẻ để mở <b>chi tiết lớp</b> ở bên phải, gồm 2 tab: <b>Chi tiết</b> và <b>Ghi danh</b>.</p>
   </section>
 
-  <section>
-    <h2>Đọc lịch</h2>
-    <p>Mở <b>Lịch Group Class</b> trong menu <b>Lịch</b> (HLV: menu <b>Huấn luyện</b>). Mỗi cột là một ngày trong tuần, lớp xếp theo giờ. Dùng ‹ › để chuyển tuần, <b>Tuần này</b> để quay về.</p>
-    <div class="scroll">
-      <table>
-        <thead><tr><th>Màu card</th><th>Nghĩa</th></tr></thead>
-        <tbody>
-          <tr><td><b>Đen</b></td><td>Còn chỗ</td></tr>
-          <tr><td><b>Xanh lá</b></td><td>Đầy</td></tr>
-          <tr><td><b>Xám, gạch ngang</b></td><td>Đã huỷ</td></tr>
-        </tbody>
-      </table>
+  <section id="tao-buoi">
+    <h2>2. Tạo buổi lớp</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">CS / OM · thanh công cụ</div>
+        <div>Bấm <b>Thêm Lớp</b>. Chọn <b>Lớp</b> (lấy từ Danh mục lớp), <b>Ngày</b>, <b>Giờ bắt đầu</b>, <b>HLV phụ trách</b>. Không thấy HLV cần chọn thì bật <b>Tất cả HLV</b>.</div>
+        <figure class="shot"><img src="images/gc-04-tao-buoi.png" alt="Hộp Tạo lớp: chọn lớp Pilates Core, ngày, giờ, HLV, sức chứa 2 chỉ để xem, công tắc Hiển thị lớp cho khách." loading="lazy"><figcaption>Sức chứa tự lấy theo lớp đã chọn, không sửa ở đây. Muốn đổi sức chứa thì sửa lớp trong danh mục.</figcaption></figure>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">CS / OM · hiển thị</div>
+        <div>Để <b>Hiển thị lớp cho khách</b> bật nếu khách được thấy lớp trên member app và trên ảnh lịch. Tắt nếu lớp nội bộ hoặc chưa chốt. Bấm <b>Tạo lớp</b>: lịch tự nhảy tới tuần của buổi vừa tạo.</div>
+      </div>
     </div>
-    <p>Trên card: giờ, loại lớp, tag <b>VN</b> / <b>EN</b> (ngôn ngữ HLV dạy) và <b>FREE</b>, tên lớp, HLV, chi nhánh, khách đã ghi danh (ô xanh là đã có mặt) và số chỗ. Chữ "· ẩn" cạnh tên HLV là lớp đang ẩn với khách. Bấm card để mở chi tiết bên phải.</p>
+    <p class="note">Chưa có chức năng sửa giờ hay đổi HLV của buổi đã tạo. Muốn đổi thì huỷ buổi rồi tạo buổi mới (khách phải ghi danh lại).</p>
   </section>
 
-  <section>
-    <h2>Ghi danh khách</h2>
+  <section id="ghi-danh">
+    <h2>3. Ghi danh khách</h2>
     <div class="steps">
       <div class="step">
         <div class="n">1</div>
         <div class="who">CS · chi tiết lớp</div>
-        <div>Mở lớp, bấm <b>+ Thêm khách</b>. Tìm khách theo tên hoặc số điện thoại (ít nhất 2 ký tự).</div>
+        <div>Mở lớp, bấm <b>Thêm khách</b> ở cuối khung bên phải. Gõ tên hoặc số điện thoại (ít nhất 2 ký tự).</div>
       </div>
       <div class="step">
         <div class="n">2</div>
         <div class="who">CS · chọn khách</div>
-        <div>Bấm <b>Ghi danh</b> ở dòng khách. Khách không ghi danh được thì dòng đó hiện lý do màu đỏ thay cho nút: <b>Không có gói active</b> (lớp có phí) hoặc <b>Lớp đã đầy</b>.</div>
+        <div>Bấm <b>Ghi danh</b> ở dòng khách. Dòng nào hiện chữ đỏ thay cho nút là khách không ghi danh được, kèm lý do: <b>Không có gói active</b> (lớp có phí), <b>Lớp đã đầy</b>, hoặc khách đã có trong lớp.</div>
+        <figure class="shot"><img src="images/gc-07-them-khach.png" alt="Hộp Ghi danh khách vào lớp: khách có gói có nút Ghi danh, khách mời hiện Không có gói active." loading="lazy"><figcaption>Lớp có phí: khách có gói (dòng ghi tên gói) có nút <b>Ghi danh</b>; khách mời chưa có gói hiện <b>Không có gói active</b>.</figcaption></figure>
       </div>
       <div class="step">
         <div class="n">3</div>
         <div class="who">CS · khách chưa có hồ sơ</div>
-        <div>Bấm <b>Khách mới</b>, nhập họ tên, số điện thoại (email không bắt buộc), bấm <b>Tạo khách</b>. Lớp FREE: hệ thống tạo khách và ghi danh luôn. Lớp có phí: chỉ tạo khách, báo "khách chưa có gói" — khách cần mua gói trước. Số điện thoại đã có người dùng thì báo <b>SĐT đã được sử dụng</b>: tìm lại khách theo số đó.</div>
+        <div>Bấm <b>Khách mới</b>, nhập <b>Họ tên</b>, <b>Số điện thoại</b> (email không bắt buộc), bấm <b>Tạo khách</b>.
+          <ul class="list">
+            <li>Lớp <b>FREE</b>: hệ thống tạo khách và ghi danh luôn.</li>
+            <li>Lớp <b>có phí</b>: chỉ tạo hồ sơ khách, báo khách chưa có gói. Khách mua gói rồi mới ghi danh được.</li>
+            <li>Số điện thoại đã có người dùng: báo <b>SĐT đã được sử dụng</b>. Tìm lại khách theo số đó, đừng tạo mới.</li>
+          </ul>
+        </div>
+        <figure class="shot"><img src="images/gc-08-khach-moi.png" alt="Form Khách mới trong hộp ghi danh: Họ tên, Số điện thoại, Email tuỳ chọn." loading="lazy"></figure>
       </div>
     </div>
-    <p class="note">Huỷ ghi danh: tab <b>Ghi danh</b>, bấm biểu tượng thùng rác cuối dòng khách, xác nhận lại. Class pass được hoàn nếu đã trừ.</p>
+    <p class="note"><b>Huỷ ghi danh:</b> tab <b>Ghi danh</b>, bấm biểu tượng thùng rác cuối dòng khách, xác nhận lại. Class pass được hoàn nếu đã trừ.</p>
   </section>
 
-  <section>
-    <h2>Check-in và điểm danh</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="n">1</div>
-        <div class="who">CS · màn Check-in</div>
-        <div>Check-in khách như bình thường. Khi chọn khách, thẻ <b>Buổi tập hôm nay</b> hiện cả lớp nhóm khách đã ghi danh hôm nay ở chi nhánh này: "Lớp nhóm · tên lớp", HLV và trạng thái. Thẻ chỉ để báo tin.</div>
-      </div>
-      <div class="step">
-        <div class="n">2</div>
-        <div class="who">CS hoặc HLV · tab Ghi danh</div>
-        <div>Mỗi khách có một trong 3 trạng thái: <b>Chờ khách check-in tại quầy</b> (nút Điểm danh khoá), <b>Đã check-in HH:mm</b> (nút mở), <b>Có mặt</b>. Bấm <b>Điểm danh</b> khi khách vào lớp. Khách có gói được cộng +5 điểm.</div>
-      </div>
-      <div class="step">
-        <div class="n">3</div>
-        <div class="who">Bấm nhầm</div>
-        <div>Bấm <b>Có mặt</b> để bỏ điểm danh, xác nhận lại. Điểm đã cộng không thu hồi; tick lại cũng không cộng thêm.</div>
+  <section id="check-in">
+    <h2>4. Khách check-in tại quầy</h2>
+    <p>Check-in khách ở màn <b>Check-in</b> như mọi ngày. Hệ thống tự gắn lượt check-in vào lớp nhóm khách đã ghi danh hôm nay, CS không cần làm gì thêm.</p>
+    <figure class="shot wide"><img src="images/gc-10-checkin-khach-moi.png" alt="Màn Check-in của khách mời Phạm Quốc Huy: chưa có gói nhưng có lớp FREE Community Run hôm nay, nút Xác nhận check-in vẫn bấm được." loading="lazy"><figcaption>Khách mời chưa có gói nhưng có lớp <b>FREE</b> hôm nay: thẻ <b>Buổi tập hôm nay</b> hiện "Lớp nhóm · Community Run · Chưa check-in", và nút <b>Xác nhận check-in</b> vẫn bấm được.</figcaption></figure>
+    <div class="rules">
+      <div class="rule"><b>Lượt check-in nào được tính</b>Cùng chi nhánh với lớp, cùng ngày, từ 3 giờ trước giờ lớp đến hết lớp. Một lần check-in tính được cho nhiều lớp và cả buổi PT trong ngày.</div>
+      <div class="rule"><b>Quầy phải chọn chi nhánh</b>Check-in khi quầy chưa chọn chi nhánh thì không được tính cho lớp.</div>
+      <div class="rule"><b>Khách mời lớp FREE</b>Check-in được khi có ghi danh lớp FREE hôm nay ở chi nhánh này và đang trong khung giờ của lớp. Lượt này không cộng điểm check-in.</div>
+    </div>
+  </section>
+
+  <section id="diem-danh">
+    <h2>5. Điểm danh</h2>
+    <p>Mở lớp, sang tab <b>Ghi danh</b>. Mỗi khách ở một trong 3 trạng thái:</p>
+    <div class="shots">
+      <figure class="shot"><img src="images/gc-06-ghi-danh-3-trang-thai.png" alt="Tab Ghi danh với 3 khách ở 3 trạng thái: chờ check-in, có mặt +5, đã check-in 00:41." loading="lazy"><figcaption>Từ trên xuống: chờ check-in (nút khoá), đã có mặt và được +5 điểm, đã check-in lúc 00:41 (nút mở).</figcaption></figure>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Dòng khách hiện</th><th>Làm gì</th></tr></thead>
+          <tbody>
+            <tr><td><b>Chờ khách check-in tại quầy</b>, nút Điểm danh mờ</td><td>Mời khách ra quầy check-in</td></tr>
+            <tr><td><b>Đã check-in HH:mm</b> (chữ xanh), nút Điểm danh mở</td><td>Khách vào lớp thì bấm <b>Điểm danh</b></td></tr>
+            <tr><td><b>Có mặt</b> (nút viền xanh), kèm <b>+5</b></td><td>Xong. Khách có gói được cộng 5 điểm</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
-    <p class="note">Khách đã check-in mà vẫn hiện "Chờ khách check-in": đóng và mở lại lớp, hoặc chuyển tab rồi quay lại. Vẫn chưa được thì kiểm tra lượt check-in có đúng chi nhánh và đúng khung giờ không.</p>
-    <p><b>HLV</b> chỉ điểm danh được lớp mình dạy, và cũng phải chờ khách check-in. HLV không thêm khách, không huỷ lớp.</p>
+    <div class="tip"><b>Mẹo:</b> khách vừa check-in mà vẫn thấy "Chờ khách check-in": đóng rồi mở lại lớp, hoặc chuyển tab rồi quay lại. Danh sách không tự cập nhật ngay.</div>
+    <div class="warn"><b>Bấm nhầm Có mặt?</b> Bấm lại nút <b>Có mặt</b> để bỏ, xác nhận lại. Điểm đã cộng không bị thu hồi, và tick lại cũng không cộng thêm lần nữa.</div>
+    <p class="note">Điểm thưởng chỉ cho khách có gói đang hoạt động. Khách gói Unlimited đã đủ 50 điểm trong ngày thì không cộng thêm.</p>
   </section>
 
-  <section>
-    <h2>Chốt điểm danh (chỉ Admin)</h2>
-    <p>Dùng khi khách thật sự có mặt nhưng không check-in được (quên check-in, máy hoặc quầy check-in lỗi). Chỉ Administrator và Admin Manager thấy chữ <b>Chốt điểm danh</b> cạnh dòng "Chờ khách check-in tại quầy", và chỉ khi lớp đã bắt đầu.</p>
-    <ol class="list">
-      <li>Bấm <b>Chốt điểm danh</b>, chọn lý do: <b>Khách quên check-in</b>, <b>Máy/quầy check-in lỗi</b> hoặc <b>Khác</b> (bắt buộc ghi chú, tối đa 150 ký tự).</li>
-      <li>Bấm <b>Xác nhận</b>. Khách thành <b>Có mặt</b>, dòng khách có nhãn <b>Xác nhận tay</b> kèm lý do. Thao tác được ghi lại để tra sau.</li>
-    </ol>
+  <section id="chot-tay">
+    <h2>6. Chốt điểm danh (chỉ Admin)</h2>
+    <p>Dùng khi khách thật sự có mặt nhưng không check-in được (quên check-in, máy hoặc quầy lỗi). Chỉ <b>Administrator</b> và <b>Admin Manager</b> thấy chữ <b>Chốt điểm danh</b>, và chỉ khi lớp <b>đã bắt đầu</b>.</p>
+    <div class="shots">
+      <figure class="shot"><img src="images/gc-15-chot-diem-danh.png" alt="Dòng khách Trần Thu Hà chờ check-in, bên dưới có chữ Chốt điểm danh." loading="lazy"><figcaption>Chữ <b>Chốt điểm danh</b> nằm ngay dưới dòng "Chờ khách check-in tại quầy".</figcaption></figure>
+      <figure class="shot"><img src="images/gc-16-chot-diem-danh-ly-do.png" alt="Hộp Chốt điểm danh: chọn lý do Khách quên check-in, Máy/quầy check-in lỗi hoặc Khác, có ô ghi chú." loading="lazy"><figcaption>Chọn lý do. Chọn <b>Khác</b> thì bắt buộc ghi chú (tối đa 150 ký tự). Bấm <b>Xác nhận</b>.</figcaption></figure>
+    </div>
+    <p>Sau khi chốt, khách thành <b>Có mặt</b> và có nhãn <b>Xác nhận tay</b> kèm lý do. Thao tác được ghi lại để tra cứu sau.</p>
   </section>
 
-  <section>
-    <h2>Tạo, huỷ, khôi phục lớp</h2>
+  <section id="huy-lop">
+    <h2>7. Huỷ, khôi phục, ẩn / hiện lớp</h2>
+    <div class="shots">
+      <figure class="shot"><img src="images/gc-05-chi-tiet-lop.png" alt="Tab Chi tiết của lớp: ngày, giờ, loại lớp, thời lượng, HLV, sức chứa, chi nhánh, công tắc Hiển thị, mô tả." loading="lazy"><figcaption>Tab <b>Chi tiết</b>: công tắc <b>Hiển thị</b> để ẩn / hiện lớp. Nút <b>Huỷ lớp</b> nhỏ, nằm ở cuối khung, dưới nút Thêm khách.</figcaption></figure>
+      <figure class="shot"><img src="images/gc-09-huy-lop-hoi-lai.png" alt="Hộp hỏi lại Huỷ lớp này: ghi rõ lớp, thời gian, số ghi danh sẽ xoá và việc khôi phục sẽ ra lớp trống." loading="lazy"><figcaption>Huỷ lớp luôn hỏi lại, ghi rõ bao nhiêu ghi danh sẽ bị xoá.</figcaption></figure>
+    </div>
     <div class="scroll">
       <table>
         <thead><tr><th>Việc</th><th>Cách làm</th><th>Kết quả</th></tr></thead>
         <tbody>
-          <tr><td>Tạo buổi lớp</td><td><b>+ Lớp</b> trên thanh công cụ: chọn lớp, ngày, giờ, HLV (bật <b>Tất cả HLV</b> nếu không thấy người cần), bật / tắt <b>Hiển thị lớp cho khách</b></td><td>Lớp mới hiện trên lịch, board nhảy tới tuần của lớp. Sức chứa theo lớp, không sửa ở đây</td></tr>
-          <tr><td>Ẩn / hiện lớp</td><td>Tab <b>Chi tiết</b>, công tắc ở dòng <b>Hiển thị</b></td><td>Lớp ẩn không hiện cho khách, không lên poster</td></tr>
-          <tr><td>Huỷ lớp</td><td><b>Huỷ lớp</b> (nút nhỏ dưới vạch kẻ), xác nhận lại</td><td>Xoá mọi ghi danh, hoàn class pass, lớp thành "Đã huỷ"</td></tr>
-          <tr><td>Khôi phục lớp</td><td>Mở lớp đã huỷ, <b>Khôi phục lớp</b>, xác nhận lại</td><td>Lớp mở lại, <b>trống</b></td></tr>
-          <tr><td>Đổi giờ / HLV</td><td>Chưa có trên app</td><td>Huỷ lớp rồi tạo buổi mới (ghi danh phải làm lại)</td></tr>
+          <tr><td>Ẩn / hiện lớp</td><td>Tab <b>Chi tiết</b>, công tắc <b>Hiển thị</b></td><td>Lớp ẩn không hiện cho khách, không lên ảnh lịch</td></tr>
+          <tr><td>Huỷ lớp</td><td><b>Huỷ lớp</b>, đọc hộp hỏi lại, xác nhận</td><td>Xoá mọi ghi danh, hoàn class pass, thẻ lớp chuyển xám "Đã huỷ"</td></tr>
+          <tr><td>Khôi phục lớp</td><td>Mở lớp đã huỷ, <b>Khôi phục lớp</b>, xác nhận</td><td>Lớp mở lại nhưng <b>trống</b></td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <section>
-    <h2>Danh mục lớp và poster</h2>
-    <p>Tab <b>Danh mục lớp</b> liệt kê các lớp: loại lớp, thời lượng, sức chứa, tag, mô tả và giáo án. <b>+ Lớp mới</b> để thêm lớp: tên, loại lớp, thời lượng, sức chứa, ngôn ngữ (VN / EN, mặc định VN), mô tả, và <b>Lớp miễn phí (FREE)</b>.</p>
-    <p>Nút <b>Export</b> trên thanh công cụ tải ảnh PNG "GROUP SCHEDULE" của tuần đang xem để gửi khách. Tuần có lớp ẩn thì app báo số lớp không lên poster.</p>
+  <section id="danh-muc">
+    <h2>8. Danh mục lớp và tạo lớp mới</h2>
+    <p>Tab <b>Danh mục lớp</b> liệt kê các lớp đang dùng. Mỗi thẻ có loại lớp, tag ngôn ngữ / FREE, thời lượng, sức chứa, số buổi trong tuần đang xem, mô tả ngắn. Bấm <b>Giáo án</b> để xem danh sách bài tập (nếu có).</p>
+    <figure class="shot wide"><img src="images/gc-11-danh-muc-lop.png" alt="Tab Danh mục lớp với các thẻ lớp và nút Lớp mới." loading="lazy"></figure>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">CS / OM · Danh mục lớp</div>
+        <div>Bấm <b>Lớp mới</b>. Nhập <b>Tên lớp</b>, chọn <b>Loại lớp</b>, <b>Thời lượng (phút)</b>, <b>Sức chứa</b>, <b>Ngôn ngữ</b> (VN / EN, mặc định VN), mô tả. Lớp miễn phí thì bật <b>Lớp miễn phí (FREE)</b>. Bấm <b>Tạo lớp</b>.</div>
+        <figure class="shot"><img src="images/gc-12-lop-moi.png" alt="Hộp Tạo lớp nhóm: tên lớp, loại lớp, thời lượng, sức chứa, ngôn ngữ, mô tả, công tắc Lớp miễn phí FREE." loading="lazy"><figcaption>Lớp mới xuất hiện ngay trong danh mục và trong ô chọn lớp khi tạo buổi.</figcaption></figure>
+      </div>
+    </div>
+    <div class="warn"><b>Bật FREE sớm:</b> chỉ đổi được FREE khi lớp chưa có buổi sắp tới nào có người ghi danh. Lớp đã có người ghi danh thì báo Admin.</div>
   </section>
 
-  <section>
-    <h2>Gặp thông báo này thì làm gì</h2>
+  <section id="xuat-lich">
+    <h2>9. Xuất lịch tuần gửi khách</h2>
+    <p>Bấm <b>Xuất Lịch</b> trên thanh công cụ: app tải về ảnh PNG "GROUP SCHEDULE" của tuần đang xem. Lớp đang ẩn không có trên ảnh; app báo số lớp bị bỏ ra.</p>
+    <figure class="shot"><img src="images/gc-14-xuat-lich-thong-bao.png" alt="Thông báo Đã xuất PNG, 1 lớp đang ẩn không có trên poster." loading="lazy"><figcaption>Muốn đưa lớp ẩn lên ảnh: bật <b>Hiển thị</b> trong chi tiết lớp rồi xuất lại.</figcaption></figure>
+    <figure class="shot"><img src="images/gc-13-poster.png" alt="Ảnh lịch tuần GROUP SCHEDULE: các ngày trong tuần, thẻ lớp có giờ, tag VN EN FREE, HLV, chi nhánh, và phần ghi chú." loading="lazy"><figcaption>Ảnh lịch tuần. Tag <b>VN / EN</b> là ngôn ngữ HLV dạy, <b>FREE</b> là lớp miễn phí. Lớp thiếu tag ngôn ngữ thì báo OM điền ngôn ngữ cho lớp.</figcaption></figure>
+  </section>
+
+  <section id="tinh-huong">
+    <h2>10. Tình huống hay gặp</h2>
+    <div class="qa">
+      <details open>
+        <summary>Khách đến lớp nhưng quên check-in</summary>
+        <p>Mời khách ra quầy check-in (vẫn trong khung 3 giờ trước đến hết lớp là được), rồi mở lại lớp và bấm <b>Điểm danh</b>. Khách đã về hoặc quầy lỗi thì báo Admin dùng <b>Chốt điểm danh</b>.</p>
+      </details>
+      <details>
+        <summary>Khách đã check-in mà lớp vẫn báo "Chờ khách check-in"</summary>
+        <p>Đóng rồi mở lại lớp. Vẫn chưa được thì kiểm tra: khách check-in đúng chi nhánh của lớp chưa, quầy đã chọn chi nhánh chưa, và giờ check-in có nằm trong khung 3 giờ trước giờ lớp đến hết lớp không.</p>
+      </details>
+      <details>
+        <summary>Khách mời (chưa có gói) muốn đi lớp</summary>
+        <p>Chỉ đi được lớp <b>FREE</b>. Ghi danh khách vào lớp FREE (tạo <b>Khách mới</b> nếu chưa có hồ sơ). Hôm học, khách check-in tại quầy như bình thường: nút <b>Xác nhận check-in</b> mở được nhờ lớp FREE. Ngoài khung giờ của lớp thì hệ thống báo "Khách chưa có gói còn hiệu lực".</p>
+      </details>
+      <details>
+        <summary>Lớp đầy mà khách vẫn muốn vào</summary>
+        <p>Không ghi danh thêm được. Báo OM mở thêm buổi; sức chứa theo lớp trong danh mục.</p>
+      </details>
+      <details>
+        <summary>Khách có buổi PT trùng giờ lớp</summary>
+        <p>Hệ thống không cho ghi danh. Dời buổi PT ở Lịch booking hoặc chọn lớp khác giờ. Hai khung chỉ chạm nhau thì được.</p>
+      </details>
+      <details>
+        <summary>Cần đổi giờ hoặc đổi HLV của buổi đã tạo</summary>
+        <p>Chưa có trên app. Huỷ buổi, tạo buổi mới với giờ / HLV đúng, rồi ghi danh lại khách. Nhớ báo khách.</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="thong-bao">
+    <h2>11. Gặp thông báo này thì làm gì</h2>
     <div class="scroll">
       <table>
         <thead><tr><th>Thông báo</th><th>Nghĩa</th><th>Làm gì</th></tr></thead>
         <tbody>
           <tr><td>Khách chưa check-in tại quầy — chưa điểm danh được</td><td>Chưa có lượt check-in hợp lệ</td><td>Mời khách check-in ở quầy đúng chi nhánh; đặc biệt thì báo Admin chốt tay</td></tr>
           <tr><td>Khách chưa có gói còn hiệu lực — chỉ ghi danh được lớp FREE</td><td>Khách không có gói đang hoạt động</td><td>Mời mua gói, hoặc chọn lớp FREE</td></tr>
-          <tr><td>Lớp đã đầy — mở thêm buổi nếu còn nhu cầu</td><td>Hết chỗ</td><td>Tạo thêm buổi lớp</td></tr>
+          <tr><td>Khách chưa có gói còn hiệu lực — mời khách mua gói… (ở màn Check-in)</td><td>Khách không có gói và không có lớp FREE đang mở hôm nay</td><td>Mời mua gói; khách mời thì kiểm tra đã ghi danh lớp FREE hôm nay ở chi nhánh này chưa</td></tr>
+          <tr><td>Lớp đã đầy — mở thêm buổi nếu còn nhu cầu</td><td>Hết chỗ</td><td>Báo OM mở thêm buổi</td></tr>
           <tr><td>Khách đã có buổi khác trong khung giờ này</td><td>Trùng buổi PT / 2:1 / trị liệu</td><td>Dời buổi PT hoặc chọn lớp khác giờ</td></tr>
           <tr><td>Khách có lớp group trùng giờ (ở Lịch booking)</td><td>Buổi PT đè lên lớp khách đã ghi danh</td><td>Chọn giờ khác, hoặc huỷ ghi danh lớp trước</td></tr>
           <tr><td>Khách đã có trong danh sách lớp này</td><td>Đã ghi danh rồi</td><td>Không cần làm gì</td></tr>
@@ -239,18 +371,18 @@
         </tbody>
       </table>
     </div>
-    <p class="note">Khách ghi danh trên member app mà bị trùng giờ buổi PT sẽ chỉ thấy lỗi chung. Khi khách hỏi, giải thích là đang có buổi PT cùng giờ.</p>
+    <p class="note">Khách tự ghi danh trên member app mà bị trùng giờ buổi PT sẽ chỉ thấy lỗi chung. Khi khách hỏi, giải thích là đang có buổi PT cùng giờ.</p>
   </section>
 
-  <section>
-    <h2>Ai được làm gì</h2>
+  <section id="vai-tro">
+    <h2>12. Ai được làm gì</h2>
     <div class="scroll">
       <table>
         <thead><tr><th>Vai trò</th><th>Được làm</th></tr></thead>
         <tbody>
-          <tr><td>CS, OM, Admin Manager, Admin</td><td>Tạo / huỷ / khôi phục lớp, ẩn / hiện, ghi danh, huỷ ghi danh, điểm danh, tạo lớp mới, xuất poster</td></tr>
-          <tr><td>Admin Manager, Admin</td><td>Thêm: Chốt điểm danh không cần check-in</td></tr>
-          <tr><td>HLV</td><td>Xem lịch, điểm danh lớp mình dạy (sau khi khách check-in), xuất poster</td></tr>
+          <tr><td>CS, OM, Admin Manager, Admin</td><td>Tạo / huỷ / khôi phục buổi, ẩn / hiện, ghi danh, huỷ ghi danh, <b>điểm danh</b>, tạo lớp mới, xuất lịch</td></tr>
+          <tr><td>Admin Manager, Admin</td><td>Thêm: <b>Chốt điểm danh</b> không cần check-in</td></tr>
+          <tr><td>HLV</td><td>Không dùng trang Lịch Group Class, không điểm danh</td></tr>
         </tbody>
       </table>
     </div>
