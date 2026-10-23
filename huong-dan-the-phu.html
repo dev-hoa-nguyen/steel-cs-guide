@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thẻ phụ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f7f5; --surface: #ffffff; --ink: #1c2230; --muted: #5a6273; --line: #dfe2e6;
+    --accent: #2f5d8a; --accent-soft: #e6eef6;
+    --warn: #9a5b00; --warn-soft: #fbf0dd;
+    --ok: #2e7d4f; --ok-soft: #e4f3ea;
+    --bad: #b03a2e; --bad-soft: #fbe7e4;
+    --code-bg: #eef0f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+      --accent: #7fb0e0; --accent-soft: #1d2b3b;
+      --warn: #e7b25c; --warn-soft: #362a17;
+      --ok: #79c795; --ok-soft: #1a3024;
+      --bad: #f0907f; --bad-soft: #3a1f1c;
+      --code-bg: #242a35;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+    --accent: #7fb0e0; --accent-soft: #1d2b3b;
+    --warn: #e7b25c; --warn-soft: #362a17;
+    --ok: #79c795; --ok-soft: #1a3024;
+    --bad: #f0907f; --bad-soft: #3a1f1c;
+    --code-bg: #242a35;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    padding-inline: 16px; padding-block: 32px 64px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+  header { display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
+  h2 { font-size: 21px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  p { margin: 0; max-width: 72ch; }
+  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .9em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+  .lede { color: var(--muted); font-size: 16px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--muted); font-size: 13px; }
+  section { display: flex; flex-direction: column; gap: 18px; }
+  ul.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+  .note { font-size: 13px; color: var(--muted); }
+
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; display: grid; grid-template-columns: 34px 1fr; gap: 4px 14px; }
+  .step .n { grid-row: span 2; width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .step.bad .n { background: var(--bad-soft); color: var(--bad); }
+  .who { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+  .step.bad .who { color: var(--bad); }
+
+  .callout { background: var(--warn-soft); border-radius: 8px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; }
+  .callout b:first-child { color: var(--warn); }
+  .callout.ok { background: var(--ok-soft); }
+  .callout.ok b:first-child { color: var(--ok); }
+
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--bg); }
+  tr:last-child td { border-bottom: 0; }
+
+  .shot { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .shot img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  .shot img.narrow { max-width: min(100%, 560px); }
+  .shot figcaption { font-size: 13px; color: var(--muted); max-width: 72ch; }
+
+  .cases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .case { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--ok); border-radius: 6px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+  .case.no { border-top-color: var(--bad); }
+  .case .sub { color: var(--muted); font-size: 13px; }
+  .case .verdict { margin-top: auto; font-weight: 600; color: var(--ok); }
+  .case.no .verdict { color: var(--bad); }
+
+  @media (max-width: 520px) {
+    h1 { font-size: 23px; }
+    .step { grid-template-columns: 1fr; }
+    .step .n { grid-row: auto; }
+  }
+  @media (max-width: 680px) {
+    .cases { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Hướng dẫn thao tác · Thẻ phụ</div>
+    <h1>Thẻ phụ (Additional Account)</h1>
+    <p class="lede">Thẻ phụ = gói riêng cho người khác, dùng chung số buổi và trạng thái của gói chính. <b>1 pass = 1 thẻ phụ.</b> CS tạo yêu cầu, quản lý duyệt, quầy đặt lịch rồi check-in.</p>
+    <div class="meta">
+      <span>Ngày: 23/10/2026</span>
+      <span>Soạn: Truong Thu Ngan</span>
+      <span>Áp dụng: STEEL Internal App · Khách hàng, Phê duyệt, Lịch booking</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Luật nhanh</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th></th><th>Thẻ phụ</th></tr></thead>
+        <tbody>
+          <tr><td>Tạo khi</td><td>Gói chính <code>active</code>, còn pass</td></tr>
+          <tr><td>Hiệu lực</td><td>Từ ngày duyệt, tối đa = hạn còn lại của gói chính</td></tr>
+          <tr><td>Buổi được dùng</td><td>PT 1:1 · Pilates 2:1 · Massage · Stretching (trừ vào gói chính)</td></tr>
+          <tr><td>Check-in</td><td>Chỉ khi có buổi đặt hôm nay, đúng chi nhánh</td></tr>
+          <tr><td>Trạng thái</td><td>Luôn theo gói chính (bảo lưu, tạm ngưng, hết hạn)</td></tr>
+          <tr><td>Không được</td><td>Tự tập · bảo lưu riêng · sang tên · tự gia hạn</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Quy trình: ai làm bước nào</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">CS</div>
+        <div><b>Tạo yêu cầu</b> + phụ lục đã ký.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">OM · Admin Manager · Admin</div>
+        <div><b>Duyệt?</b> Có → bước 3. Không → từ chối.</div>
+      </div>
+      <div class="step bad">
+        <div class="n">✕</div>
+        <div class="who">Nếu từ chối</div>
+        <div>Ghi lý do, trả pass. CS tạo lại yêu cầu mới.</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">Hệ thống</div>
+        <div><b>Thẻ phụ active</b> từ hôm nay, trừ 1 pass.</div>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <div class="who">Quầy (CS / quản lý)</div>
+        <div><b>Đặt lịch</b> rồi check-in.</div>
+      </div>
+    </div>
+    <p class="note">Coach / Therapist không thao tác, chỉ thấy buổi của mình trên lịch.</p>
+  </section>
+
+  <section>
+    <h2>1. CS tạo yêu cầu</h2>
+    <p>Mở hồ sơ <b>chủ thẻ chính</b> (không phải người dùng thẻ phụ).</p>
+    <figure class="shot"><img src="images/the-phu-01-ho-so-chu-the.png" alt="Card gói chính với nút Tài khoản phụ, lượt thẻ phụ và danh sách thẻ phụ" loading="lazy"><figcaption>① Bấm <b>Tài khoản phụ</b> · ② số pass còn lại · ③ danh sách thẻ phụ của gói. Dữ liệu minh hoạ.</figcaption></figure>
+    <figure class="shot"><img class="narrow" src="images/the-phu-02-tao-tai-khoan-phu.png" alt="Hộp Tạo tài khoản phụ" loading="lazy"><figcaption>① Kiểm gói, hạn, pass · ② chọn người đứng thẻ phụ · ③ số tháng (≤ tối đa) · ④ hiệu lực dự kiến · ⑤ tải phụ lục đã ký (bắt buộc) · ⑥ <b>Gửi yêu cầu duyệt</b>.</figcaption></figure>
+    <p>Gửi xong: yêu cầu <b>Chờ duyệt</b>, giữ 1 pass. CS huỷ được yêu cầu của mình tại <b>Phê duyệt → Thẻ phụ</b>.</p>
+  </section>
+
+  <section>
+    <h2>2. Quản lý duyệt (OM · Admin Manager · Admin)</h2>
+    <p><b>Phê duyệt</b> → tab <b>Thẻ phụ</b>. Không sửa được ngày / số tháng: sai thì từ chối.</p>
+    <figure class="shot"><img src="images/the-phu-03-phe-duyet.png" alt="Danh sách yêu cầu thẻ phụ ở trang Phê duyệt" loading="lazy"><figcaption>① Lọc trạng thái · ② thiếu phụ lục → nút Duyệt khoá · ③ <b>Duyệt</b>: tạo thẻ phụ từ hôm nay, trừ 1 pass · ④ <b>Từ chối</b>: bắt buộc ghi lý do, trả pass.</figcaption></figure>
+  </section>
+
+  <section>
+    <h2>3. Quầy: check-in thẻ phụ</h2>
+    <p>Hồ sơ người dùng thẻ phụ sau khi duyệt:</p>
+    <figure class="shot"><img src="images/the-phu-04-ho-so-the-phu.png" alt="Hồ sơ người dùng thẻ phụ" loading="lazy"><figcaption>① Thẻ phụ của ai · ② số buổi là của gói chính · ③ luật check-in.</figcaption></figure>
+    <p>Check-in qua khi có buổi đặt <b>hôm nay</b>, <b>đúng chi nhánh</b>, từ <b>30 phút trước</b> tới hết buổi:</p>
+    <figure class="shot"><img src="images/the-phu-05-ket-qua-checkin.png" alt="Ba kết quả check-in thẻ phụ: thành công, chưa có booking, thẻ hết hạn" loading="lazy"><figcaption>Thành công · chưa có buổi đặt hôm nay tại chi nhánh · thẻ phụ đã hết hạn.</figcaption></figure>
+    <p>Bị từ chối → đặt lịch trước rồi check-in lại. Thẻ phụ hết hạn → mua pass mới, tạo yêu cầu mới.</p>
+  </section>
+
+  <section>
+    <h2>4. Đặt lịch cho thẻ phụ (CS · quản lý)</h2>
+    <div class="cases">
+      <div class="case">
+        <b>Thẻ phụ đặt 1 mình</b>
+        <div>PT 1:1, Massage, Stretching → trừ buổi gói chính</div>
+        <div class="verdict">✓ Đặt được</div>
+      </div>
+      <div class="case">
+        <b>2:1 khách thường + thẻ phụ</b>
+        <div>Tự chuyển sang gói khách thường (thành khách chính)</div>
+        <div class="sub">Gói đó hết buổi 2:1 → không đặt được</div>
+        <div class="verdict">✓ Đặt được</div>
+      </div>
+      <div class="case no">
+        <b>2:1 thẻ phụ + thẻ phụ</b>
+        <div>Không cho phép → đổi khách thứ 2</div>
+        <div class="verdict">✕ Không đặt được</div>
+      </div>
+    </div>
+    <p>Recovery và lớp nhóm không đặt được bằng thẻ phụ. Buổi 2:1 cũ nằm trên gói thẻ phụ mà cần dời / đổi khách → huỷ và đặt lại.</p>
+  </section>
+
+  <section>
+    <h2>Lỗi hay gặp</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>App báo</th><th>Làm gì</th></tr></thead>
+        <tbody>
+          <tr><td>Hết lượt tài khoản phụ</td><td>Mua thêm pass, hoặc huỷ yêu cầu chờ duyệt thừa</td></tr>
+          <tr><td>Gói chính phải đang hoạt động</td><td>Chờ gói chính <code>active</code> rồi tạo</td></tr>
+          <tr><td>Số tháng vượt thời hạn còn lại</td><td>Giảm số tháng</td></tr>
+          <tr><td>Khách đã là thẻ phụ / đang chờ duyệt</td><td>Chọn người khác hoặc chờ yêu cầu cũ</td></tr>
+          <tr><td>Thẻ phụ chỉ được check-in khi có buổi…</td><td>Đặt lịch; kiểm chi nhánh và giờ</td></tr>
+          <tr><td>Thẻ phụ chỉ dùng PT 1:1, Pilates 2:1, Massage, Stretching</td><td>Chọn đúng loại buổi</td></tr>
+          <tr><td>Buổi 2:1 không được có cả 2 khách là thẻ phụ</td><td>Đổi khách thứ 2</td></tr>
+          <tr><td>Yêu cầu này đã được xử lý</td><td>Tải lại trang</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Ảnh minh hoạ lấy từ bản thiết kế UI, dữ liệu giả; giao diện thật có thể khác vài chi tiết.</p>
+  </section>
+
+</div>
+</body>
+</html>
