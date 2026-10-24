@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trả theo tháng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f7f5; --surface: #ffffff; --ink: #1c2230; --muted: #5a6273; --line: #dfe2e6;
+    --accent: #2f5d8a; --accent-soft: #e6eef6;
+    --warn: #9a5b00; --warn-soft: #fbf0dd;
+    --ok: #2e7d4f; --ok-soft: #e4f3ea;
+    --bad: #b03a2e; --bad-soft: #fbe7e4;
+    --code-bg: #eef0f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+      --accent: #7fb0e0; --accent-soft: #1d2b3b;
+      --warn: #e7b25c; --warn-soft: #362a17;
+      --ok: #79c795; --ok-soft: #1a3024;
+      --bad: #f0907f; --bad-soft: #3a1f1c;
+      --code-bg: #242a35;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #13171e; --surface: #1b2029; --ink: #e6e9ee; --muted: #9aa3b2; --line: #2c3340;
+    --accent: #7fb0e0; --accent-soft: #1d2b3b;
+    --warn: #e7b25c; --warn-soft: #362a17;
+    --ok: #79c795; --ok-soft: #1a3024;
+    --bad: #f0907f; --bad-soft: #3a1f1c;
+    --code-bg: #242a35;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    padding-inline: 16px; padding-block: 32px 64px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+  header { display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
+  h2 { font-size: 21px; line-height: 1.3; margin: 0; font-weight: 600; text-wrap: balance; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  p { margin: 0; max-width: 72ch; }
+  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .9em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+  .lede { color: var(--muted); font-size: 16px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--muted); font-size: 13px; }
+  section { display: flex; flex-direction: column; gap: 18px; }
+  ul.list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+  .note { font-size: 13px; color: var(--muted); }
+
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; display: grid; grid-template-columns: 34px 1fr; gap: 4px 14px; }
+  .step .n { grid-row: span 2; width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .step.bad .n { background: var(--bad-soft); color: var(--bad); }
+  .who { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+  .step.bad .who { color: var(--bad); }
+
+  .callout { background: var(--warn-soft); border-radius: 8px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; }
+  .callout b:first-child { color: var(--warn); }
+  .callout.ok { background: var(--ok-soft); }
+  .callout.ok b:first-child { color: var(--ok); }
+
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--bg); }
+  tr:last-child td { border-bottom: 0; }
+
+  .shot { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .shot img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  .shot img.narrow { max-width: min(100%, 560px); }
+  .shot figcaption { font-size: 13px; color: var(--muted); max-width: 72ch; }
+
+  .cases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .case { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--ok); border-radius: 6px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+  .case.no { border-top-color: var(--bad); }
+  .case .sub { color: var(--muted); font-size: 13px; }
+  .case .verdict { margin-top: auto; font-weight: 600; color: var(--ok); }
+  .case.no .verdict { color: var(--bad); }
+
+  @media (max-width: 520px) {
+    h1 { font-size: 23px; }
+    .step { grid-template-columns: 1fr; }
+    .step .n { grid-row: auto; }
+  }
+  @media (max-width: 680px) {
+    .cases { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Hướng dẫn thao tác · Trả theo tháng</div>
+    <h1>Trả theo tháng (Monthly)</h1>
+    <p class="lede">Khách mua gói chính nhiều tháng nhưng trả từng tháng. <b>Kỳ 1 = phí 1 tháng + cọc 1 tháng.</b> Các kỳ sau CS thu ngay trên card gói trong hồ sơ khách, đúng ngày thanh toán cố định đã chọn lúc bán.</p>
+    <div class="meta">
+      <span>Ngày: 24/10/2026</span>
+      <span>Áp dụng: STEEL Internal App · Tạo / Báo giá Gói, Khách hàng, Trả tháng đến hạn</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Luật nhanh</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th></th><th>Trả theo tháng</th></tr></thead>
+        <tbody>
+          <tr><td>Gói bán được</td><td>Gói chính có đuôi <b>- Monthly</b> (vd House Membership - Monthly). Số tháng chọn ở giỏ = số kỳ</td></tr>
+          <tr><td>Giỏ hàng</td><td>Chỉ 1 dòng gói chính. Add-on (PT, Recovery…) bán giao dịch riêng</td></tr>
+          <tr><td>Phí 1 kỳ</td><td>= giá 1 tháng, không giảm giá. Không đổi suốt hợp đồng</td></tr>
+          <tr><td>Kỳ 1 (hôm mua)</td><td>Phí 1 kỳ + cọc (cọc = phí 1 kỳ)</td></tr>
+          <tr><td>Ngày thanh toán</td><td>Cố định hằng tháng, ngày 2–28. Gợi ý = ngày mua lùi 3 ngày. Không chọn được 29, 30, 31 và ngày 1</td></tr>
+          <tr><td>Ân hạn</td><td>3 ngày sau ngày đến hạn. Ngày thứ 4 chưa thu → hệ thống <b>tự khoá gói</b>, khách không check-in được</td></tr>
+          <tr><td>Hạn gói</td><td>Đủ thời hạn gói, tính từ ngày mua kỳ 1. Thu kỳ sau <b>không cộng thêm ngày</b>; ngày bị khoá không bù</td></tr>
+          <tr><td>Quyền lợi</td><td>Ngày bảo lưu, lượt lớp… cộng dần theo từng kỳ đã thu (vd 5 ngày bảo lưu / kỳ)</td></tr>
+          <tr><td>Cọc</td><td>Trả kỳ cuối khi đã trả đủ <b>6 kỳ</b>. Dưới 6 kỳ mà huỷ → mất cọc. <b>Không hoàn cọc</b> trong mọi trường hợp</td></tr>
+          <tr><td>Không được</td><td>Trả trước nhiều kỳ · sửa phí / ngày thanh toán sau khi bán · thêm kỳ sau kỳ cuối (bán gói mới)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Quy trình: ai làm bước nào</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="who">CS</div>
+        <div><b>Bán kỳ 1</b> ở Tạo / Báo giá Gói: chọn Monthly, chọn ngày thanh toán hằng tháng, thu phí + cọc.</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="who">CS · SM · Sale · Kế toán</div>
+        <div><b>Theo dõi</b> trang <b>Trả tháng đến hạn</b>, nhắc khách trả (chưa có email nhắc tự động).</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="who">CS</div>
+        <div><b>Thu kỳ tháng</b> trên card gói. Kỳ cuối (gói ≥ 6 kỳ) khách trả 0đ, cọc trả.</div>
+      </div>
+      <div class="step bad">
+        <div class="n">✕</div>
+        <div class="who">Hệ thống · nếu quá ân hạn</div>
+        <div>Quá 3 ngày chưa thu → gói <b>tạm khoá</b>. CS thu kỳ đó → gói mở lại ngay.</div>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <div class="who">CS</div>
+        <div><b>Huỷ hợp đồng</b> khi khách gửi yêu cầu, hoặc khi khách ngừng trả.</div>
+      </div>
+    </div>
+    <p class="note">Kế toán đối soát từng giao dịch kỳ như giao dịch thường.</p>
+  </section>
+
+  <section>
+    <h2>1. CS bán kỳ 1</h2>
+    <p><b>Tạo / Báo giá Gói</b> → tab <b>Membership</b> → chọn gói <b>- Monthly</b> → chọn số tháng → <b>Tạo Gói</b>.</p>
+    <figure class="shot"><img src="images/monthly-01-chon-goi.png" alt="Catalog Membership, gói House Membership - Monthly 12 tháng trong giỏ" loading="lazy"><figcaption>Chọn gói <b>- Monthly</b>, bấm 3 / 6 / 12 hoặc gõ số tháng (= số kỳ). Giỏ chỉ có dòng này. Tạm tính là giá cả gói — kỳ 1 thu ít hơn (bước 4). Dữ liệu minh hoạ.</figcaption></figure>
+    <p>Bước 1–3 như bán gói thường (Khách mới / Tái ký, chọn khách, kiểm gói). Tới <b>bước 4 · Kỳ thanh toán</b>:</p>
+    <figure class="shot"><img class="narrow" src="images/monthly-02-ky-thanh-toan.png" alt="Bước 4 chọn Monthly và ngày thanh toán hằng tháng" loading="lazy"><figcaption>Chọn <b>Monthly — Trả theo tháng, tháng đầu tiên</b>. Ô <b>Ngày thanh toán hằng tháng</b> điền sẵn gợi ý (mua 24 → ngày 21), đổi được trong 2–28. Kiểm tóm tắt: số thu hôm nay = phí + cọc, ngày đến hạn kỳ 2, kỳ cuối cọc trả.</figcaption></figure>
+    <div class="callout">
+      <b>Chọn ngày cho kỹ — không sửa được sau khi bán.</b>
+      <p>Mua ngày 1–4 thì lùi 3 ngày rơi vào ngày bị khoá: app để trống, CS hỏi khách rồi chọn ngày khác. Chưa chọn ngày thì không qua được bước 4.</p>
+    </div>
+    <p>Giỏ có thêm dòng khác (add-on, buổi PT…) thì Monthly bị khoá:</p>
+    <figure class="shot"><img class="narrow" src="images/monthly-06-gio-co-addon.png" alt="Monthly bị khoá khi giỏ có dòng khác ngoài gói chính" loading="lazy"><figcaption>Bỏ dòng add-on khỏi giỏ, bán Monthly trước; add-on tạo giao dịch riêng sau.</figcaption></figure>
+    <p><b>Bước 5 · Thanh toán</b>: số phải trả đã khoá = phí + cọc. Chia hình thức (tiền mặt, chuyển khoản, thẻ…) như thường.</p>
+    <figure class="shot"><img class="narrow" src="images/monthly-04-thanh-toan-ky-1.png" alt="Bước 5 phân bổ thanh toán kỳ 1" loading="lazy"><figcaption>Phải trả = 4.200.000 + 4.200.000 = 8.400.000đ. Nhiều hình thức thì <b>Thêm dòng</b>, tổng phải <b>Khớp</b>.</figcaption></figure>
+    <figure class="shot"><img class="narrow" src="images/monthly-05-review.png" alt="Bước 6 review giao dịch Monthly" loading="lazy"><figcaption>Bước 6: kiểm <b>Kỳ thanh toán = Monthly</b> và <b>Số tiền giao dịch</b> = phí + cọc → <b>Tạo Transaction</b>. Sau đó như gói thường (kế toán đối soát, mở sub, hợp đồng).</figcaption></figure>
+  </section>
+
+  <section>
+    <h2>2. Theo dõi khách đến hạn (CS · SM · Sale · Kế toán)</h2>
+    <p>Menu <b>Trả tháng đến hạn</b>: khách đã tới hoặc quá ngày thanh toán mà chưa thu kỳ đó. Chỉ xem — bấm dòng để mở hồ sơ khách và thu.</p>
+    <figure class="shot"><img src="images/monthly-16-danh-sach-den-han.png" alt="Danh sách trả theo tháng đến hạn" loading="lazy"><figcaption>Lọc <b>Trong ân hạn</b> (còn nhắc được) / <b>Quá ân hạn</b> (đã khoá). Cột <b>Kỳ</b> = kỳ sắp thu / tổng kỳ. <b>Quá hạn</b>: xanh = hôm nay, vàng = trong 3 ngày, đỏ = quá ân hạn. <b>Thu kỳ này</b>: kỳ cuối ghi 0 (cọc trả). <b>Sub</b>: Tạm khoá, Báo huỷ. Dữ liệu minh hoạ.</figcaption></figure>
+  </section>
+
+  <section>
+    <h2>3. CS thu kỳ tháng (kỳ 2 → kỳ cuối)</h2>
+    <p>Mở hồ sơ khách → card gói Monthly → <b>Thu kỳ tháng n/N</b>. Không cần chọn lại gói hay qua wizard.</p>
+    <figure class="shot"><img src="images/monthly-07-card-ky-thang.png" alt="Card gói Monthly với nút Thu kỳ tháng và Huỷ hợp đồng" loading="lazy"><figcaption><b>Thu kỳ tháng 3/12</b> = kỳ sắp thu. Dòng <b>Kỳ tháng 2/12</b>: số kỳ đã thu, ngày đến hạn, số ngày quá hạn (đỏ). Bảo lưu 10 ngày = 2 kỳ × 5 ngày.</figcaption></figure>
+    <figure class="shot"><img class="narrow" src="images/monthly-08-thu-ky.png" alt="Hộp thoại Thu kỳ tháng 3/12" loading="lazy"><figcaption>Kiểm gói, kỳ, ngày đến hạn. Số thu = phí 1 kỳ, khoá cố định. Chọn hình thức (chia nhiều dòng được, tổng phải khớp) → <b>Xác nhận thu</b>.</figcaption></figure>
+    <p><b>Kỳ cuối</b> của gói từ 6 kỳ trở lên: cọc trả, khách 0đ — vẫn bấm xác nhận để chốt kỳ.</p>
+    <figure class="shot"><img class="narrow" src="images/monthly-09-ky-cuoi-coc-tra.png" alt="Hộp thoại kỳ cuối do cọc trả" loading="lazy"><figcaption><b>Cọc trả kỳ cuối</b> −4.200.000đ → <b>Thu kỳ này 0đ</b> → <b>Xác nhận kỳ cuối (cọc trả)</b>.</figcaption></figure>
+    <p>Mỗi lần thu tạo một giao dịch mới chờ kế toán đối soát, kèm hoá đơn; không tạo hợp đồng mới.</p>
+  </section>
+
+  <section>
+    <h2>4. Quá hạn và tạm khoá</h2>
+    <div class="cases">
+      <div class="case">
+        <b>Đến hạn → +3 ngày</b>
+        <div>Trong ân hạn, gói dùng bình thường</div>
+        <div class="sub">Nhắc khách trả</div>
+        <div class="verdict">✓ Check-in được</div>
+      </div>
+      <div class="case no">
+        <b>Ngày thứ 4 chưa thu</b>
+        <div>Hệ thống tự khoá gói (chạy đêm)</div>
+        <div class="sub">Gói đang bảo lưu thì không khoá</div>
+        <div class="verdict">✕ Không check-in được</div>
+      </div>
+      <div class="case">
+        <b>CS thu kỳ đang nợ</b>
+        <div>Gói mở lại ngay khi tạo giao dịch</div>
+        <div class="sub">Hạn gói giữ nguyên, không bù ngày bị khoá</div>
+        <div class="verdict">✓ Check-in lại được</div>
+      </div>
+    </div>
+    <figure class="shot"><img src="images/monthly-13-card-tam-khoa.png" alt="Card gói Monthly đang tạm khoá do quá hạn" loading="lazy"><figcaption>Gói bị khoá: trạng thái <code>suspended</code>, <b>quá hạn 6 ngày</b>. Thu kỳ như bình thường để mở lại.</figcaption></figure>
+    <p>Bảo lưu <b>không dời</b> lịch trả: khách đang bảo lưu vẫn trả đúng ngày; bảo lưu chỉ lùi hạn gói.</p>
+  </section>
+
+  <section>
+    <h2>5. Huỷ hợp đồng</h2>
+    <p>Card gói → <b>Huỷ hợp đồng</b> → nhập <b>ngày khách gửi yêu cầu</b> (ngày khách gửi, không phải ngày STEEL xác nhận). App tính kết quả trước khi ghi:</p>
+    <div class="cases">
+      <div class="case">
+        <b>Đã trả ≥ 6 kỳ, báo trước ≥ 30 ngày</b>
+        <div>Cọc trả kỳ tiếp theo — đó là kỳ cuối</div>
+        <div class="verdict">✓ Khách không trả thêm</div>
+      </div>
+      <div class="case">
+        <b>Đã trả ≥ 6 kỳ, báo trễ (&lt; 30 ngày)</b>
+        <div>Khách tự trả kỳ tiếp theo, cọc trả kỳ sau nữa</div>
+        <div class="verdict">✓ Khách trả thêm 1 kỳ</div>
+      </div>
+      <div class="case no">
+        <b>Dưới 6 kỳ, hoặc ngừng trả không báo</b>
+        <div>Đóng hợp đồng ngay</div>
+        <div class="verdict">✕ Mất cọc</div>
+      </div>
+    </div>
+    <p class="note">Số kỳ đã trả tính tại <b>ngày khách gửi yêu cầu</b>. 30 ngày tính tới ngày đến hạn của kỳ tiếp theo. Gói hết hạn vào ngày trước ngày đến hạn của kỳ đầu tiên không thu.</p>
+    <figure class="shot"><img class="narrow" src="images/monthly-10-huy-bao-som.png" alt="Huỷ hợp đồng: đủ 6 kỳ, báo sớm" loading="lazy"><figcaption><b>Báo sớm.</b> Đã trả 7/12, kỳ 8 đến hạn 25/11, khách báo 24/10 (32 ngày) → cọc trả kỳ 8, gói hết hạn 24/12/2026 → <b>Ghi báo huỷ</b>.</figcaption></figure>
+    <figure class="shot"><img class="narrow" src="images/monthly-11-huy-bao-tre.png" alt="Huỷ hợp đồng: đủ 6 kỳ, báo trễ" loading="lazy"><figcaption><b>Báo trễ.</b> Đã trả 7/12, kỳ 8 đến hạn 22/11, khách báo 24/10 (29 ngày) → khách trả kỳ 8 (4.200.000đ), cọc trả kỳ 9, gói hết hạn 21/01/2027.</figcaption></figure>
+    <figure class="shot"><img class="narrow" src="images/monthly-12-huy-duoi-6-ky.png" alt="Huỷ hợp đồng khi chưa đủ 6 kỳ" loading="lazy"><figcaption><b>Dưới 6 kỳ.</b> Đã trả 3/12 → mất cọc, đóng ngay, gói hết hạn ngày trước kỳ 4 (21/11/2026) → <b>Huỷ hợp đồng ngay</b>.</figcaption></figure>
+    <figure class="shot"><img class="narrow" src="images/monthly-14-huy-ngung-tra.png" alt="Huỷ hợp đồng do khách ngừng trả" loading="lazy"><figcaption><b>Ngừng trả, không báo.</b> Công tắc chỉ hiện khi kỳ đang quá hạn: bật <b>Khách không báo, ngừng trả</b> → mất cọc, gói hết hạn ngày trước kỳ nợ. Ghi kênh / lý do vào ô ghi chú.</figcaption></figure>
+    <p>Sau khi <b>Ghi báo huỷ</b>, card hiện kỳ cuối đã chốt; CS vẫn thu các kỳ còn lại như bình thường (kỳ cuối cọc trả):</p>
+    <figure class="shot"><img src="images/monthly-15-card-da-bao-huy.png" alt="Card gói Monthly đã báo huỷ" loading="lazy"><figcaption><b>đã báo huỷ, kỳ cuối 9</b> · nút Huỷ hợp đồng ẩn · vẫn <b>Thu kỳ tháng 8/12</b>.</figcaption></figure>
+  </section>
+
+  <section>
+    <h2>Ví dụ trọn hợp đồng</h2>
+    <p>House Membership - Monthly, 12 tháng, 4.200.000đ / tháng. Khách mua ngày <b>24/10/2026</b>, CS giữ ngày gợi ý <b>21</b>.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Mốc</th><th>Ngày</th><th>Khách trả</th><th>Ghi chú</th></tr></thead>
+        <tbody>
+          <tr><td>Kỳ 1</td><td>24/10/2026</td><td>8.400.000đ</td><td>Phí 4.200.000 + cọc 4.200.000. Gói chạy đủ 12 tháng từ hôm nay</td></tr>
+          <tr><td>Kỳ 2</td><td>21/11/2026</td><td>4.200.000đ</td><td>Hiện ở Trả tháng đến hạn từ 21/11</td></tr>
+          <tr><td>Kỳ 2 chưa trả</td><td>22 → 24/11</td><td>—</td><td>Trong ân hạn, vẫn check-in</td></tr>
+          <tr><td>Tự khoá</td><td>25/11/2026</td><td>—</td><td>Thu kỳ 2 lúc nào thì mở lại lúc đó; hạn gói không đổi</td></tr>
+          <tr><td>Kỳ 3 → 11</td><td>Ngày 21 hằng tháng</td><td>4.200.000đ / kỳ</td><td>Không trả trước nhiều kỳ</td></tr>
+          <tr><td>Kỳ 12</td><td>21/09/2027</td><td>0đ</td><td>Cọc trả. Muốn tiếp → bán gói mới</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Chưa có trên app — báo quản lý / kế toán xử lý tay</h2>
+    <ul class="list">
+      <li><b>Phí trả trễ</b>: bán riêng thành dịch vụ, không sửa phí kỳ.</li>
+      <li><b>Tái ký</b> giữ cọc sang hợp đồng mới, hoặc tái ký sang trả đủ.</li>
+      <li>Lệch ngày giữa lịch trả và hạn gói; khách dừng giữa chừng cần dời ngày.</li>
+      <li><b>Email</b> nhắc đến hạn, báo thanh toán thành công, báo quá hạn: đợt sau. Hiện CS nhắc khách theo danh sách đến hạn.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Lỗi hay gặp</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>App báo</th><th>Làm gì</th></tr></thead>
+        <tbody>
+          <tr><td>Monthly mờ: Giỏ có dòng khác ngoài gói chính…</td><td>Bỏ add-on khỏi giỏ, bán add-on giao dịch riêng</td></tr>
+          <tr><td>Trả theo tháng: giỏ chỉ chứa gói chính và phải chọn ngày thanh toán hằng tháng</td><td>Chọn ngày ở ô Ngày thanh toán hằng tháng</td></tr>
+          <tr><td>Lịch trả theo tháng không hợp lệ — kiểm lại ngày thanh toán…</td><td>Kiểm ngày (2–28), giỏ chỉ gói chính; hoặc gói đã thu đủ kỳ → tải lại hồ sơ</td></tr>
+          <tr><td>Tổng các khoản phải bằng đúng số còn lại</td><td>Chỉnh số tiền các dòng cho khớp số thu kỳ này</td></tr>
+          <tr><td>Không thấy nút Thu kỳ tháng</td><td>Gói đã thu đủ kỳ, hoặc gói monthly bán theo cách cũ (không có lịch) → báo quản lý</td></tr>
+          <tr><td>Khách không check-in được</td><td>Mở hồ sơ: gói <code>suspended</code> do quá ân hạn → thu kỳ đang nợ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Ảnh chụp từ STEEL Internal App; dữ liệu khách và gói là minh hoạ, giao diện thật có thể khác vài chi tiết.</p>
+  </section>
+
+</div>
+</body>
+</html>
